@@ -1,0 +1,22 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "name": "Believer",
+      "author": "Imagine Dragons",
+      "image": "https://upload.wikimedia.org/wikipedia/he/5/5c/Imagine-Dragons-Believer-art.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Shortwave",
+      "author": "Ryan Grigdry",
+      "image": "https://m.media-amazon.com/images/M/MV5BZWUxOWIzOTYtMjBhYy00MWFiLWEzYTgtMzRiOTExOTA1ZWQ4XkEyXkFqcGdeQXVyNjI2ODA4MDU@._V1_.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Origins",
+      "author": "Imagine Dragons",
+      "image": "https://upload.wikimedia.org/wikipedia/en/9/95/Origins_cover.png"
+    }
+  ]
+}

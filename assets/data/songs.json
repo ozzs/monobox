@@ -17,6 +17,30 @@
       "name": "Origins",
       "author": "Imagine Dragons",
       "image": "https://upload.wikimedia.org/wikipedia/en/9/95/Origins_cover.png"
+    },
+    {
+      "id": 4,
+      "name": "One Life",
+      "author": "Mike Perry",
+      "image": "https://images.genius.com/5503afff8cf62a25d493d058f1764345.1000x1000x1.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Fire On Up",
+      "author": "Paper Kings",
+      "image": "https://cdn.musicbed.com/image/upload/c_fill,dpr_auto,f_auto,g_auto,q_40,w_630,h_630/v1567689411/production/albums/5173"
+    },
+    {
+      "id": 6,
+      "name": "Here With Me",
+      "author": "Marshmello feat. CHVRCHES",
+      "image": "https://upload.wikimedia.org/wikipedia/en/b/b8/Marshmello_featuring_Chvrches_-_Here_with_Me.png"
+    },
+    {
+      "id": 7,
+      "name": "Something In The Way",
+      "author": "Nirvana",
+      "image": "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
     }
   ]
 }

@@ -16,7 +16,7 @@ const SongsDetails: FC<DetailsProps> = ({ details }) => {
     <View style={styles.detailsWrapper}>
       <Image source={{ uri: details.image }} style={styles.detailsImage} />
       <Text style={styles.detailsSongName}>{details.name}</Text>
-      <Text style={styles.detailsBand}>{details.author}</Text>
+      <Text style={styles.detailsAuthor}>{details.author}</Text>
     </View>
   )
 }
@@ -35,12 +35,14 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontFamily: 'Roboto_500Medium',
     color: colors.secondary,
+    fontSize: 14,
   },
-  detailsBand: {
+  detailsAuthor: {
     paddingTop: 5,
     fontFamily: 'Roboto_400Regular',
     color: colors.bandName,
     textTransform: 'uppercase',
+    fontSize: 10,
   },
 })
 

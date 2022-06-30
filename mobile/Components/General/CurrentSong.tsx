@@ -1,16 +1,15 @@
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
 import React, { FC } from 'react'
-import colors from '../../assets/colors/colors'
+import colors from '../../../assets/colors/colors'
 import Slider from '@react-native-community/slider'
 import { Feather, AntDesign } from '@expo/vector-icons'
 
-type DetailsType = {
-  name: string
-  author: string
-  image: string
-}
 interface DetailsProps {
-  details: DetailsType
+  details: {
+    name: string
+    author: string
+    imageURL: string
+  }
 }
 
 const CurrentSong: FC<DetailsProps> = ({ details }) => {
@@ -31,7 +30,10 @@ const CurrentSong: FC<DetailsProps> = ({ details }) => {
 
       {/* Current Song Details */}
       <View style={styles.currentSongDetails}>
-        <Image source={{ uri: details.image }} style={styles.currentSongImage} />
+        <Image
+          source={{ uri: details.imageURL }}
+          style={styles.currentSongImage}
+        />
         <View style={styles.currentSongTitles}>
           <Text style={styles.currentSongName}> {details.name} </Text>
           <Text style={styles.currentSongAuthor}> {details.author}</Text>
@@ -40,7 +42,12 @@ const CurrentSong: FC<DetailsProps> = ({ details }) => {
         {/* Controllers */}
         <View style={styles.controllersWrapper}>
           <Feather name='skip-back' size={20} color={colors.secondary} />
-          <AntDesign name='pause' style={{ marginLeft: 16 }} size={20} color={colors.secondary} />
+          <AntDesign
+            name='pause'
+            style={{ marginLeft: 16 }}
+            size={20}
+            color={colors.secondary}
+          />
           <Feather
             name='skip-forward'
             style={{ marginLeft: 16 }}

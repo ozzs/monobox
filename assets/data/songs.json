@@ -4,43 +4,43 @@
       "id": 1,
       "name": "Believer",
       "author": "Imagine Dragons",
-      "image": "https://upload.wikimedia.org/wikipedia/he/5/5c/Imagine-Dragons-Believer-art.jpg"
+      "imageURL": "https://upload.wikimedia.org/wikipedia/he/5/5c/Imagine-Dragons-Believer-art.jpg"
     },
     {
       "id": 2,
       "name": "Shortwave",
       "author": "Ryan Grigdry",
-      "image": "https://m.media-amazon.com/images/M/MV5BZWUxOWIzOTYtMjBhYy00MWFiLWEzYTgtMzRiOTExOTA1ZWQ4XkEyXkFqcGdeQXVyNjI2ODA4MDU@._V1_.jpg"
+      "imageURL": "https://m.media-amazon.com/images/M/MV5BZWUxOWIzOTYtMjBhYy00MWFiLWEzYTgtMzRiOTExOTA1ZWQ4XkEyXkFqcGdeQXVyNjI2ODA4MDU@._V1_.jpg"
     },
     {
       "id": 3,
       "name": "Origins",
       "author": "Imagine Dragons",
-      "image": "https://upload.wikimedia.org/wikipedia/en/9/95/Origins_cover.png"
+      "imageURL": "https://upload.wikimedia.org/wikipedia/en/9/95/Origins_cover.png"
     },
     {
       "id": 4,
       "name": "One Life",
       "author": "Mike Perry",
-      "image": "https://images.genius.com/5503afff8cf62a25d493d058f1764345.1000x1000x1.jpg"
+      "imageURL": "https://images.genius.com/5503afff8cf62a25d493d058f1764345.1000x1000x1.jpg"
     },
     {
       "id": 5,
       "name": "Fire On Up",
       "author": "Paper Kings",
-      "image": "https://cdn.musicbed.com/image/upload/c_fill,dpr_auto,f_auto,g_auto,q_40,w_630,h_630/v1567689411/production/albums/5173"
+      "imageURL": "https://cdn.musicbed.com/image/upload/c_fill,dpr_auto,f_auto,g_auto,q_40,w_630,h_630/v1567689411/production/albums/5173"
     },
     {
       "id": 6,
       "name": "Here With Me",
       "author": "Marshmello feat. CHVRCHES",
-      "image": "https://upload.wikimedia.org/wikipedia/en/b/b8/Marshmello_featuring_Chvrches_-_Here_with_Me.png"
+      "imageURL": "https://upload.wikimedia.org/wikipedia/en/b/b8/Marshmello_featuring_Chvrches_-_Here_with_Me.png"
     },
     {
       "id": 7,
       "name": "Something In The Way",
       "author": "Nirvana",
-      "image": "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
+      "imageURL": "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
     }
   ]
 }

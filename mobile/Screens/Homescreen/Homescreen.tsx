@@ -8,25 +8,26 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native'
-import React, { FC } from 'react'
-import colors from '../../../assets/colors/colors'
+import React, { FC, useContext } from 'react'
+import themeContext from '../../../assets/styles/themeContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { DrawerActions } from '@react-navigation/native'
 import { RootStackParamList } from '../../../App'
 import { Feather, FontAwesome } from '@expo/vector-icons'
-import SongDetails from '../../Components/LikedSongs/SongDetails'
+import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 import { Song } from '../../utils/Song'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
+  const theme = useContext(themeContext)
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const customData = require('../../../assets/data/songs.json')
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView>
         {/* Header */}
         <SafeAreaView>
@@ -34,16 +35,18 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
             >
-              <FontAwesome name='bars' size={24} color={colors.secondary} />
+              <FontAwesome name='bars' size={24} color={theme.primary} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('LikedSongs')}>
-              <Feather name='search' size={24} color={colors.secondary} />
+              <Feather name='search' size={24} color={theme.primary} />
             </TouchableOpacity>
           </View>
         </SafeAreaView>
 
         {/* Recommended Title */}
-        <Text style={styles.recommendedTitle}>Recommended for you</Text>
+        <Text style={[styles.recommendedTitle, { color: theme.primary }]}>
+          Recommended for you
+        </Text>
 
         <View style={styles.songsWrapper}>
           <FlatList
@@ -52,7 +55,7 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <SongDetails
-                song={new Song(item.name, item.author, item.imageURL)}
+                song={new Song(item.title, item.artist, item.artwork, item.url)}
                 imageSize={{ height: 190, width: 190 }}
                 fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
               />
@@ -65,7 +68,9 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
         </View>
 
         {/* My Playlist Title */}
-        <Text style={styles.playlistTitle}>My Playlist</Text>
+        <Text style={[styles.playlistTitle, { color: theme.primary }]}>
+          My Playlist
+        </Text>
 
         <View style={styles.songsWrapper}>
           <FlatList
@@ -74,7 +79,7 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <SongDetails
-                song={new Song(item.name, item.author, item.imageURL)}
+                song={new Song(item.title, item.artist, item.artwork, item.url)}
                 imageSize={{ height: 190, width: 190 }}
                 fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
               />
@@ -88,7 +93,12 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
       </ScrollView>
 
       {/* Bottom Layer */}
-      <View style={styles.bottomLayerWrapper}>
+      <View
+        style={[
+          styles.bottomLayerWrapper,
+          { backgroundColor: theme.background },
+        ]}
+      >
         <CurrentSong details={customData['songs'][3]} />
       </View>
     </View>
@@ -98,7 +108,6 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   headerIcons: {
@@ -110,7 +119,6 @@ const styles = StyleSheet.create({
   recommendedTitle: {
     fontFamily: 'Roboto_700Bold',
     fontSize: 24,
-    color: colors.secondary,
     paddingHorizontal: 30,
     paddingBottom: 25,
   },
@@ -120,7 +128,6 @@ const styles = StyleSheet.create({
   playlistTitle: {
     fontFamily: 'Roboto_700Bold',
     fontSize: 24,
-    color: colors.secondary,
     paddingHorizontal: 30,
     paddingTop: 15,
     paddingBottom: 25,
@@ -130,12 +137,6 @@ const styles = StyleSheet.create({
     height: 90,
     bottom: 0,
     position: 'absolute',
-    backgroundColor: colors.primary,
-  },
-  navigator: {
-    width: 50,
-    height: 50,
-    backgroundColor: colors.secondary,
   },
 })
 

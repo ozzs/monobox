@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
-import colors from '../../../assets/colors/colors'
+import themeContext from '../../../assets/styles/themeContext'
 import { Song } from '../../utils/Song'
 
 interface DetailsProps {
@@ -16,10 +16,11 @@ interface DetailsProps {
 }
 
 const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
+  const theme = useContext(themeContext)
   return (
     <View style={styles.detailsWrapper}>
       <Image
-        source={{ uri: song.imageURL }}
+        source={{ uri: song.artwork }}
         style={{
           width: imageSize.width,
           height: imageSize.height,
@@ -30,14 +31,19 @@ const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
         style={{
           ...styles.detailsSongName,
           fontSize: fontSize.songNameFontSize,
+          color: theme.primary,
         }}
       >
-        {song.name}
+        {song.title}
       </Text>
       <Text
-        style={{ ...styles.detailsAuthor, fontSize: fontSize.authorFontSize }}
+        style={{
+          ...styles.detailsAuthor,
+          fontSize: fontSize.authorFontSize,
+          color: theme.author,
+        }}
       >
-        {song.author}
+        {song.artist}
       </Text>
     </View>
   )
@@ -52,12 +58,10 @@ const styles = StyleSheet.create({
   detailsSongName: {
     paddingTop: 12,
     fontFamily: 'Roboto_500Medium',
-    color: colors.secondary,
   },
   detailsAuthor: {
     paddingTop: 5,
     fontFamily: 'Roboto_400Regular',
-    color: colors.bandName,
     textTransform: 'uppercase',
     fontSize: 10,
   },

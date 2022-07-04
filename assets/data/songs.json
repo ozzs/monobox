@@ -2,45 +2,52 @@
   "songs": [
     {
       "id": 1,
-      "name": "Believer",
-      "author": "Imagine Dragons",
-      "imageURL": "https://upload.wikimedia.org/wikipedia/he/5/5c/Imagine-Dragons-Believer-art.jpg"
+      "title": "Believer",
+      "artist": "Imagine Dragons",
+      "artwork": "https://upload.wikimedia.org/wikipedia/he/5/5c/Imagine-Dragons-Believer-art.jpg",
+      "url": "http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg"
     },
     {
       "id": 2,
-      "name": "Shortwave",
-      "author": "Ryan Grigdry",
-      "imageURL": "https://m.media-amazon.com/images/M/MV5BZWUxOWIzOTYtMjBhYy00MWFiLWEzYTgtMzRiOTExOTA1ZWQ4XkEyXkFqcGdeQXVyNjI2ODA4MDU@._V1_.jpg"
+      "title": "Shortwave",
+      "artist": "Ryan Grigdry",
+      "artwork": "https://m.media-amazon.com/images/M/MV5BZWUxOWIzOTYtMjBhYy00MWFiLWEzYTgtMzRiOTExOTA1ZWQ4XkEyXkFqcGdeQXVyNjI2ODA4MDU@._V1_.jpg",
+      "url": "http://example.com/avaritia.mp3"
     },
     {
       "id": 3,
-      "name": "Origins",
-      "author": "Imagine Dragons",
-      "imageURL": "https://upload.wikimedia.org/wikipedia/en/9/95/Origins_cover.png"
+      "title": "Origins",
+      "artist": "Imagine Dragons",
+      "artwork": "https://upload.wikimedia.org/wikipedia/en/9/95/Origins_cover.png",
+      "url": "http://example.com/avaritia.mp3"
     },
     {
       "id": 4,
-      "name": "One Life",
-      "author": "Mike Perry",
-      "imageURL": "https://images.genius.com/5503afff8cf62a25d493d058f1764345.1000x1000x1.jpg"
+      "title": "One Life",
+      "artist": "Mike Perry",
+      "artwork": "https://images.genius.com/5503afff8cf62a25d493d058f1764345.1000x1000x1.jpg",
+      "url": "http://example.com/avaritia.mp3"
     },
     {
       "id": 5,
-      "name": "Fire On Up",
-      "author": "Paper Kings",
-      "imageURL": "https://cdn.musicbed.com/image/upload/c_fill,dpr_auto,f_auto,g_auto,q_40,w_630,h_630/v1567689411/production/albums/5173"
+      "title": "Fire On Up",
+      "artist": "Paper Kings",
+      "artwork": "https://cdn.musicbed.com/image/upload/c_fill,dpr_auto,f_auto,g_auto,q_40,w_630,h_630/v1567689411/production/albums/5173",
+      "url": "http://example.com/avaritia.mp3"
     },
     {
       "id": 6,
-      "name": "Here With Me",
-      "author": "Marshmello feat. CHVRCHES",
-      "imageURL": "https://upload.wikimedia.org/wikipedia/en/b/b8/Marshmello_featuring_Chvrches_-_Here_with_Me.png"
+      "title": "Here With Me",
+      "artist": "Marshmello feat. CHVRCHES",
+      "artwork": "https://upload.wikimedia.org/wikipedia/en/b/b8/Marshmello_featuring_Chvrches_-_Here_with_Me.png",
+      "url": "file://localhost/C:/Projects/musicPlayer/assets/data/Imagine Dragons - Radioactive (Lyrics).mp3"
     },
     {
       "id": 7,
-      "name": "Something In The Way",
-      "author": "Nirvana",
-      "imageURL": "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
+      "title": "Something In The Way",
+      "artist": "Nirvana",
+      "artwork": "https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg",
+      "url": "http://example.com/avaritia.mp3"
     }
   ]
 }

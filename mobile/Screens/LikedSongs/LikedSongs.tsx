@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons'
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -10,33 +10,33 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native'
-import colors from '../../../assets/colors/colors'
-import SongDetails from '../../Components/LikedSongs/SongDetails'
+import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 import { Song } from '../../utils/Song'
+import themeContext from '../../../assets/styles/themeContext'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const customData = require('../../../assets/data/songs.json')
-  console.log(customData)
+  const theme = useContext(themeContext)
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Header */}
       <SafeAreaView>
         <View style={styles.headerIcons}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <AntDesign name='arrowleft' size={24} color={colors.secondary} />
+            <AntDesign name='arrowleft' size={24} color={theme.primary} />
           </TouchableOpacity>
-          <AntDesign name='bars' size={24} color={colors.secondary} />
+          <AntDesign name='bars' size={24} color={theme.primary} />
         </View>
       </SafeAreaView>
 
       {/* Title */}
-      <Text style={styles.title}>Liked Songs</Text>
+      <Text style={[styles.title, { color: theme.primary }]}>Liked Songs</Text>
 
       {/* Songs */}
       <View style={styles.songsWrapper}>
@@ -47,7 +47,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
           data={customData['songs']}
           renderItem={({ item }) => (
             <SongDetails
-              song={new Song(item.name, item.author, item.imageURL)}
+              song={new Song(item.title, item.artist, item.artwork, item.url)}
               imageSize={{ height: 150, width: 150 }}
               fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
             />
@@ -57,7 +57,12 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
       </View>
 
       {/* Bottom Layer */}
-      <View style={styles.bottomLayerWrapper}>
+      <View
+        style={[
+          styles.bottomLayerWrapper,
+          { backgroundColor: theme.background },
+        ]}
+      >
         <CurrentSong details={customData['songs'][5]} />
       </View>
     </View>
@@ -67,7 +72,6 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   bottomLayerWrapper: {
@@ -75,7 +79,6 @@ const styles = StyleSheet.create({
     height: 90,
     bottom: 0,
     position: 'absolute',
-    backgroundColor: colors.primary,
   },
   headerIcons: {
     flexDirection: 'row',
@@ -88,7 +91,6 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     fontFamily: 'Roboto_700Bold',
     fontSize: 24,
-    color: colors.secondary,
   },
   songsWrapper: {
     flex: 1,

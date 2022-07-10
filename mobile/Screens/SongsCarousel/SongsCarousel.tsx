@@ -5,87 +5,40 @@ import {
   Platform,
   StatusBar,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native'
-import React, { FC, useContext, useEffect } from 'react'
-import Carousel from 'react-native-snap-carousel'
-import SongsDetails from '../../Components/General/SongDetails'
-import musicPlayer from '../../../musicPlayer'
-import { Song } from '../../utils/Song'
-import { windowWidth } from '../../utils/Dimensions'
+import React, { FC, useContext } from 'react'
+import themeContext from '../../../assets/styles/themeContext'
+
+/* Navigation imports */
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { AntDesign, Feather } from '@expo/vector-icons'
+
+/* Components imports */
+import Carousel from 'react-native-snap-carousel'
 import Slider from '@react-native-community/slider'
-import themeContext from '../../../assets/styles/themeContext'
-import TrackPlayer, {
-  Capability,
-  State,
-  usePlaybackState,
-} from 'react-native-track-player'
+import SongsDetails from '../../Components/General/SongDetails'
+import { AntDesign, Feather } from '@expo/vector-icons'
+
+/* utils imports */
+import { Song } from '../../utils/Song'
+import { windowWidth } from '../../utils/Dimensions'
+
+/* Music Player imports */
+import { togglePlayBack } from '../../MusicPlayerServices/MusicPlayerActions'
+import { State, usePlaybackState } from 'react-native-track-player'
 
 type SongsCarouselProps = NativeStackScreenProps<
   RootStackParamList,
   'SongsCarousel'
 >
 
-const tracks = [
-  {
-    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-    title: 'Avaritia',
-    artist: 'deadmau5',
-    album: 'while(1<2)',
-    genre: 'Progressive House, Electro House',
-    date: '2014-05-20T07:00:00+00:00', // RFC 3339
-    artwork: 'http://example.com/cover.png', // Load artwork from the network
-    duration: 402, // Duration in seconds
-  },
-]
-
-TrackPlayer.updateOptions({
-  stopWithApp: false,
-  capabilities: [
-    Capability.Play,
-    Capability.Pause,
-    Capability.SkipToNext,
-    Capability.SkipToPrevious,
-    Capability.Stop,
-  ],
-  compactCapabilities: [
-    Capability.Play,
-    Capability.Pause,
-    Capability.SkipToNext,
-  ],
-})
-
-async function setupPlayer() {
-  try {
-    await TrackPlayer.setupPlayer({})
-    await TrackPlayer.add(tracks)
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-const togglePlayBack = async (playBackState: State) => {
-  const currentTrack = await TrackPlayer.getCurrentTrack()
-  if (currentTrack != null) {
-    if (playBackState === State.Paused) {
-      await TrackPlayer.play()
-    } else {
-      await TrackPlayer.pause()
-    }
-  }
-}
-
-const SongsCarousel: FC<SongsCarouselProps> = ({ route, navigation }) => {
+const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const customData = require('../../../assets/data/songs.json')
   const theme = useContext(themeContext)
-  useEffect(() => {
-    setupPlayer()
-  }, [])
   const playBackState = usePlaybackState()
+
   const renderSong = ({ item }: { item: Song }) => {
     return (
       <View>
@@ -169,11 +122,12 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             togglePlayBack(playBackState)
-            console.log(route.params.playBackState)
+            console.log(playBackState)
+            console.log('pressed play!')
           }}
         >
           <AntDesign
-            name='pause'
+            name={playBackState === State.Playing ? 'pause' : 'playcircleo'}
             style={{ marginLeft: 40 }}
             size={35}
             color={theme.primary}

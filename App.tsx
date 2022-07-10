@@ -12,13 +12,7 @@ import theme from './assets/styles/theme'
 import themeContext from './assets/styles/themeContext'
 
 /* Track Player imports */
-import TrackPlayer, {
-  State,
-  usePlaybackState,
-  Capability,
-} from 'react-native-track-player'
-import musicPlayer from './musicPlayer'
-import songs from './assets/data/songs.json'
+import { setupPlayer } from './mobile/MusicPlayerServices/SetupService'
 
 /* Design setup imports */
 import {
@@ -37,7 +31,7 @@ import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
 export type RootStackParamList = {
   Homescreen: undefined
   LikedSongs: undefined
-  SongsCarousel: { playBackState: State }
+  SongsCarousel: undefined
   Profile: undefined
   CustomDrawerContent: undefined
 }
@@ -45,10 +39,9 @@ export type RootStackParamList = {
 const Drawer = createDrawerNavigator<RootStackParamList>()
 
 export default function App() {
-  const playBackState = usePlaybackState()
-
   const [mode, setMode] = useState(true)
   useEffect(() => {
+    setupPlayer()
     EventRegister.addEventListener('changeTheme', (data) => {
       setMode(data)
       console.log(data)
@@ -87,7 +80,6 @@ export default function App() {
             name='SongsCarousel'
             component={SongsCarousel}
             options={{ headerShown: false }}
-            initialParams={{ playBackState: playBackState }}
           />
         </Drawer.Navigator>
       </NavigationContainer>

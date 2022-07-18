@@ -20,7 +20,9 @@ const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
   return (
     <View style={styles.detailsWrapper}>
       <Image
-        source={{ uri: song.artwork }}
+        source={{
+          uri: 'http://192.168.1.131:5000/songs/' + song.id + '/artwork',
+        }}
         style={{
           width: imageSize.width,
           height: imageSize.height,
@@ -58,12 +60,14 @@ const styles = StyleSheet.create({
   detailsSongName: {
     paddingTop: 12,
     fontFamily: 'Roboto_500Medium',
+    textAlign: 'center',
   },
   detailsAuthor: {
     paddingTop: 5,
     fontFamily: 'Roboto_400Regular',
     textTransform: 'uppercase',
     fontSize: 10,
+    textAlign: 'center',
   },
 })
 

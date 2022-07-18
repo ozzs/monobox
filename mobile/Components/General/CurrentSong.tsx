@@ -1,67 +1,89 @@
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
 import Slider from '@react-native-community/slider'
 import { Feather, AntDesign } from '@expo/vector-icons'
 import themeContext from '../../../assets/styles/themeContext'
-import { Song } from '../../utils/Song'
+import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerActions'
+import TrackPlayer, {
+  State,
+  Track,
+  usePlaybackState,
+  useProgress,
+} from 'react-native-track-player'
 
-interface DetailsProps {
-  details: {
-    title: string
-    artist: string
-    artwork: string
-    url: string
-  }
+interface TrackInfoProps {
+  track?: Track
 }
 
-const CurrentSong: FC<DetailsProps> = ({ details }) => {
+const CurrentSong: FC<TrackInfoProps> = ({ track }) => {
   const theme = useContext(themeContext)
+
+  const state = usePlaybackState()
+  const isPlaying = state === State.Playing
+  const onTogglePlayback = useOnTogglePlayback()
+  const progress = useProgress()
+
   return (
     <>
       {/* Slider */}
       <View style={styles.sliderWrapper}>
         <Slider
           style={styles.slider}
-          value={0.5}
+          value={progress.position}
           minimumValue={0}
-          maximumValue={1}
+          maximumValue={progress.duration}
           thumbTintColor={theme.primary}
           minimumTrackTintColor={theme.primary}
           maximumTrackTintColor={theme.primary}
+          onSlidingComplete={async (value) => {
+            TrackPlayer.seekTo(value)
+          }}
         />
       </View>
 
       {/* Current Song Details */}
       <View style={styles.currentSongDetails}>
         <Image
-          source={{ uri: details.artwork }}
+          source={{
+            uri: 'http://192.168.1.131:5000/songs/' + track?.id + '/artwork',
+          }}
           style={styles.currentSongImage}
         />
         <View style={styles.currentSongTitles}>
           <Text style={[styles.currentSongName, { color: theme.primary }]}>
-            {details.title}
+            {track?.title}
           </Text>
           <Text style={[styles.currentSongAuthor, { color: theme.author }]}>
             {' '}
-            {details.artist}
+            {track?.artist}
           </Text>
         </View>
 
         {/* Controllers */}
         <View style={styles.controllersWrapper}>
-          <Feather name='skip-back' size={20} color={theme.primary} />
-          <AntDesign
-            name='pause'
-            style={{ marginLeft: 16 }}
-            size={20}
-            color={theme.primary}
-          />
-          <Feather
-            name='skip-forward'
-            style={{ marginLeft: 16 }}
-            size={20}
-            color={theme.primary}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              TrackPlayer.skipToPrevious()
+            }}
+          >
+            <Feather name='skip-back' size={20} color={theme.primary} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onTogglePlayback}>
+            <AntDesign
+              name={isPlaying ? 'pause' : 'playcircleo'}
+              style={{ marginLeft: 16 }}
+              size={22}
+              color={theme.primary}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => TrackPlayer.skipToNext()}>
+            <Feather
+              name='skip-forward'
+              style={{ marginLeft: 16 }}
+              size={20}
+              color={theme.primary}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </>

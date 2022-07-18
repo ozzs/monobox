@@ -18,6 +18,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons'
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 import { Song } from '../../utils/Song'
+import { useCurrentTrack } from '../../MusicPlayerServices/MusicPlayerActions'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
@@ -25,6 +26,7 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
   const theme = useContext(themeContext)
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const customData = require('../../../assets/data/songs.json')
+  const track = useCurrentTrack()
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -55,7 +57,15 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <SongDetails
-                song={new Song(item.title, item.artist, item.artwork, item.url)}
+                song={
+                  new Song(
+                    item.id,
+                    item.title,
+                    item.artist,
+                    item.artwork,
+                    item.url,
+                  )
+                }
                 imageSize={{ height: 190, width: 190 }}
                 fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
               />
@@ -79,7 +89,15 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <SongDetails
-                song={new Song(item.title, item.artist, item.artwork, item.url)}
+                song={
+                  new Song(
+                    item.id,
+                    item.title,
+                    item.artist,
+                    item.artwork,
+                    item.url,
+                  )
+                }
                 imageSize={{ height: 190, width: 190 }}
                 fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
               />
@@ -87,20 +105,25 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
             ItemSeparatorComponent={() => {
               return <View style={{ width: 20 }} />
             }}
-            contentContainerStyle={{ paddingRight: 30, paddingBottom: 90 }}
+            contentContainerStyle={{
+              paddingRight: 30,
+              paddingBottom: track === undefined ? 0 : 90,
+            }}
           ></FlatList>
         </View>
       </ScrollView>
 
       {/* Bottom Layer */}
-      <View
-        style={[
-          styles.bottomLayerWrapper,
-          { backgroundColor: theme.background },
-        ]}
-      >
-        <CurrentSong details={customData['songs'][3]} />
-      </View>
+      {track === undefined ? null : (
+        <View
+          style={[
+            styles.bottomLayerWrapper,
+            { backgroundColor: theme.background },
+          ]}
+        >
+          <CurrentSong track={track} />
+        </View>
+      )}
     </View>
   )
 }

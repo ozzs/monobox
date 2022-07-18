@@ -13,6 +13,7 @@ import themeContext from './assets/styles/themeContext'
 
 /* Track Player imports */
 import { setupPlayer } from './mobile/MusicPlayerServices/SetupService'
+import { Song } from './mobile/utils/Song'
 
 /* Design setup imports */
 import {

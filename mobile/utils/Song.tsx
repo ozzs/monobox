@@ -1,5 +1,6 @@
 export class Song {
   constructor(
+    public id: number,
     public title: string,
     public artist: string,
     public artwork: string,

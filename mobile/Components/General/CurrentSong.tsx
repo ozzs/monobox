@@ -10,6 +10,7 @@ import TrackPlayer, {
   usePlaybackState,
   useProgress,
 } from 'react-native-track-player'
+import theme from '../../../assets/styles/theme'
 
 interface TrackInfoProps {
   track?: Track
@@ -50,10 +51,16 @@ const CurrentSong: FC<TrackInfoProps> = ({ track }) => {
           style={styles.currentSongImage}
         />
         <View style={styles.currentSongTitles}>
-          <Text style={[styles.currentSongName, { color: theme.primary }]}>
+          <Text
+            style={[styles.currentSongName, { color: theme.primary }]}
+            numberOfLines={1}
+          >
             {track?.title}
           </Text>
-          <Text style={[styles.currentSongAuthor, { color: theme.author }]}>
+          <Text
+            style={[styles.currentSongAuthor, { color: theme.author }]}
+            numberOfLines={1}
+          >
             {' '}
             {track?.artist}
           </Text>
@@ -113,6 +120,7 @@ const styles = StyleSheet.create({
     marginLeft: 13,
     justifyContent: 'center',
     marginRight: 'auto',
+    paddingRight: '60%',
   },
   currentSongName: {
     fontFamily: 'Roboto_500Medium',

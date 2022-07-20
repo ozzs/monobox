@@ -10,7 +10,7 @@ from fastapi_utils.tasks import repeat_every
 from sqlmodel import Session, select
 
 from database_setup import create_db_and_tables, engine
-from models import Song, SongBase, SongUpdate
+from models import Liked, Song, SongBase, SongUpdate
 
 app = FastAPI()
 session = Session(bind=engine)
@@ -18,32 +18,10 @@ session = Session(bind=engine)
 music_folder_url = "D:\Music\musicPlayer\Songs"
 cover_folder_url = "D:\Music\musicPlayer\Covers"
 
-# def get_artwork(path: str) -> Optional[str]:
-#     audio_file = eyed3.load(path)
-#     for image in audio_file.tag.images:
-#         if image.picture_type == 3:
-#             print("picture type:", image.picture_type)
-#             print("mime type: ", image.mime_type)
-#             print(type(image.image_data))
-#         return image.image_data
-#     return "No Image Found"
-
 
 def get_last_modify(path: str) -> str:
     path_str = str(datetime.datetime.fromtimestamp(os.path.getctime(path)))
     return path_str
-
-
-@app.get("/get_mock_song")
-async def get_mock_song():
-    def iterfile():
-        with open(
-            "D:\Music\musicPlayer\Songs\[Lyrics] Tears In Heaven - Eric Clapton.mp3",
-            mode="rb",
-        ) as file_like:
-            yield from file_like
-
-    return StreamingResponse(iterfile(), media_type="audio/mp3")
 
 
 @app.get("/songs/{song_id}/artwork")
@@ -57,7 +35,6 @@ async def download_cover(song_id: int) -> FileResponse:
     if song.artwork == None:
         return FileResponse(path, media_type="image/png")
     return FileResponse(song.artwork)
-    pass
 
 
 @app.get("/songs/{song_id}/stream")
@@ -76,6 +53,28 @@ async def stream_song(song_id: int) -> StreamingResponse:
             yield from file_like
 
     return StreamingResponse(iterfile(), media_type="audio/mp3")
+
+
+@app.post("/songs/{song_id}/like")
+async def like(song_id: int) -> dict:
+    new_like = Liked(song_id=song_id)
+    session.add(new_like)
+    session.commit()
+    return {"Liked song with id: ": song_id}
+
+
+@app.delete("/songs/{song_id}/unlike")
+async def unlike(song_id: int) -> dict:
+    statement = select(Liked).where(Liked.song_id == song_id)
+    liked = session.exec(statement).one_or_none()
+    if not liked:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Liked entry for song not found",
+        )
+    session.delete(liked)
+    session.commit()
+    return {"Unliked song with id: ": song_id}
 
 
 @app.on_event("startup")
@@ -129,9 +128,16 @@ def scan_songs():
 
 
 @app.get("/songs", response_model=List)
-async def get_all_songs() -> List:
+async def get_all_songs():
     statement = select(Song)
     return session.exec(statement).all()
+
+
+@app.get("/check")
+async def check():
+    statement = select(Song, Liked.song_id).join(Liked, isouter=True)
+    results = session.exec(statement).all()
+    return results
 
 
 @app.get("/songs/{song_id}", response_model=Song)

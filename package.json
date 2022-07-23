@@ -36,6 +36,7 @@
     "react-native-safe-area-context": "4.2.4",
     "react-native-screens": "~3.11.1",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-system-setting": "^1.7.6",
     "react-native-track-player": "^2.2.0-rc4",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "0.17.7"

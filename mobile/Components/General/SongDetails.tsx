@@ -1,10 +1,11 @@
 import React, { FC, useContext } from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
+import { Track } from 'react-native-track-player'
 import themeContext from '../../../assets/styles/themeContext'
 import { Song } from '../../utils/Song'
 
 interface DetailsProps {
-  song: Song
+  song: Track
   imageSize: {
     height: number
     width: number
@@ -18,10 +19,10 @@ interface DetailsProps {
 const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
   const theme = useContext(themeContext)
   return (
-    <View style={styles.detailsWrapper}>
+    <View style={{ ...styles.detailsWrapper, width: imageSize.width }}>
       <Image
         source={{
-          uri: 'http://192.168.1.131:5000/songs/' + song.id + '/artwork',
+          uri: 'http://10.0.0.15:5000/songs/' + song.id + '/artwork',
         }}
         style={{
           width: imageSize.width,
@@ -35,6 +36,7 @@ const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
           fontSize: fontSize.songNameFontSize,
           color: theme.primary,
         }}
+        numberOfLines={1}
       >
         {song.title}
       </Text>
@@ -61,6 +63,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     fontFamily: 'Roboto_500Medium',
     textAlign: 'center',
+    width: 150,
   },
   detailsAuthor: {
     paddingTop: 5,

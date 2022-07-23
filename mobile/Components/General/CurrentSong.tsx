@@ -3,7 +3,7 @@ import React, { FC, useContext } from 'react'
 import Slider from '@react-native-community/slider'
 import { Feather, AntDesign } from '@expo/vector-icons'
 import themeContext from '../../../assets/styles/themeContext'
-import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerActions'
+import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   State,
   Track,
@@ -46,7 +46,7 @@ const CurrentSong: FC<TrackInfoProps> = ({ track }) => {
       <View style={styles.currentSongDetails}>
         <Image
           source={{
-            uri: 'http://192.168.1.131:5000/songs/' + track?.id + '/artwork',
+            uri: 'http://10.0.0.15:5000/songs/' + track?.id + '/artwork',
           }}
           style={styles.currentSongImage}
         />

@@ -14,14 +14,18 @@ import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
-import { Song } from '../../utils/Song'
 import themeContext from '../../../assets/styles/themeContext'
+import {
+  useApiRequest,
+  useCurrentTrack,
+} from '../../MusicPlayerServices/MusicPlayerHooks'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const customData = require('../../../assets/data/songs.json')
+  const { data, error } = useApiRequest('http://10.0.0.15:5000/songs/liked')
+  const track = useCurrentTrack()
+
   const theme = useContext(themeContext)
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -44,10 +48,10 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
           columnWrapperStyle={{ justifyContent: 'space-between' }}
           numColumns={2}
           showsVerticalScrollIndicator={false}
-          data={customData['songs']}
+          data={data}
           renderItem={({ item }) => (
             <SongDetails
-              song={new Song(item.title, item.artist, item.artwork, item.url)}
+              song={item.Song}
               imageSize={{ height: 150, width: 150 }}
               fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
             />
@@ -57,14 +61,16 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
       </View>
 
       {/* Bottom Layer */}
-      <View
-        style={[
-          styles.bottomLayerWrapper,
-          { backgroundColor: theme.background },
-        ]}
-      >
-        <CurrentSong details={customData['songs'][5]} />
-      </View>
+      {track === undefined ? null : (
+        <View
+          style={[
+            styles.bottomLayerWrapper,
+            { backgroundColor: theme.background },
+          ]}
+        >
+          <CurrentSong track={track} />
+        </View>
+      )}
     </View>
   )
 }

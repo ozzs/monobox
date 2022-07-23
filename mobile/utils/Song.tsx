@@ -5,5 +5,7 @@ export class Song {
     public artist: string,
     public artwork: string,
     public url: string,
+    public rating: boolean,
+    public duration: number,
   ) {}
 }

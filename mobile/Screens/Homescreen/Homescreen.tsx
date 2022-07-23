@@ -2,6 +2,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Image,
   Platform,
   StatusBar,
   TouchableOpacity,
@@ -18,15 +19,20 @@ import { Feather, FontAwesome } from '@expo/vector-icons'
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 import { Song } from '../../utils/Song'
-import { useCurrentTrack } from '../../MusicPlayerServices/MusicPlayerActions'
+import {
+  useApiRequest,
+  useCurrentTrack,
+} from '../../MusicPlayerServices/MusicPlayerHooks'
+import { Track } from 'react-native-track-player'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
   const theme = useContext(themeContext)
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const customData = require('../../../assets/data/songs.json')
   const track = useCurrentTrack()
+
+  // Fetches required songs
+  const { data, error } = useApiRequest('http://10.0.0.15:5000/songs')
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -52,20 +58,12 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
 
         <View style={styles.songsWrapper}>
           <FlatList
-            data={customData['songs']}
+            data={data}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <SongDetails
-                song={
-                  new Song(
-                    item.id,
-                    item.title,
-                    item.artist,
-                    item.artwork,
-                    item.url,
-                  )
-                }
+                song={item.Song}
                 imageSize={{ height: 190, width: 190 }}
                 fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
               />
@@ -84,20 +82,12 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
 
         <View style={styles.songsWrapper}>
           <FlatList
-            data={customData['songs']}
+            data={data}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <SongDetails
-                song={
-                  new Song(
-                    item.id,
-                    item.title,
-                    item.artist,
-                    item.artwork,
-                    item.url,
-                  )
-                }
+                song={item.Song}
                 imageSize={{ height: 190, width: 190 }}
                 fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
               />

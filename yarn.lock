@@ -6589,6 +6589,11 @@
     "prop-types" "^15.6.1"
     "react-addons-shallow-compare" "15.6.2"
 
+"react-native-system-setting@^1.7.6":
+  "integrity" "sha512-nBnIK5Xnyu8XRRA3BMzRI54oYlSBKc0oOTQdZOCEeOvn4ltS1nk2shj/vtMQe6khXvuhai3vIc+g7DcsOcr5+w=="
+  "resolved" "https://registry.npmjs.org/react-native-system-setting/-/react-native-system-setting-1.7.6.tgz"
+  "version" "1.7.6"
+
 "react-native-track-player@^2.2.0-rc4":
   "integrity" "sha512-ojEEZbAv3P9RhTxkeQMrh3kpOp/bqV/F7VwKezSyMxtdZXZiyIXn0D3eMbrRLiamwVjDuMKYy1S9DxoCOL8eUQ=="
   "resolved" "https://registry.npmjs.org/react-native-track-player/-/react-native-track-player-2.2.0-rc4.tgz"

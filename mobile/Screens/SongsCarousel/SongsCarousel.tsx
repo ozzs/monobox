@@ -10,7 +10,6 @@ import {
   Animated as ReactAnimated,
   FlatList,
   ActivityIndicator,
-  Pressable,
 } from 'react-native'
 import React, { FC, useContext, useEffect, useRef, useState } from 'react'
 import themeContext from '../../../assets/styles/themeContext'
@@ -24,19 +23,19 @@ import Slider from '@react-native-community/slider'
 import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons'
 
 /* utils imports */
-// import { Song } from '../../utils/Song'
 import { windowWidth } from '../../utils/Dimensions'
 
 /* Music Player imports */
 import {
   useCurrentTrack,
   useOnTogglePlayback,
-} from '../../MusicPlayerServices/MusicPlayerActions'
+  useSetupTracks,
+  useApiRequest,
+} from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   Event,
   RepeatMode,
   State,
-  Track,
   usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
@@ -50,7 +49,6 @@ type SongsCarouselProps = NativeStackScreenProps<
 const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
   /* General use variables */
   const theme = useContext(themeContext)
-  const [isLoading, setIsLoading] = useState(true)
 
   /* TrackPlayer variables initialization */
   const isPlaying = usePlaybackState() === State.Playing
@@ -85,6 +83,15 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
       }
     }
   })
+
+  /* Function: Gets current track's duration */
+  const getCurrentTrackDuration = (): number => {
+    if (currentTrack !== undefined) {
+      const duration = currentTrack.duration as number
+      return duration
+    }
+    return 0
+  }
 
   /* Function: Changes repeat icon according to user's choice */
   const repeatIcon = () => {
@@ -156,7 +163,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
   const likeSong = async (songID: number) => {
     const trackId = await TrackPlayer.getCurrentTrack()
     if (trackRating === false) {
-      await fetch('http://192.168.1.131:5000/songs/' + songID + '/like', {
+      await fetch('http://10.0.0.15:5000/songs/' + songID + '/like', {
         method: 'POST',
       })
       TrackPlayer.updateMetadataForTrack(trackId, {
@@ -164,7 +171,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
       })
       setTrackRating(true)
     } else {
-      await fetch('http://192.168.1.131:5000/songs/' + songID + '/unlike', {
+      await fetch('http://10.0.0.15:5000/songs/' + songID + '/unlike', {
         method: 'DELETE',
       })
       TrackPlayer.updateMetadataForTrack(trackId, {
@@ -174,53 +181,11 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
     }
   }
 
-  /* Function: fetches required songs */
-  const [data, setData] = useState<Track[]>([])
-  const fetchSongs = async () => {
-    await fetch('http://192.168.1.131:5000/check', {
-      method: 'GET',
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.error(error))
-  }
-
-  /* Function: sets up tracks for TrackPlayer */
-  const tracks: Track[] = []
-  const setupTracks = async () => {
-    data.forEach((item) => {
-      const track: Track = {
-        id: 0,
-        url: '',
-        title: '',
-        artist: '',
-        artwork: '',
-      }
-      track['id'] = item.Song.id
-      track['url'] =
-        'http://192.168.1.131:5000/songs/' + item.Song.id + '/stream'
-      track['title'] = item.Song.title
-      track['artist'] = item.Song.artist
-      track['artwork'] = item.Song.artwork
-      track['rating'] = item.song_id ? true : false
-      tracks.push(track)
-    })
-    await TrackPlayer.add(tracks)
-    console.log('data received: ', data)
-    setIsLoading(false)
-  }
-
-  useEffect(() => {
-    fetchSongs()
-  }, [])
+  // Fetches required songs
+  const { data, error } = useApiRequest('http://10.0.0.15:5000/songs')
 
   // Sets up tracks for TrackPlayer after data is fetched & set
-  useEffect(() => {
-    setupTracks()
-  }, [data])
+  const isLoaded = useSetupTracks(data)
 
   /* Function (Carousel): renders track's artwork */
   const renderSong = () => {
@@ -228,9 +193,8 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
       <View style={styles.carouselImageContainer}>
         <Image
           source={{
-            uri: 'http://192.168.1.131:5000/songs/' + trackArtwork + '/artwork',
+            uri: 'http://10.0.0.15:5000/songs/' + trackArtwork + '/artwork',
           }}
-          key={trackArtwork}
           style={styles.carouselImage}
         />
       </View>
@@ -241,7 +205,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-      {isLoading ? (
+      {isLoaded ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
         </View>
@@ -318,7 +282,13 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
           {/* Options */}
           <View style={styles.optionsWrapper}>
             <View style={styles.optionsLeftContainer}>
-              <Feather name='volume-1' size={20} color={theme.icon} />
+              <TouchableOpacity onPress={changeRepeatMode}>
+                <MaterialCommunityIcons
+                  name={repeatIcon()}
+                  size={20}
+                  color={repeatMode !== 'off' ? theme.primary : theme.icon}
+                />
+              </TouchableOpacity>
             </View>
             <View style={styles.optionsCenterContainer}>
               {trackRating ? (
@@ -341,13 +311,6 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
             </View>
 
             <View style={styles.optionsRightContainer}>
-              <TouchableOpacity onPress={changeRepeatMode}>
-                <MaterialCommunityIcons
-                  name={repeatIcon()}
-                  size={20}
-                  color={repeatMode !== 'off' ? theme.primary : theme.icon}
-                />
-              </TouchableOpacity>
               <Feather
                 name='shuffle'
                 size={20}
@@ -363,7 +326,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
               {new Date(progress.position * 1000).toISOString().slice(14, 19)}
             </Text>
             <Text style={[styles.sliderTime, { color: theme.primary }]}>
-              {new Date((progress.duration - progress.position) * 1000)
+              {new Date((getCurrentTrackDuration() - progress.position) * 1000)
                 .toISOString()
                 .slice(14, 19)}
             </Text>
@@ -374,12 +337,12 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
             style={styles.slider}
             value={progress.position}
             minimumValue={0}
-            maximumValue={progress.duration}
+            maximumValue={getCurrentTrackDuration()}
             thumbTintColor={theme.primary}
             minimumTrackTintColor={theme.primary}
             maximumTrackTintColor={theme.primary}
             onSlidingComplete={async (value) => {
-              TrackPlayer.seekTo(value)
+              await TrackPlayer.seekTo(value)
             }}
           />
 

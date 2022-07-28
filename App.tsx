@@ -28,11 +28,14 @@ import LikedSongs from './mobile/Screens/LikedSongs/LikedSongs'
 import Homescreen from './mobile/Screens/Homescreen/Homescreen'
 import CustomDrawerContent from './mobile/Screens/Homescreen/CustomDrawerContent'
 import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
+import CurrentSong from './mobile/Components/General/CurrentSong'
+import { useCurrentTrack } from './mobile/MusicPlayerServices/MusicPlayerHooks'
+import { View } from 'react-native'
 
 export type RootStackParamList = {
   Homescreen: undefined
   LikedSongs: undefined
-  SongsCarousel: undefined
+  SongsCarousel: { song_id: number; playlist_id?: number } | undefined
   Profile: undefined
   CustomDrawerContent: undefined
 }
@@ -41,6 +44,9 @@ const Drawer = createDrawerNavigator<RootStackParamList>()
 
 export default function App() {
   const [mode, setMode] = useState(true)
+
+  const currentTrack = useCurrentTrack()
+
   useEffect(() => {
     setupPlayer()
     EventRegister.addEventListener('changeTheme', (data) => {

@@ -20,7 +20,7 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "camelcase": "error",
+    "camelcase": "off",
     "spaced-comment": "error",
     "quotes": ["error", "single"],
     "no-duplicate-imports": "error"

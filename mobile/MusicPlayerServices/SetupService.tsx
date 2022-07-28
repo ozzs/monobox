@@ -11,7 +11,6 @@ export async function setupPlayer() {
         Capability.Pause,
         Capability.SkipToNext,
         Capability.SkipToPrevious,
-        Capability.SetRating,
       ],
       compactCapabilities: [
         Capability.Play,

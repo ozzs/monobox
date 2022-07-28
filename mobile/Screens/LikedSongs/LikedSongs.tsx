@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons'
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
   StatusBar,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
@@ -16,59 +17,77 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 import themeContext from '../../../assets/styles/themeContext'
 import {
-  useApiRequest,
   useCurrentTrack,
+  useTracksApiRequest,
 } from '../../MusicPlayerServices/MusicPlayerHooks'
+import { Track } from 'react-native-track-player'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
-  const { data, error } = useApiRequest('http://10.0.0.15:5000/songs/liked')
-  const track = useCurrentTrack()
+  const { playlist, error } = useTracksApiRequest(
+    'http://192.168.1.131:5000/songs/liked',
+  )
+  const currentTrack = useCurrentTrack()
+
+  console.log('PLAYLIST: ', playlist)
+  console.log('TRACK: ', currentTrack)
 
   const theme = useContext(themeContext)
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {/* Header */}
-      <SafeAreaView>
-        <View style={styles.headerIcons}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <AntDesign name='arrowleft' size={24} color={theme.primary} />
-          </TouchableOpacity>
-          <AntDesign name='bars' size={24} color={theme.primary} />
+      {playlist.length < 0 ? (
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator size='large' color={theme.primary} />
         </View>
-      </SafeAreaView>
+      ) : (
+        <View style={{ flex: 1 }}>
+          {/* Header */}
+          <SafeAreaView>
+            <View style={styles.headerIcons}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <AntDesign name='arrowleft' size={24} color={theme.primary} />
+              </TouchableOpacity>
+              <AntDesign name='bars' size={24} color={theme.primary} />
+            </View>
+          </SafeAreaView>
 
-      {/* Title */}
-      <Text style={[styles.title, { color: theme.primary }]}>Liked Songs</Text>
+          {/* Title */}
+          <Text style={[styles.title, { color: theme.primary }]}>
+            Liked Songs
+          </Text>
 
-      {/* Songs */}
-      <View style={styles.songsWrapper}>
-        <FlatList
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          data={data}
-          renderItem={({ item }) => (
-            <SongDetails
-              song={item.Song}
-              imageSize={{ height: 150, width: 150 }}
-              fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
-            />
+          {/* Songs */}
+          <View style={styles.songsWrapper}>
+            <FlatList
+              columnWrapperStyle={{ justifyContent: 'space-between' }}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              data={playlist}
+              renderItem={({ item }) => (
+                <SongDetails
+                  song={item.Song}
+                  imageSize={{ height: 150, width: 150 }}
+                  fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
+                />
+              )}
+              contentContainerStyle={{ paddingBottom: 90 }}
+            ></FlatList>
+          </View>
+          {/* <CurrentSong track={currentTrack} playlistID={2} />
+          <Text>BLABLABLA</Text> */}
+
+          {/* Bottom Layer */}
+          {currentTrack === undefined ? null : (
+            <View
+              style={[
+                styles.bottomLayerWrapper,
+                { backgroundColor: theme.background },
+              ]}
+            >
+              <CurrentSong track={currentTrack} />
+            </View>
           )}
-          contentContainerStyle={{ paddingBottom: 90 }}
-        ></FlatList>
-      </View>
-
-      {/* Bottom Layer */}
-      {track === undefined ? null : (
-        <View
-          style={[
-            styles.bottomLayerWrapper,
-            { backgroundColor: theme.background },
-          ]}
-        >
-          <CurrentSong track={track} />
         </View>
       )}
     </View>
@@ -79,6 +98,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  activityIndicatorContainer: {
+    minHeight: '100%',
+    display: 'flex',
+    justifyContent: 'center',
   },
   bottomLayerWrapper: {
     width: '100%',

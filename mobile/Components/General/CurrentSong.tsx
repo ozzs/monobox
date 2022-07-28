@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useMemo } from 'react'
 import Slider from '@react-native-community/slider'
+
 import { Feather, AntDesign } from '@expo/vector-icons'
 import themeContext from '../../../assets/styles/themeContext'
 import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerHooks'
@@ -11,13 +12,25 @@ import TrackPlayer, {
   useProgress,
 } from 'react-native-track-player'
 import theme from '../../../assets/styles/theme'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../App'
 
 interface TrackInfoProps {
   track?: Track
+  playlistID?: number
 }
 
-const CurrentSong: FC<TrackInfoProps> = ({ track }) => {
+type CurrentSongProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Homescreen'
+>
+
+const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
   const theme = useContext(themeContext)
+  const navigation = useNavigation<CurrentSongProps>()
+
+  const check = useMemo(() => playlistID, [playlistID])
 
   const state = usePlaybackState()
   const isPlaying = state === State.Playing
@@ -44,12 +57,21 @@ const CurrentSong: FC<TrackInfoProps> = ({ track }) => {
 
       {/* Current Song Details */}
       <View style={styles.currentSongDetails}>
-        <Image
-          source={{
-            uri: 'http://10.0.0.15:5000/songs/' + track?.id + '/artwork',
-          }}
-          style={styles.currentSongImage}
-        />
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('SongsCarousel', {
+              playlist_id: check,
+              song_id: 0,
+            })
+          }
+        >
+          <Image
+            source={{
+              uri: 'http://192.168.1.131:5000/songs/' + track?.id + '/artwork',
+            }}
+            style={styles.currentSongImage}
+          />
+        </TouchableOpacity>
         <View style={styles.currentSongTitles}>
           <Text
             style={[styles.currentSongName, { color: theme.primary }]}

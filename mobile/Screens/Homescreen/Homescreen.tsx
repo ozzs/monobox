@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native'
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import themeContext from '../../../assets/styles/themeContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -18,100 +19,104 @@ import { RootStackParamList } from '../../../App'
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
-import { Song } from '../../utils/Song'
 import {
-  useApiRequest,
   useCurrentTrack,
+  usePlaylistApiRequest,
 } from '../../MusicPlayerServices/MusicPlayerHooks'
-import { Track } from 'react-native-track-player'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
   const theme = useContext(themeContext)
-  const track = useCurrentTrack()
+  const currentTrack = useCurrentTrack()
+  const [playlistId, setPlaylistId] = useState(0)
 
   // Fetches required songs
-  const { data, error } = useApiRequest('http://10.0.0.15:5000/songs')
+  const { playlists, isLoaded, error } = usePlaylistApiRequest(
+    'http://192.168.1.131:5000/songs/playlists',
+  )
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <ScrollView>
-        {/* Header */}
-        <SafeAreaView>
-          <View style={styles.headerIcons}>
-            <TouchableOpacity
-              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+      {isLoaded ? (
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator size='large' color={theme.primary} />
+        </View>
+      ) : (
+        <View>
+          <ScrollView>
+            {/* Header */}
+            <SafeAreaView>
+              <View style={styles.headerIcons}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.dispatch(DrawerActions.openDrawer())
+                  }
+                >
+                  <FontAwesome name='bars' size={24} color={theme.primary} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('LikedSongs')}
+                >
+                  <Feather name='search' size={24} color={theme.primary} />
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
+
+            {playlists.map((playlist) => {
+              return (
+                <View key={playlist.id}>
+                  <Text
+                    style={[styles.recommendedTitle, { color: theme.primary }]}
+                  >
+                    {playlist.name}
+                  </Text>
+                  <View style={styles.songsWrapper}>
+                    <FlatList
+                      data={playlist.songs}
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}
+                      renderItem={({ item }) => (
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('SongsCarousel', {
+                              song_id: item.id,
+                              playlist_id: playlist.id,
+                            })
+                            setPlaylistId(playlist.id)
+                          }}
+                        >
+                          <SongDetails
+                            song={item}
+                            imageSize={{ height: 190, width: 190 }}
+                            fontSize={{
+                              songNameFontSize: 16,
+                              authorFontSize: 10,
+                            }}
+                          />
+                        </TouchableOpacity>
+                      )}
+                      ItemSeparatorComponent={() => {
+                        return <View style={{ width: 20 }} />
+                      }}
+                    ></FlatList>
+                  </View>
+                </View>
+              )
+            })}
+          </ScrollView>
+
+          {/* Bottom Layer */}
+          {currentTrack === undefined ? null : (
+            <View
+              style={[
+                styles.bottomLayerWrapper,
+                { backgroundColor: theme.background },
+              ]}
             >
-              <FontAwesome name='bars' size={24} color={theme.primary} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('LikedSongs')}>
-              <Feather name='search' size={24} color={theme.primary} />
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-
-        {/* Recommended Title */}
-        <Text style={[styles.recommendedTitle, { color: theme.primary }]}>
-          Recommended for you
-        </Text>
-
-        <View style={styles.songsWrapper}>
-          <FlatList
-            data={data}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <SongDetails
-                song={item.Song}
-                imageSize={{ height: 190, width: 190 }}
-                fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
-              />
-            )}
-            ItemSeparatorComponent={() => {
-              return <View style={{ width: 20 }} />
-            }}
-            contentContainerStyle={{ paddingRight: 30 }}
-          ></FlatList>
-        </View>
-
-        {/* My Playlist Title */}
-        <Text style={[styles.playlistTitle, { color: theme.primary }]}>
-          My Playlist
-        </Text>
-
-        <View style={styles.songsWrapper}>
-          <FlatList
-            data={data}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <SongDetails
-                song={item.Song}
-                imageSize={{ height: 190, width: 190 }}
-                fontSize={{ songNameFontSize: 16, authorFontSize: 10 }}
-              />
-            )}
-            ItemSeparatorComponent={() => {
-              return <View style={{ width: 20 }} />
-            }}
-            contentContainerStyle={{
-              paddingRight: 30,
-              paddingBottom: track === undefined ? 0 : 90,
-            }}
-          ></FlatList>
-        </View>
-      </ScrollView>
-
-      {/* Bottom Layer */}
-      {track === undefined ? null : (
-        <View
-          style={[
-            styles.bottomLayerWrapper,
-            { backgroundColor: theme.background },
-          ]}
-        >
-          <CurrentSong track={track} />
+              <CurrentSong track={currentTrack} playlistID={playlistId} />
+            </View>
+          )}
         </View>
       )}
     </View>
@@ -122,6 +127,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+  activityIndicatorContainer: {
+    minHeight: '100%',
+    display: 'flex',
+    justifyContent: 'center',
   },
   headerIcons: {
     flexDirection: 'row',

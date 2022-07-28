@@ -30,12 +30,13 @@ import {
   useCurrentTrack,
   useOnTogglePlayback,
   useSetupTracks,
-  useApiRequest,
+  useTracksApiRequest,
 } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   Event,
   RepeatMode,
   State,
+  Track,
   usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
@@ -46,7 +47,10 @@ type SongsCarouselProps = NativeStackScreenProps<
   'SongsCarousel'
 >
 
-const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
+const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
+  const song_id = route.params?.song_id
+  const playlist_id = route.params?.playlist_id
+
   /* General use variables */
   const theme = useContext(themeContext)
 
@@ -163,7 +167,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
   const likeSong = async (songID: number) => {
     const trackId = await TrackPlayer.getCurrentTrack()
     if (trackRating === false) {
-      await fetch('http://10.0.0.15:5000/songs/' + songID + '/like', {
+      await fetch('http://192.168.1.131:5000/songs/' + songID + '/like', {
         method: 'POST',
       })
       TrackPlayer.updateMetadataForTrack(trackId, {
@@ -171,7 +175,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
       })
       setTrackRating(true)
     } else {
-      await fetch('http://10.0.0.15:5000/songs/' + songID + '/unlike', {
+      await fetch('http://192.168.1.131:5000/songs/' + songID + '/unlike', {
         method: 'DELETE',
       })
       TrackPlayer.updateMetadataForTrack(trackId, {
@@ -182,10 +186,23 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
   }
 
   // Fetches required songs
-  const { data, error } = useApiRequest('http://10.0.0.15:5000/songs')
+  const { playlist, error } = useTracksApiRequest(
+    'http://192.168.1.131:5000/songs/' + playlist_id + '/fetch',
+  )
 
   // Sets up tracks for TrackPlayer after data is fetched & set
-  const isLoaded = useSetupTracks(data)
+  const { index, isLoaded } = useSetupTracks(playlist, song_id)
+
+  useEffect(() => {
+    setSongIndex(index)
+  }, [index])
+
+  const getIndex = async () => {
+    const index = await TrackPlayer.getCurrentTrack()
+    console.log('Song Index:', index)
+    console.log('Song Index State: ', songIndex)
+    return index
+  }
 
   /* Function (Carousel): renders track's artwork */
   const renderSong = () => {
@@ -193,7 +210,7 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
       <View style={styles.carouselImageContainer}>
         <Image
           source={{
-            uri: 'http://10.0.0.15:5000/songs/' + trackArtwork + '/artwork',
+            uri: 'http://192.168.1.131:5000/songs/' + trackArtwork + '/artwork',
           }}
           style={styles.carouselImage}
         />
@@ -229,12 +246,18 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
           {/* Songs Carousel */}
           <ReactAnimated.FlatList
             ref={carouselRef}
-            data={data}
+            data={playlist}
             renderItem={renderSong}
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={16}
+            initialScrollIndex={index}
+            getItemLayout={(data, index) => ({
+              length: 260,
+              offset: windowWidth * index,
+              index,
+            })}
             onScroll={ReactAnimated.event(
               [
                 {
@@ -311,12 +334,18 @@ const SongsCarousel: FC<SongsCarouselProps> = ({ navigation }) => {
             </View>
 
             <View style={styles.optionsRightContainer}>
-              <Feather
-                name='shuffle'
-                size={20}
-                color={theme.icon}
-                style={styles.shuffleIcon}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  getIndex()
+                }}
+              >
+                <Feather
+                  name='shuffle'
+                  size={20}
+                  color={theme.icon}
+                  style={styles.shuffleIcon}
+                />
+              </TouchableOpacity>
             </View>
           </View>
 

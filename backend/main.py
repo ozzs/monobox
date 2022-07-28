@@ -1,6 +1,6 @@
 import datetime
-from ntpath import join
 import os
+from random import seed
 from typing import List, Optional
 
 import eyed3  # type: ignore
@@ -8,16 +8,28 @@ import uvicorn  # type: ignore
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi_utils.tasks import repeat_every
-from sqlmodel import LABEL_STYLE_DEFAULT, Session, select
+from sqlmodel import Session, select
 
 from database_setup import create_db_and_tables, engine
-from models import Liked, Song, SongBase, SongUpdate, Playlist, SongPlaylistLink
+from models import (
+    Liked,
+    Playlist,
+    PlaylistBase,
+    PlaylistRead,
+    PlaylistReadWithSongs,
+    Song,
+    SongBase,
+    SongPlaylistLink,
+    SongRead,
+    SongReadWithPlaylists,
+    SongUpdate,
+)
 
 app = FastAPI()
 session = Session(bind=engine)
 
-music_folder_url = "C:\musicPlayer\Songs"
-cover_folder_url = "C:\musicPlayer\Covers"
+music_folder_url = "D:\Music\musicPlayer\Songs"
+cover_folder_url = "D:\Music\musicPlayer\Covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -26,7 +38,7 @@ def get_last_modify(path: str) -> str:
 
 
 @app.get("/songs/{song_id}/artwork")
-async def download_cover(song_id: int) -> FileResponse:
+async def download_artwork(song_id: int) -> FileResponse:
     path = "../assets/defaultArtwork.png"
     song = session.get(Song, song_id)
     if not song:
@@ -78,97 +90,76 @@ async def unlike(song_id: int) -> dict:
     return {"Unliked song with id: ": song_id}
 
 
-@app.on_event("startup")
-# @repeat_every(seconds=5)
-def scan_songs():
-    for song in os.listdir(music_folder_url):
-        if song.endswith('.mp3'):
-            print(song)
-            joined_path = os.path.join(music_folder_url, song)
-            audiofile = eyed3.load(joined_path)
-            print(audiofile.info.time_secs)
+@app.post("/check", response_model=List[PlaylistReadWithSongs])
+async def check(
+    song_id1: int,
+    song_id2: int,
+    song_id3: int,
+    song_id4: int,
+    song_id5: int,
+    playlist_id1: int,
+    playlist_id2: int,
+):
+    song1 = session.exec(select(Song).where(Song.id == song_id1)).one()
+    song2 = session.exec(select(Song).where(Song.id == song_id2)).one()
+    song3 = session.exec(select(Song).where(Song.id == song_id3)).one()
+    song4 = session.exec(select(Song).where(Song.id == song_id4)).one()
+    song5 = session.exec(select(Song).where(Song.id == song_id5)).one()
 
-            # TODO: Think of a better algorithm
-            statement = select(Song).where(
-                Song.title == audiofile.tag.title, Song.artist == audiofile.tag.artist
-            )
-            db_song = session.exec(statement).one_or_none()
-            if db_song:
-                if get_last_modify(joined_path) != db_song.last_modify:
-                    # TODO: think of a smart way to implement updating a song
-                    pass
-                continue
-
-            song_title = audiofile.tag.title
-            artwork_path = str(os.path.join(cover_folder_url, song_title)) + ".jpg"
-            artwork_exists = False
-            for image in audiofile.tag.images:
-                image_file = open(
-                    "C:\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
-                )
-                print("Writing image file: {}).jpg".format(song_title))
-                image_file.write(image.image_data)
-                image_file.close()
-                artwork_exists = True
-
-            new_song = Song(
-                url=joined_path,
-                title=song_title,
-                artist=audiofile.tag.artist,
-                artwork=artwork_path if artwork_exists else None,
-                last_modify=get_last_modify(joined_path),
-                duration=audiofile.info.time_secs
-            )
-            print(new_song.title, " added!")
-            session.add(
-                Song(
-                    url=joined_path,
-                    title=song_title,
-                    artist=audiofile.tag.artist,
-                    artwork=artwork_path if artwork_exists else None,
-                    last_modify=get_last_modify(joined_path),
-                    duration=audiofile.info.time_secs
-                )
-            )
+    playlist1 = session.exec(select(Playlist).where(Playlist.id == playlist_id1)).one()
+    playlist2 = session.exec(select(Playlist).where(Playlist.id == playlist_id2)).one()
+    playlist1.songs.append(song1)
+    playlist1.songs.append(song2)
+    playlist2.songs.append(song2)
+    playlist2.songs.append(song3)
+    playlist2.songs.append(song4)
+    playlist2.songs.append(song5)
+    session.add(playlist1)
+    session.add(playlist2)
     session.commit()
+    return [playlist1, playlist2]
 
-@app.post("/add_link")
-async def add_link():
-    new_link1 = SongPlaylistLink(song_id=2, playlist_id=1)
-    new_link2 = SongPlaylistLink(song_id=3, playlist_id=1)
-    session.add(new_link1)
-    session.add(new_link2)
+
+@app.post(
+    "/songs/playlists", response_model=Playlist, status_code=status.HTTP_201_CREATED
+)
+async def create_playlist(playlist: PlaylistBase) -> Playlist:
+    new_playlist = Playlist.from_orm(playlist)
+    session.add(new_playlist)
     session.commit()
+    return new_playlist
 
 
-@app.get("/songs/{playlist_id}/fetch")
+@app.get("/songs/{playlist_id}/fetch", response_model=List)
 async def get_playlist(playlist_id: int) -> List:
-    statement = select(Song).select_from(Song) \
-                .join(SongPlaylistLink).join(Playlist).where(Playlist.id == playlist_id)
+    statement = (
+        select(Song, Liked.song_id)
+        .select_from(Song)
+        .join(SongPlaylistLink)
+        .join(Playlist)
+        .join(Liked, isouter=True)
+        .where(Playlist.id == playlist_id)
+    )
     return session.exec(statement).all()
 
 
-@app.get("/check")
-async def get_all_playlist() -> List:
-    statement = select(Playlist.id, Playlist.name, Song.title, Song.artist)
-    return session.exec(statement).all()
-    pass
+@app.get("/songs/playlists", response_model=List[PlaylistReadWithSongs])
+async def get_all_playlist():
+    return session.exec(select(Playlist)).all()
 
 
-@app.get("/songs", response_model=List)
+@app.get("/songs")
 async def get_all_songs():
-    statement = select(Song)
-    return session.exec(statement).all()
+    return session.exec(select(Song, Liked.song_id).join(Liked, isouter=True)).all()
 
 
 @app.get("/songs/liked")
 async def get_liked_songs() -> List:
     statement = select(Song, Liked.song_id).join(Liked)
-    results = session.exec(statement).all()
-    return results
+    return session.exec(statement).all()
 
 
-@app.get("/songs/{song_id}", response_model=Song)
+@app.get("/songs/{song_id}", response_model=SongRead)
 async def get_song(song_id: int) -> Optional[Song]:
     song = session.get(Song, song_id)
     if not song:
@@ -178,9 +169,9 @@ async def get_song(song_id: int) -> Optional[Song]:
     return song
 
 
-@app.post("/songs", response_model=Song, status_code=status.HTTP_201_CREATED)
-async def create_song(song: SongBase) -> SongBase:
-    new_song = Song(url=song.url, title=song.title, artist=song.artist)
+@app.post("/songs", response_model=SongRead, status_code=status.HTTP_201_CREATED)
+async def create_song(song: SongBase):
+    new_song = Song.from_orm(song)
     session.add(new_song)
     session.commit()
     return new_song
@@ -214,6 +205,59 @@ async def delete_song(song_id: int) -> Optional[Song]:
     return song
 
 
+@app.on_event("startup")
+# @repeat_every(seconds=5)
+def scan_songs():
+    for song in os.listdir(music_folder_url):
+        if song.endswith(".mp3"):
+            joined_path = os.path.join(music_folder_url, song)
+            audiofile = eyed3.load(joined_path)
+
+            # TODO: Think of a better algorithm
+            statement = select(Song).where(
+                Song.title == audiofile.tag.title, Song.artist == audiofile.tag.artist
+            )
+            db_song = session.exec(statement).one_or_none()
+            if db_song:
+                if get_last_modify(joined_path) != db_song.last_modify:
+                    # TODO: think of a smart way to implement updating a song
+                    pass
+                continue
+
+            song_title = audiofile.tag.title
+            artwork_path = str(os.path.join(cover_folder_url, song_title)) + ".jpg"
+            artwork_exists = False
+            for image in audiofile.tag.images:
+                image_file = open(
+                    "D:\Music\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
+                )
+                print("Writing image file: {}).jpg".format(song_title))
+                image_file.write(image.image_data)
+                image_file.close()
+                artwork_exists = True
+
+            new_song = Song(
+                url=joined_path,
+                title=song_title,
+                artist=audiofile.tag.artist,
+                artwork=artwork_path if artwork_exists else None,
+                last_modify=get_last_modify(joined_path),
+                duration=audiofile.info.time_secs,
+            )
+            print(new_song.title, " added!")
+            session.add(
+                Song(
+                    url=joined_path,
+                    title=song_title,
+                    artist=audiofile.tag.artist,
+                    artwork=artwork_path if artwork_exists else None,
+                    last_modify=get_last_modify(joined_path),
+                    duration=audiofile.info.time_secs,
+                )
+            )
+    session.commit()
+
+
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="10.0.0.15", port=5000, reload=True)
+    uvicorn.run("main:app", host="192.168.1.131", port=5000, reload=True)

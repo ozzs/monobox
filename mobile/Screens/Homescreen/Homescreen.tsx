@@ -23,12 +23,13 @@ import {
   useCurrentTrack,
   usePlaylistApiRequest,
 } from '../../MusicPlayerServices/MusicPlayerHooks'
+import trackContext from '../../utils/CurrentSongContext'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
   const theme = useContext(themeContext)
-  const currentTrack = useCurrentTrack()
+  const currentTrack = useContext(trackContext)
   const [playlistId, setPlaylistId] = useState(0)
 
   // Fetches required songs

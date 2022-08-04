@@ -11,7 +11,14 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native'
-import React, { FC, useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  FC,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  createContext,
+} from 'react'
 import themeContext from '../../../assets/styles/themeContext'
 
 /* Navigation imports */
@@ -42,6 +49,10 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player'
 
+interface TrackContextInterface {
+  track: Track
+}
+
 type SongsCarouselProps = NativeStackScreenProps<
   RootStackParamList,
   'SongsCarousel'
@@ -53,6 +64,7 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
 
   /* General use variables */
   const theme = useContext(themeContext)
+  const trackContext = createContext({} as TrackContextInterface)
 
   /* TrackPlayer variables initialization */
   const isPlaying = usePlaybackState() === State.Playing

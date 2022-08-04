@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons'
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -16,11 +16,8 @@ import CurrentSong from '../../Components/General/CurrentSong'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 import themeContext from '../../../assets/styles/themeContext'
-import {
-  useCurrentTrack,
-  useTracksApiRequest,
-} from '../../MusicPlayerServices/MusicPlayerHooks'
-import { Track } from 'react-native-track-player'
+import trackContext from '../../utils/CurrentSongContext'
+import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
@@ -28,12 +25,14 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   const { playlist, error } = useTracksApiRequest(
     'http://192.168.1.131:5000/songs/liked',
   )
-  const currentTrack = useCurrentTrack()
+  // const currentTrack = useCurrentTrack()
 
   console.log('PLAYLIST: ', playlist)
-  console.log('TRACK: ', currentTrack)
+  // console.log('TRACK: ', currentTrack)
 
   const theme = useContext(themeContext)
+  const currentTrack = useContext(trackContext)
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       {playlist.length < 0 ? (

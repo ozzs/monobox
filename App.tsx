@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import 'react-native-gesture-handler'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 
 /* Navigation imports */
 import { createDrawerNavigator } from '@react-navigation/drawer'
@@ -10,6 +10,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { EventRegister } from 'react-native-event-listeners'
 import theme from './assets/styles/theme'
 import themeContext from './assets/styles/themeContext'
+
+import trackContext from './mobile/utils/CurrentSongContext'
 
 /* Track Player imports */
 import { setupPlayer } from './mobile/MusicPlayerServices/SetupService'
@@ -31,6 +33,7 @@ import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
 import CurrentSong from './mobile/Components/General/CurrentSong'
 import { useCurrentTrack } from './mobile/MusicPlayerServices/MusicPlayerHooks'
 import { View } from 'react-native'
+import { Track } from 'react-native-track-player'
 
 export type RootStackParamList = {
   Homescreen: undefined
@@ -68,28 +71,30 @@ export default function App() {
 
   return (
     <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
-      <NavigationContainer>
-        <Drawer.Navigator
-          initialRouteName='Homescreen'
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
-        >
-          <Drawer.Screen
-            name='Homescreen'
-            component={Homescreen}
-            options={{ headerShown: false }}
-          />
-          <Drawer.Screen
-            name='LikedSongs'
-            component={LikedSongs}
-            options={{ headerShown: false }}
-          />
-          <Drawer.Screen
-            name='SongsCarousel'
-            component={SongsCarousel}
-            options={{ headerShown: false }}
-          />
-        </Drawer.Navigator>
-      </NavigationContainer>
+      <trackContext.Provider value={currentTrack}>
+        <NavigationContainer>
+          <Drawer.Navigator
+            initialRouteName='Homescreen'
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
+          >
+            <Drawer.Screen
+              name='Homescreen'
+              component={Homescreen}
+              options={{ headerShown: false }}
+            />
+            <Drawer.Screen
+              name='LikedSongs'
+              component={LikedSongs}
+              options={{ headerShown: false }}
+            />
+            <Drawer.Screen
+              name='SongsCarousel'
+              component={SongsCarousel}
+              options={{ headerShown: false }}
+            />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </trackContext.Provider>
     </themeContext.Provider>
   )
 }

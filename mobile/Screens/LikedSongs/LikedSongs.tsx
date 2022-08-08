@@ -18,19 +18,17 @@ import { RootStackParamList } from '../../../App'
 import themeContext from '../../../assets/styles/themeContext'
 import trackContext from '../../utils/CurrentSongContext'
 import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+import playlistIDContext from '../../utils/PlaylistIDContext'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   const { playlist, error } = useTracksApiRequest(
-    'http://192.168.1.131:5000/songs/liked',
+    'http://10.0.0.13:5000/songs/1/fetch',
   )
-  // const currentTrack = useCurrentTrack()
-
-  console.log('PLAYLIST: ', playlist)
-  // console.log('TRACK: ', currentTrack)
 
   const theme = useContext(themeContext)
+  const { playlistId, setPlaylistId } = useContext(playlistIDContext)
   const currentTrack = useContext(trackContext)
 
   return (
@@ -64,11 +62,21 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
               showsVerticalScrollIndicator={false}
               data={playlist}
               renderItem={({ item }) => (
-                <SongDetails
-                  song={item.Song}
-                  imageSize={{ height: 150, width: 150 }}
-                  fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('SongsCarousel', {
+                      song_id: item.id,
+                      playlist_id: 1,
+                    })
+                    setPlaylistId(1)
+                  }}
+                >
+                  <SongDetails
+                    song={item.Song}
+                    imageSize={{ height: 150, width: 150 }}
+                    fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
+                  />
+                </TouchableOpacity>
               )}
               contentContainerStyle={{ paddingBottom: 90 }}
             ></FlatList>
@@ -84,7 +92,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
                 { backgroundColor: theme.background },
               ]}
             >
-              <CurrentSong track={currentTrack} />
+              <CurrentSong track={currentTrack} playlistID={playlistId} />
             </View>
           )}
         </View>

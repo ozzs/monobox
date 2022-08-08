@@ -28,8 +28,8 @@ from models import (
 app = FastAPI()
 session = Session(bind=engine)
 
-music_folder_url = "D:\Music\musicPlayer\Songs"
-cover_folder_url = "D:\Music\musicPlayer\Covers"
+music_folder_url = "C:\musicPlayer\Songs"
+cover_folder_url = "C:\musicPlayer\Covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -71,7 +71,9 @@ async def stream_song(song_id: int) -> StreamingResponse:
 @app.post("/songs/{song_id}/like")
 async def like(song_id: int) -> dict:
     new_like = Liked(song_id=song_id)
+    new_link = SongPlaylistLink(playlist_id=1, song_id=song_id)
     session.add(new_like)
+    session.add(new_link)
     session.commit()
     return {"Liked song with id: ": song_id}
 
@@ -96,7 +98,7 @@ async def check(
     song_id2: int,
     song_id3: int,
     song_id4: int,
-    song_id5: int,
+    # song_id5: int,
     playlist_id1: int,
     playlist_id2: int,
 ):
@@ -104,7 +106,7 @@ async def check(
     song2 = session.exec(select(Song).where(Song.id == song_id2)).one()
     song3 = session.exec(select(Song).where(Song.id == song_id3)).one()
     song4 = session.exec(select(Song).where(Song.id == song_id4)).one()
-    song5 = session.exec(select(Song).where(Song.id == song_id5)).one()
+    # song5 = session.exec(select(Song).where(Song.id == song_id5)).one()
 
     playlist1 = session.exec(select(Playlist).where(Playlist.id == playlist_id1)).one()
     playlist2 = session.exec(select(Playlist).where(Playlist.id == playlist_id2)).one()
@@ -113,7 +115,7 @@ async def check(
     playlist2.songs.append(song2)
     playlist2.songs.append(song3)
     playlist2.songs.append(song4)
-    playlist2.songs.append(song5)
+    # playlist2.songs.append(song5)
     session.add(playlist1)
     session.add(playlist2)
     session.commit()
@@ -153,10 +155,11 @@ async def get_all_songs():
     return session.exec(select(Song, Liked.song_id).join(Liked, isouter=True)).all()
 
 
-@app.get("/songs/liked")
-async def get_liked_songs() -> List:
-    statement = select(Song, Liked.song_id).join(Liked)
-    return session.exec(statement).all()
+@app.get("/songs/liked", response_model=List[PlaylistReadWithSongs])
+async def get_liked_songs():
+    return session.exec(select(Playlist).where(Playlist.id == 1)).all()
+    # statement = select(Song, Liked.song_id).join(Liked)
+    # return session.exec(statement).all()
 
 
 @app.get("/songs/{song_id}", response_model=SongRead)
@@ -229,7 +232,7 @@ def scan_songs():
             artwork_exists = False
             for image in audiofile.tag.images:
                 image_file = open(
-                    "D:\Music\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
+                    "C:\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
                 )
                 print("Writing image file: {}).jpg".format(song_title))
                 image_file.write(image.image_data)
@@ -255,9 +258,10 @@ def scan_songs():
                     duration=audiofile.info.time_secs,
                 )
             )
+    # session.add(Playlist(name="LikedSongs"))
     session.commit()
 
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="192.168.1.131", port=5000, reload=True)
+    uvicorn.run("main:app", host="10.0.0.13", port=5000, reload=True)

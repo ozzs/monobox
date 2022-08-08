@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { FC, useContext, useMemo } from 'react'
+import React, { FC, useContext, useEffect, useMemo, useRef } from 'react'
 import Slider from '@react-native-community/slider'
 
 import { Feather, AntDesign } from '@expo/vector-icons'
@@ -30,12 +30,12 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
   const theme = useContext(themeContext)
   const navigation = useNavigation<CurrentSongProps>()
 
-  const check = useMemo(() => playlistID, [playlistID])
-
   const state = usePlaybackState()
   const isPlaying = state === State.Playing
   const onTogglePlayback = useOnTogglePlayback()
   const progress = useProgress()
+
+  // console.log('playlistId.current: ', playlistId.current)
 
   return (
     <>
@@ -60,14 +60,14 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('SongsCarousel', {
-              playlist_id: check,
+              playlist_id: playlistID,
               song_id: 0,
             })
           }
         >
           <Image
             source={{
-              uri: 'http://192.168.1.131:5000/songs/' + track?.id + '/artwork',
+              uri: 'http://10.0.0.13:5000/songs/' + track?.id + '/artwork',
             }}
             style={styles.currentSongImage}
           />

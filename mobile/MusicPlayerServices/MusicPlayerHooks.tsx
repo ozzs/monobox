@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import TrackPlayer, {
   usePlaybackState,
   State,
@@ -44,18 +44,18 @@ export const useTracksApiRequest = (url: string) => {
   const [playlist, setPlaylist] = useState<Track[]>([])
   const [isLoaded, setIsLoaded] = useState(true)
   const [error, setError] = useState(null)
-  useEffect(() => {
-    const fetchSongs = async () => {
-      await fetch(url, {
-        method: 'GET',
+  const fetchSongs = async () => {
+    await fetch(url, {
+      method: 'GET',
+    })
+      .then((response) => response.json())
+      .then((json) => setPlaylist(json))
+      .catch((error) => {
+        setError(error)
       })
-        .then((response) => response.json())
-        .then((json) => setPlaylist(json))
-        .catch((error) => {
-          setError(error)
-        })
-      setIsLoaded(false)
-    }
+    setIsLoaded(false)
+  }
+  useEffect(() => {
     fetchSongs()
   }, [url])
 
@@ -103,8 +103,7 @@ export const useSetupTracks = (
         duration: 0,
       }
       track['id'] = item.Song.id
-      track['url'] =
-        'http://192.168.1.131:5000/songs/' + item.Song.id + '/stream'
+      track['url'] = 'http://10.0.0.13:5000/songs/' + item.Song.id + '/stream'
       track['title'] = item.Song.title
       track['artist'] = item.Song.artist
       track['artwork'] = item.Song.artwork

@@ -10,7 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native'
-import React, { FC, useContext, useState } from 'react'
+import React, { createContext, FC, useContext, useState } from 'react'
 import themeContext from '../../../assets/styles/themeContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -24,17 +24,19 @@ import {
   usePlaylistApiRequest,
 } from '../../MusicPlayerServices/MusicPlayerHooks'
 import trackContext from '../../utils/CurrentSongContext'
+import playlistIDContext from '../../utils/PlaylistIDContext'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
-  const [playlistId, setPlaylistId] = useState(0)
+  // const [playlistId, setPlaylistId] = useState(0)
+  const { playlistId, setPlaylistId } = useContext(playlistIDContext)
 
   // Fetches required songs
   const { playlists, isLoaded, error } = usePlaylistApiRequest(
-    'http://192.168.1.131:5000/songs/playlists',
+    'http://10.0.0.13:5000/songs/playlists',
   )
 
   return (

@@ -12,6 +12,7 @@ import theme from './assets/styles/theme'
 import themeContext from './assets/styles/themeContext'
 
 import trackContext from './mobile/utils/CurrentSongContext'
+import playlistIDContext from './mobile/utils/PlaylistIDContext'
 
 /* Track Player imports */
 import { setupPlayer } from './mobile/MusicPlayerServices/SetupService'
@@ -48,6 +49,7 @@ const Drawer = createDrawerNavigator<RootStackParamList>()
 export default function App() {
   const [mode, setMode] = useState(true)
 
+  const [playlistId, setPlaylistId] = useState(0)
   const currentTrack = useCurrentTrack()
 
   useEffect(() => {
@@ -71,30 +73,32 @@ export default function App() {
 
   return (
     <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
-      <trackContext.Provider value={currentTrack}>
-        <NavigationContainer>
-          <Drawer.Navigator
-            initialRouteName='Homescreen'
-            drawerContent={(props) => <CustomDrawerContent {...props} />}
-          >
-            <Drawer.Screen
-              name='Homescreen'
-              component={Homescreen}
-              options={{ headerShown: false }}
-            />
-            <Drawer.Screen
-              name='LikedSongs'
-              component={LikedSongs}
-              options={{ headerShown: false }}
-            />
-            <Drawer.Screen
-              name='SongsCarousel'
-              component={SongsCarousel}
-              options={{ headerShown: false }}
-            />
-          </Drawer.Navigator>
-        </NavigationContainer>
-      </trackContext.Provider>
+      <playlistIDContext.Provider value={{ playlistId, setPlaylistId }}>
+        <trackContext.Provider value={currentTrack}>
+          <NavigationContainer>
+            <Drawer.Navigator
+              initialRouteName='Homescreen'
+              drawerContent={(props) => <CustomDrawerContent {...props} />}
+            >
+              <Drawer.Screen
+                name='Homescreen'
+                component={Homescreen}
+                options={{ headerShown: false }}
+              />
+              <Drawer.Screen
+                name='LikedSongs'
+                component={LikedSongs}
+                options={{ headerShown: false }}
+              />
+              <Drawer.Screen
+                name='SongsCarousel'
+                component={SongsCarousel}
+                options={{ headerShown: false }}
+              />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </trackContext.Provider>
+      </playlistIDContext.Provider>
     </themeContext.Provider>
   )
 }

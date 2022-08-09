@@ -22,7 +22,7 @@ const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
     <View style={{ ...styles.detailsWrapper, width: imageSize.width }}>
       <Image
         source={{
-          uri: 'http://10.0.0.13:5000/songs/' + song.id + '/artwork',
+          uri: 'http://192.168.1.131:5000/songs/' + song.id + '/artwork',
         }}
         style={{
           width: imageSize.width,

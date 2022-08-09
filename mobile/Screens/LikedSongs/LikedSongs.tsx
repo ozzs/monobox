@@ -24,7 +24,7 @@ type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   const { playlist, error } = useTracksApiRequest(
-    'http://10.0.0.13:5000/songs/1/fetch',
+    'http://192.168.1.131:5000/songs/1/fetch',
   )
 
   const theme = useContext(themeContext)

@@ -67,7 +67,7 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
         >
           <Image
             source={{
-              uri: 'http://10.0.0.13:5000/songs/' + track?.id + '/artwork',
+              uri: 'http://192.168.1.131:5000/songs/' + track?.id + '/artwork',
             }}
             style={styles.currentSongImage}
           />

@@ -103,7 +103,8 @@ export const useSetupTracks = (
         duration: 0,
       }
       track['id'] = item.Song.id
-      track['url'] = 'http://10.0.0.13:5000/songs/' + item.Song.id + '/stream'
+      track['url'] =
+        'http://192.168.1.131:5000/songs/' + item.Song.id + '/stream'
       track['title'] = item.Song.title
       track['artist'] = item.Song.artist
       track['artwork'] = item.Song.artwork

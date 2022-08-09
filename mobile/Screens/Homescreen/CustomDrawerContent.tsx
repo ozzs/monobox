@@ -84,11 +84,11 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         )}
         onPress={() => props.navigation.navigate('Homescreen')}
       />
-      <DrawerItem
+      {/* <DrawerItem
         label={'Song Carousel'}
         labelStyle={[styles.drawerRow, { color: theme.primary }]}
         onPress={() => props.navigation.navigate('SongsCarousel')}
-      />
+      /> */}
     </DrawerContentScrollView>
   )
 }

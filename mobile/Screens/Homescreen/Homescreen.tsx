@@ -36,7 +36,7 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
 
   // Fetches required songs
   const { playlists, isLoaded, error } = usePlaylistApiRequest(
-    'http://10.0.0.13:5000/songs/playlists',
+    'http://192.168.1.131:5000/songs/playlists',
   )
 
   return (

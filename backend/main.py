@@ -28,8 +28,8 @@ from models import (
 app = FastAPI()
 session = Session(bind=engine)
 
-music_folder_url = "C:\musicPlayer\Songs"
-cover_folder_url = "C:\musicPlayer\Covers"
+music_folder_url = "D:\Music\musicPlayer\Songs"
+cover_folder_url = "D:\Music\musicPlayer\Covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -232,7 +232,7 @@ def scan_songs():
             artwork_exists = False
             for image in audiofile.tag.images:
                 image_file = open(
-                    "C:\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
+                    "D:\Music\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
                 )
                 print("Writing image file: {}).jpg".format(song_title))
                 image_file.write(image.image_data)
@@ -264,4 +264,4 @@ def scan_songs():
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="10.0.0.13", port=5000, reload=True)
+    uvicorn.run("main:app", host="192.168.1.131", port=5000, reload=True)

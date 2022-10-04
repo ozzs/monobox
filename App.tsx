@@ -90,11 +90,11 @@ export default function App() {
                 component={LikedSongs}
                 options={{ headerShown: false }}
               />
-              <Drawer.Screen
+              {/* <Drawer.Screen
                 name='SongsCarousel'
                 component={SongsCarousel}
                 options={{ headerShown: false }}
-              />
+              /> */}
             </Drawer.Navigator>
           </NavigationContainer>
         </trackContext.Provider>

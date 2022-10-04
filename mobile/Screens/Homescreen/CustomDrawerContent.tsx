@@ -17,7 +17,7 @@ import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const theme = useContext(themeContext)
-  const [mode, setMode] = useState(true)
+  const [mode, setMode] = useState(false)
   return (
     <DrawerContentScrollView
       {...props}
@@ -83,11 +83,6 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
           />
         )}
         onPress={() => props.navigation.navigate('Homescreen')}
-      />
-      <DrawerItem
-        label={'Song Carousel'}
-        labelStyle={[styles.drawerRow, { color: theme.primary }]}
-        onPress={() => props.navigation.navigate('SongsCarousel')}
       />
     </DrawerContentScrollView>
   )

@@ -15,6 +15,7 @@ import theme from '../../../assets/styles/theme'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
+import { baseURL } from '../../../baseURL'
 
 interface TrackInfoProps {
   track?: Track
@@ -34,8 +35,6 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
   const isPlaying = state === State.Playing
   const onTogglePlayback = useOnTogglePlayback()
   const progress = useProgress()
-
-  // console.log('playlistId.current: ', playlistId.current)
 
   return (
     <>
@@ -67,7 +66,8 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
         >
           <Image
             source={{
-              uri: 'http://10.0.0.13:5000/songs/' + track?.id + '/artwork',
+              uri:
+                'http://' + baseURL + ':5000/songs/' + track?.id + '/artwork',
             }}
             style={styles.currentSongImage}
           />

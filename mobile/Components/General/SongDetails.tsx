@@ -2,6 +2,7 @@ import React, { FC, useContext } from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { Track } from 'react-native-track-player'
 import themeContext from '../../../assets/styles/themeContext'
+import { baseURL } from '../../../baseURL'
 import { Song } from '../../utils/Song'
 
 interface DetailsProps {
@@ -22,7 +23,7 @@ const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
     <View style={{ ...styles.detailsWrapper, width: imageSize.width }}>
       <Image
         source={{
-          uri: 'http://10.0.0.13:5000/songs/' + song.id + '/artwork',
+          uri: 'http://' + baseURL + ':5000/songs/' + song.id + '/artwork',
         }}
         style={{
           width: imageSize.width,

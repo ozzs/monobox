@@ -19,12 +19,13 @@ import themeContext from '../../../assets/styles/themeContext'
 import trackContext from '../../utils/CurrentSongContext'
 import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 import playlistIDContext from '../../utils/PlaylistIDContext'
+import { baseURL } from '../../../baseURL'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   const { playlist, error } = useTracksApiRequest(
-    'http://10.0.0.13:5000/songs/1/fetch',
+    'http://' + baseURL + ':5000/songs/1/fetch',
   )
 
   const theme = useContext(themeContext)
@@ -53,36 +54,39 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
           <Text style={[styles.title, { color: theme.primary }]}>
             Liked Songs
           </Text>
-
           {/* Songs */}
           <View style={styles.songsWrapper}>
-            <FlatList
-              columnWrapperStyle={{ justifyContent: 'space-between' }}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              data={playlist}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('SongsCarousel', {
-                      song_id: item.id,
-                      playlist_id: 1,
-                    })
-                    setPlaylistId(1)
-                  }}
-                >
-                  <SongDetails
-                    song={item.Song}
-                    imageSize={{ height: 150, width: 150 }}
-                    fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
-                  />
-                </TouchableOpacity>
-              )}
-              contentContainerStyle={{ paddingBottom: 90 }}
-            ></FlatList>
+            {playlist.length > 0 ? (
+              <FlatList
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                data={playlist}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SongsCarousel', {
+                        song_id: item.id,
+                        playlist_id: 1,
+                      })
+                      setPlaylistId(1)
+                    }}
+                  >
+                    <SongDetails
+                      song={item.Song}
+                      imageSize={{ height: 150, width: 150 }}
+                      fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
+                    />
+                  </TouchableOpacity>
+                )}
+                contentContainerStyle={{ paddingBottom: 90 }}
+              ></FlatList>
+            ) : (
+              <Text style={{ color: theme.author, paddingBottom: 25 }}>
+                There are currently no songs on this playlist
+              </Text>
+            )}
           </View>
-          {/* <CurrentSong track={currentTrack} playlistID={2} />
-          <Text>BLABLABLA</Text> */}
 
           {/* Bottom Layer */}
           {currentTrack === undefined ? null : (

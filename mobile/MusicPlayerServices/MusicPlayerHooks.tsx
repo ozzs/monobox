@@ -6,6 +6,7 @@ import TrackPlayer, {
   Event,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
+import { baseURL } from '../../baseURL'
 
 import { Playlist } from '../utils/Song'
 
@@ -103,7 +104,8 @@ export const useSetupTracks = (
         duration: 0,
       }
       track['id'] = item.Song.id
-      track['url'] = 'http://10.0.0.13:5000/songs/' + item.Song.id + '/stream'
+      track['url'] =
+        'http://' + baseURL + ':5000/songs/' + item.Song.id + '/stream'
       track['title'] = item.Song.title
       track['artist'] = item.Song.artist
       track['artwork'] = item.Song.artwork

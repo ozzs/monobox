@@ -81,13 +81,16 @@ async def like(song_id: int) -> dict:
 @app.delete("/songs/{song_id}/unlike")
 async def unlike(song_id: int) -> dict:
     statement = select(Liked).where(Liked.song_id == song_id)
+    stmt = select(SongPlaylistLink).where(SongPlaylistLink.song_id == song_id, SongPlaylistLink.playlist_id == 1)
     liked = session.exec(statement).one_or_none()
+    link = session.exec(stmt).one_or_none()
     if not liked:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Liked entry for song not found",
         )
     session.delete(liked)
+    session.delete(link)
     session.commit()
     return {"Unliked song with id: ": song_id}
 
@@ -125,8 +128,8 @@ async def check(
 @app.post(
     "/songs/playlists", response_model=Playlist, status_code=status.HTTP_201_CREATED
 )
-async def create_playlist(playlist: PlaylistBase) -> Playlist:
-    new_playlist = Playlist.from_orm(playlist)
+async def create_playlist(playlist_name: str) -> Playlist:
+    new_playlist = Playlist(name=playlist_name)
     session.add(new_playlist)
     session.commit()
     return new_playlist
@@ -258,10 +261,13 @@ def scan_songs():
                     duration=audiofile.info.time_secs,
                 )
             )
-    # session.add(Playlist(name="LikedSongs"))
+    stmt = select(Playlist).where(Playlist.id == 1)
+    db_liked_playlist = session.exec(stmt).one_or_none()
+    if not db_liked_playlist:
+        session.add(Playlist(name="Liked Songs")) #TODO: Think of a better way to implement
     session.commit()
 
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="10.0.0.13", port=5000, reload=True)
+    uvicorn.run("main:app", host="10.0.0.20", port=5000, reload=True)

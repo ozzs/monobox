@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import TrackPlayer, {
   usePlaybackState,
   State,
@@ -6,7 +6,7 @@ import TrackPlayer, {
   Event,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
-import { baseURL } from '../../baseURL'
+import { BASE_API_URL, BASE_API_PORT } from '../utils/BaseAPI'
 
 import { Playlist } from '../utils/Song'
 
@@ -82,7 +82,7 @@ export const usePlaylistApiRequest = (url: string) => {
     fetchPlaylists()
   }, [url])
 
-  return { playlists, isLoaded, error }
+  return { playlists, setPlaylists, isLoaded, error }
 }
 
 export const useSetupTracks = (
@@ -104,8 +104,9 @@ export const useSetupTracks = (
         duration: 0,
       }
       track['id'] = item.Song.id
-      track['url'] =
-        'http://' + baseURL + ':5000/songs/' + item.Song.id + '/stream'
+      track[
+        'url'
+      ] = `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${item.Song.id}/stream`
       track['title'] = item.Song.title
       track['artist'] = item.Song.artist
       track['artwork'] = item.Song.artwork

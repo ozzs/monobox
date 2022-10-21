@@ -2,7 +2,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Image,
   Platform,
   StatusBar,
   TouchableOpacity,
@@ -10,37 +9,47 @@ import {
   ScrollView,
   ActivityIndicator,
   Modal,
+  SafeAreaView,
 } from 'react-native'
-import React, { createContext, FC, useContext, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
+
+/* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
-import { SafeAreaView } from 'react-native-safe-area-context'
+
+/* Navigation imports */
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { DrawerActions } from '@react-navigation/native'
 import { RootStackParamList } from '../../../App'
+import { DrawerActions } from '@react-navigation/native'
+
+/* utils imports */
+import trackContext from '../../utils/CurrentSongContext'
+import playlistIDContext from '../../utils/PlaylistIDContext'
+import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
+
+/* Components imports */
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
-import {
-  useCurrentTrack,
-  usePlaylistApiRequest,
-} from '../../MusicPlayerServices/MusicPlayerHooks'
-import trackContext from '../../utils/CurrentSongContext'
-import playlistIDContext from '../../utils/PlaylistIDContext'
-import { baseURL } from '../../../baseURL'
 import AddPlaylist from '../../Components/Modals/AddPlaylist'
+
+/* Music Player imports */
+import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+import HomescreenHeader from './HomescreenHeader'
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
+  const [modalOpen, setModalOpen] = useState(false)
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
-  const [modalOpen, setModalOpen] = useState(false)
 
   // Fetches required songs
   const { playlists, isLoaded, error } = usePlaylistApiRequest(
-    'http://' + baseURL + ':5000/songs/playlists',
+    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
   )
+  if (error) console.error(error)
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       {isLoaded ? (
@@ -59,21 +68,9 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
           </Modal>
           <ScrollView>
             {/* Header */}
-            <SafeAreaView>
-              <View style={styles.headerIcons}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.dispatch(DrawerActions.openDrawer())
-                  }
-                >
-                  <FontAwesome name='bars' size={24} color={theme.primary} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => setModalOpen(true)}>
-                  <Feather name='plus-square' size={24} color={theme.primary} />
-                </TouchableOpacity>
-              </View>
-            </SafeAreaView>
+            <HomescreenHeader setModalOpen={setModalOpen} />
 
+            {/* Playlists */}
             <View
               style={{ paddingBottom: currentTrack === undefined ? 0 : 90 }}
             >

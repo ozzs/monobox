@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { FC, useContext, useEffect, useMemo, useRef } from 'react'
+import React, { FC, useContext } from 'react'
 import Slider from '@react-native-community/slider'
 
 import { Feather, AntDesign } from '@expo/vector-icons'
@@ -11,11 +11,10 @@ import TrackPlayer, {
   usePlaybackState,
   useProgress,
 } from 'react-native-track-player'
-import theme from '../../../assets/styles/theme'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
-import { baseURL } from '../../../baseURL'
+import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 interface TrackInfoProps {
   track?: Track
@@ -66,8 +65,7 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
         >
           <Image
             source={{
-              uri:
-                'http://' + baseURL + ':5000/songs/' + track?.id + '/artwork',
+              uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${track?.id}/artwork`,
             }}
             style={styles.currentSongImage}
           />

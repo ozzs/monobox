@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import 'react-native-gesture-handler'
-import React, { useState, useEffect, createContext } from 'react'
+import React, { useState, useEffect } from 'react'
 
 /* Navigation imports */
 import { createDrawerNavigator } from '@react-navigation/drawer'
@@ -14,9 +14,9 @@ import themeContext from './assets/styles/themeContext'
 import trackContext from './mobile/utils/CurrentSongContext'
 import playlistIDContext from './mobile/utils/PlaylistIDContext'
 
-/* Track Player imports */
+/* Music Player imports */
 import { setupPlayer } from './mobile/MusicPlayerServices/SetupService'
-import { Song } from './mobile/utils/Song'
+import { useCurrentTrack } from './mobile/MusicPlayerServices/MusicPlayerHooks'
 
 /* Design setup imports */
 import {
@@ -29,12 +29,8 @@ import { useFonts } from 'expo-font'
 /* Screens imports */
 import LikedSongs from './mobile/Screens/LikedSongs/LikedSongs'
 import Homescreen from './mobile/Screens/Homescreen/Homescreen'
-import CustomDrawerContent from './mobile/Screens/Homescreen/CustomDrawerContent'
 import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
-import CurrentSong from './mobile/Components/General/CurrentSong'
-import { useCurrentTrack } from './mobile/MusicPlayerServices/MusicPlayerHooks'
-import { View } from 'react-native'
-import { Track } from 'react-native-track-player'
+import CustomDrawerContent from './mobile/Screens/Homescreen/CustomDrawerContent'
 
 export type RootStackParamList = {
   Homescreen: undefined
@@ -56,7 +52,6 @@ export default function App() {
     setupPlayer()
     EventRegister.addEventListener('changeTheme', (data) => {
       setMode(data)
-      console.log(data)
     })
     EventRegister.removeEventListener('changeTheme')
   }, [])
@@ -90,11 +85,11 @@ export default function App() {
                 component={LikedSongs}
                 options={{ headerShown: false }}
               />
-              {/* <Drawer.Screen
+              <Drawer.Screen
                 name='SongsCarousel'
                 component={SongsCarousel}
                 options={{ headerShown: false }}
-              /> */}
+              />
             </Drawer.Navigator>
           </NavigationContainer>
         </trackContext.Provider>

@@ -12,7 +12,6 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import React, {
-  FC,
   useContext,
   useEffect,
   useRef,
@@ -48,7 +47,7 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
-import { baseURL } from '../../../baseURL'
+import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 interface TrackContextInterface {
   track: Track
@@ -180,17 +179,23 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
   const likeSong = async (songID: number) => {
     const trackId = await TrackPlayer.getCurrentTrack()
     if (trackRating === false) {
-      await fetch('http://' + baseURL + ':5000/songs/' + songID + '/like', {
-        method: 'POST',
-      })
+      await fetch(
+        `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${songID}/like`,
+        {
+          method: 'POST',
+        },
+      )
       TrackPlayer.updateMetadataForTrack(trackId, {
         rating: true,
       })
       setTrackRating(true)
     } else {
-      await fetch('http://' + baseURL + ':5000/songs/' + songID + '/unlike', {
-        method: 'DELETE',
-      })
+      await fetch(
+        `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${songID}/unlike`,
+        {
+          method: 'DELETE',
+        },
+      )
       TrackPlayer.updateMetadataForTrack(trackId, {
         rating: false,
       })
@@ -200,8 +205,10 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
 
   // Fetches required songs
   const { playlist, error } = useTracksApiRequest(
-    'http://' + baseURL + ':5000/songs/' + playlist_id + '/fetch',
+    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${playlist_id}/fetch`,
   )
+
+  if (error) console.error(error)
 
   // Sets up tracks for TrackPlayer after data is fetched & set
   const { index, isLoaded } = useSetupTracks(playlist, song_id)
@@ -223,8 +230,7 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
       <View style={styles.carouselImageContainer}>
         <Image
           source={{
-            uri:
-              'http://' + baseURL + ':5000/songs/' + trackArtwork + '/artwork',
+            uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${trackArtwork}/artwork`,
           }}
           style={styles.carouselImage}
         />

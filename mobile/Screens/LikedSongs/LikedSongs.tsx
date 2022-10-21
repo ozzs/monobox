@@ -19,14 +19,16 @@ import themeContext from '../../../assets/styles/themeContext'
 import trackContext from '../../utils/CurrentSongContext'
 import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 import playlistIDContext from '../../utils/PlaylistIDContext'
-import { baseURL } from '../../../baseURL'
+import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   const { playlist, error } = useTracksApiRequest(
-    'http://' + baseURL + ':5000/songs/1/fetch',
+    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/1/fetch`,
   )
+
+  if (error) console.error(error)
 
   const theme = useContext(themeContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)

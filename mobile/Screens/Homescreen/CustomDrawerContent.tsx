@@ -13,7 +13,12 @@ import {
 } from '@react-navigation/drawer'
 import { EventRegister } from 'react-native-event-listeners'
 import themeContext from '../../../assets/styles/themeContext'
-import { Feather, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
+import {
+  Feather,
+  AntDesign,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons'
 
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const theme = useContext(themeContext)
@@ -37,16 +42,30 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         </TouchableOpacity>
       </View>
       <DrawerItem
-        label={'Profile'}
+        label={'Home'}
         labelStyle={[styles.drawerRow, { color: theme.primary }]}
-        icon={() => <AntDesign name='user' size={20} color={theme.icon} />}
+        icon={() => <Feather name='home' size={20} color={theme.icon} />}
         onPress={() => props.navigation.navigate('Homescreen')}
+      />
+      <DrawerItem
+        label={'Library'}
+        labelStyle={[styles.drawerRow, { color: theme.primary }]}
+        icon={() => (
+          <MaterialIcons name='library-music' size={20} color={theme.icon} />
+        )}
+        onPress={() => props.navigation.navigate('Library')}
       />
       <DrawerItem
         label={'Liked Songs'}
         labelStyle={[styles.drawerRow, { color: theme.primary }]}
         icon={() => <AntDesign name='hearto' size={20} color={theme.icon} />}
         onPress={() => props.navigation.navigate('LikedSongs')}
+      />
+      <DrawerItem
+        label={'Profile'}
+        labelStyle={[styles.drawerRow, { color: theme.primary }]}
+        icon={() => <AntDesign name='user' size={20} color={theme.icon} />}
+        onPress={() => props.navigation.navigate('Homescreen')}
       />
       <DrawerItem
         label={'Contact Us'}

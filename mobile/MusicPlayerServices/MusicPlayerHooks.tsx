@@ -1,4 +1,7 @@
+/* React / React-Native imports */
 import { useCallback, useEffect, useState } from 'react'
+
+/* Music Player imports */
 import TrackPlayer, {
   usePlaybackState,
   State,
@@ -6,8 +9,9 @@ import TrackPlayer, {
   Event,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
-import { BASE_API_URL, BASE_API_PORT } from '../utils/BaseAPI'
 
+/* utils imports */
+import { BASE_API_URL, BASE_API_PORT } from '../utils/BaseAPI'
 import { Playlist } from '../utils/Song'
 
 export const useOnTogglePlayback = () => {
@@ -41,6 +45,7 @@ export const useCurrentTrack = (): Track | undefined => {
   return track
 }
 
+// Fetches a playlist
 export const useTracksApiRequest = (url: string) => {
   const [playlist, setPlaylist] = useState<Track[]>([])
   const [isLoaded, setIsLoaded] = useState(true)
@@ -60,9 +65,10 @@ export const useTracksApiRequest = (url: string) => {
     fetchSongs()
   }, [url])
 
-  return { isLoaded, playlist, error }
+  return { playlist, isLoaded, error }
 }
 
+// Fetches all playlists
 export const usePlaylistApiRequest = (url: string) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([])
   const [isLoaded, setIsLoaded] = useState(true)

@@ -11,6 +11,7 @@ import { EventRegister } from 'react-native-event-listeners'
 import theme from './assets/styles/theme'
 import themeContext from './assets/styles/themeContext'
 
+/* utils imports */
 import trackContext from './mobile/utils/CurrentSongContext'
 import playlistIDContext from './mobile/utils/PlaylistIDContext'
 
@@ -27,6 +28,7 @@ import {
 import { useFonts } from 'expo-font'
 
 /* Screens imports */
+import Library from './mobile/Screens/Library/Library'
 import LikedSongs from './mobile/Screens/LikedSongs/LikedSongs'
 import Homescreen from './mobile/Screens/Homescreen/Homescreen'
 import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
@@ -34,6 +36,7 @@ import CustomDrawerContent from './mobile/Screens/Homescreen/CustomDrawerContent
 
 export type RootStackParamList = {
   Homescreen: undefined
+  Library: undefined
   LikedSongs: undefined
   SongsCarousel: { song_id: number; playlist_id?: number } | undefined
   Profile: undefined
@@ -78,6 +81,11 @@ export default function App() {
               <Drawer.Screen
                 name='Homescreen'
                 component={Homescreen}
+                options={{ headerShown: false }}
+              />
+              <Drawer.Screen
+                name='Library'
+                component={Library}
                 options={{ headerShown: false }}
               />
               <Drawer.Screen

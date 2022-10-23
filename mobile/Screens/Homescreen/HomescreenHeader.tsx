@@ -1,8 +1,15 @@
+/* React / React-Native imports */
 import { View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { FC, useContext } from 'react'
-import { Feather, FontAwesome } from '@expo/vector-icons'
-import themeContext from '../../../assets/styles/themeContext'
+
+/* Navigation imports */
 import { DrawerActions, useNavigation } from '@react-navigation/native'
+
+/* Theme imports */
+import themeContext from '../../../assets/styles/themeContext'
+
+/* Icons imports */
+import { Feather, FontAwesome } from '@expo/vector-icons'
 
 interface HomescreenHeaderProps {
   setModalOpen: (bool: boolean) => void

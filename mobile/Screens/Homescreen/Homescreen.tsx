@@ -1,25 +1,17 @@
+/* React / React-Native imports */
 import {
   StyleSheet,
   View,
-  Text,
   Platform,
   StatusBar,
-  TouchableOpacity,
-  FlatList,
   ScrollView,
   ActivityIndicator,
   Modal,
-  SafeAreaView,
 } from 'react-native'
-import React, { FC, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 /* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
-
-/* Navigation imports */
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../App'
-import { DrawerActions } from '@react-navigation/native'
 
 /* utils imports */
 import trackContext from '../../utils/CurrentSongContext'
@@ -27,18 +19,15 @@ import playlistIDContext from '../../utils/PlaylistIDContext'
 import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 /* Components imports */
-import { Feather, FontAwesome } from '@expo/vector-icons'
-import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 import AddPlaylist from '../../Components/Modals/AddPlaylist'
 
 /* Music Player imports */
 import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 import HomescreenHeader from './HomescreenHeader'
+import PlaylistSongsDisplay from './PlaylistSongsDisplay'
 
-type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
-
-const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
+const Homescreen = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
@@ -77,49 +66,10 @@ const Homescreen: FC<HomeScreenProps> = ({ navigation }) => {
               {playlists.map((playlist) => {
                 return (
                   <View key={playlist.id}>
-                    <Text
-                      style={[styles.playlistTitle, { color: theme.primary }]}
-                    >
-                      {playlist.name}
-                    </Text>
-                    <View style={styles.songsWrapper}>
-                      {playlist.songs.length > 0 ? (
-                        <FlatList
-                          data={playlist.songs}
-                          horizontal={true}
-                          showsHorizontalScrollIndicator={false}
-                          renderItem={({ item }) => (
-                            <TouchableOpacity
-                              onPress={() => {
-                                navigation.navigate('SongsCarousel', {
-                                  song_id: item.id,
-                                  playlist_id: playlist.id,
-                                })
-                                setPlaylistId(playlist.id)
-                              }}
-                            >
-                              <SongDetails
-                                song={item}
-                                imageSize={{ height: 190, width: 190 }}
-                                fontSize={{
-                                  songNameFontSize: 16,
-                                  authorFontSize: 10,
-                                }}
-                              />
-                            </TouchableOpacity>
-                          )}
-                          ItemSeparatorComponent={() => {
-                            return <View style={{ width: 20 }} />
-                          }}
-                        ></FlatList>
-                      ) : (
-                        <Text
-                          style={{ color: theme.author, paddingBottom: 25 }}
-                        >
-                          There are currently no songs on this playlist
-                        </Text>
-                      )}
-                    </View>
+                    <PlaylistSongsDisplay
+                      playlist={playlist}
+                      setPlaylistId={setPlaylistId}
+                    />
                   </View>
                 )
               })}
@@ -152,12 +102,6 @@ const styles = StyleSheet.create({
     minHeight: '100%',
     display: 'flex',
     justifyContent: 'center',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 30,
-    paddingVertical: 35,
   },
   songsWrapper: {
     paddingLeft: 30,

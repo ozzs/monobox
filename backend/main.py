@@ -21,6 +21,7 @@ from models import (
     SongBase,
     SongPlaylistLink,
     SongRead,
+    SongReadWithPlaylists,
     SongUpdate,
 )
 
@@ -154,9 +155,9 @@ async def get_all_playlist():
     return session.exec(select(Playlist)).all()
 
 
-@app.get("/songs")
+@app.get("/songs", response_model=List[SongReadWithPlaylists])
 async def get_all_songs():
-    return session.exec(select(Song, Liked.song_id).join(Liked, isouter=True)).all()
+    return session.exec(select(Song)).all()
 
 
 @app.get("/songs/liked", response_model=List[PlaylistReadWithSongs])
@@ -273,4 +274,4 @@ def scan_songs():
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="10.0.0.16", port=5000, reload=True)
+    uvicorn.run("main:app", host="192.168.1.120", port=5000, reload=True)

@@ -1,3 +1,4 @@
+/* React / React-Native imports */
 import {
   StyleSheet,
   View,
@@ -24,12 +25,13 @@ import themeContext from '../../../assets/styles/themeContext'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
-/* Components imports */
+/* Icons imports */
 import Slider from '@react-native-community/slider'
 import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons'
 
 /* utils imports */
 import { windowWidth } from '../../utils/Dimensions'
+import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 /* Music Player imports */
 import {
@@ -47,7 +49,6 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
-import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 interface TrackContextInterface {
   track: Track

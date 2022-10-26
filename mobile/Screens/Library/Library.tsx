@@ -7,8 +7,9 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator,
+  Modal,
 } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 /* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
@@ -30,14 +31,19 @@ import SongDisplay from './SongDisplay'
 
 /* Music Player imports */
 import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
-import { Inter_100Thin } from '@expo-google-fonts/inter'
-import { Roboto_900Black } from '@expo-google-fonts/roboto'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../App'
+import PlaylistsList from '../../Components/Modals/PlaylistsList'
 
 const Library = () => {
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
-  const navigation = useNavigation()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [chosenSongID, setChosenSongID] = useState(0)
+
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   const { playlist, isLoaded, error } = useTracksApiRequest(
     `http://${BASE_API_URL}:${BASE_API_PORT}/songs`,
@@ -53,6 +59,17 @@ const Library = () => {
         </View>
       ) : (
         <View>
+          <Modal
+            transparent={true}
+            animationType='fade'
+            visible={modalOpen}
+            onRequestClose={() => setModalOpen(false)}
+          >
+            <PlaylistsList
+              chosenSongID={chosenSongID}
+              setModalOpen={setModalOpen}
+            />
+          </Modal>
           <View style={styles.headerContainer}>
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
@@ -64,31 +81,30 @@ const Library = () => {
             Your Library
           </Text>
           <View
-            style={[
-              {
-                paddingHorizontal: 30,
-                paddingBottom: currentTrack === undefined ? 0 : 90,
-              },
-            ]}
+            style={{
+              paddingBottom: currentTrack === undefined ? 0 : 90,
+            }}
           >
             {playlist.map((song) => (
-              <View style={styles.songdisplayWrapper} key={song.id}>
-                <SongDisplay song={song} setPlaylistId={setPlaylistId} />
-              </View>
+              <SongDisplay
+                key={song.id}
+                song={song}
+                setModalOpen={setModalOpen}
+                setChosenSongID={setChosenSongID}
+              />
             ))}
           </View>
-
-          {/* Bottom Layer */}
-          {currentTrack === undefined ? null : (
-            <View
-              style={[
-                styles.bottomLayerWrapper,
-                { backgroundColor: theme.background },
-              ]}
-            >
-              <CurrentSong track={currentTrack} playlistID={playlistId} />
-            </View>
-          )}
+        </View>
+      )}
+      {/* Bottom Layer */}
+      {currentTrack === undefined ? null : (
+        <View
+          style={[
+            styles.bottomLayerWrapper,
+            { backgroundColor: theme.background },
+          ]}
+        >
+          <CurrentSong track={currentTrack} playlistID={playlistId} />
         </View>
       )}
     </View>
@@ -118,7 +134,8 @@ const styles = StyleSheet.create({
   },
   songdisplayWrapper: {
     flexDirection: 'row',
-    paddingBottom: 15,
+    alignItems: 'center',
+    marginBottom: 15,
   },
   bottomLayerWrapper: {
     width: '100%',

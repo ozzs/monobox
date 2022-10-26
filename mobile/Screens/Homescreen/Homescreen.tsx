@@ -21,11 +21,11 @@ import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 /* Components imports */
 import CurrentSong from '../../Components/General/CurrentSong'
 import AddPlaylist from '../../Components/Modals/AddPlaylist'
+import PlaylistSongsDisplay from './PlaylistSongsDisplay'
+import HomescreenHeader from './HomescreenHeader'
 
 /* Music Player imports */
 import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
-import HomescreenHeader from './HomescreenHeader'
-import PlaylistSongsDisplay from './PlaylistSongsDisplay'
 
 const Homescreen = () => {
   const [modalOpen, setModalOpen] = useState(false)

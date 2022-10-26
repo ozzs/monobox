@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+/* React / React-Native imports */
 import {
   StyleSheet,
   View,
@@ -6,13 +6,19 @@ import {
   StatusBar,
   TouchableOpacity,
 } from 'react-native'
+import React, { useState, useContext } from 'react'
+
+/* Theme imports */
+import themeContext from '../../../assets/styles/themeContext'
+
+/* Navigation imports */
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer'
-import { EventRegister } from 'react-native-event-listeners'
-import themeContext from '../../../assets/styles/themeContext'
+
+/* Icons imports */
 import {
   Feather,
   AntDesign,
@@ -20,13 +26,18 @@ import {
   MaterialIcons,
 } from '@expo/vector-icons'
 
+import { EventRegister } from 'react-native-event-listeners'
+
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
   const theme = useContext(themeContext)
   const [mode, setMode] = useState(false)
   return (
     <DrawerContentScrollView
       {...props}
-      style={[styles.container, { backgroundColor: theme.background }]}
+      style={[
+        styles.container,
+        { backgroundColor: theme.background, borderColor: theme.primary },
+      ]}
     >
       <View style={styles.headerIcons}>
         <TouchableOpacity onPress={() => props.navigation.closeDrawer()}>
@@ -111,6 +122,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    borderRightWidth: 0.5,
   },
   headerIcons: {
     flexDirection: 'row',

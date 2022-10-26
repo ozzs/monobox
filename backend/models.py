@@ -24,14 +24,12 @@ class SongBase(SQLModel):
 
 class Song(SongBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, nullable=False)
-    liked_bool: "Liked" = Relationship(back_populates="song_liked")
+    liked_bool: Optional["Liked"] = Relationship(
+        sa_relationship_kwargs={"uselist": False}, back_populates="song_liked"
+    )
     playlists: List["Playlist"] = Relationship(
         back_populates="songs", link_model=SongPlaylistLink
     )
-
-
-class SongRead(SongBase):
-    id: int
 
 
 class PlaylistBase(SQLModel):
@@ -49,6 +47,27 @@ class PlaylistRead(PlaylistBase):
     id: int
 
 
+class LikedBase(SQLModel):
+    song_id: int = Field(default=None, foreign_key="song.id")
+
+
+class Liked(LikedBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True, nullable=False)
+    song_liked: Song = Relationship(back_populates="liked_bool")
+
+
+class LikedRead(LikedBase):
+    id: int
+
+
+class SongRead(SongBase):
+    id: int
+
+
+class SongReadWithLike(SongRead):
+    liked_bool: Optional[LikedRead] = None
+
+
 class SongReadWithPlaylists(SongRead):
     playlists: List[PlaylistRead] = []
 
@@ -64,9 +83,3 @@ class SongUpdate(SQLModel):
     album: Optional[str] = None
     artwork: Optional[str] = None
     duration: Optional[int] = None
-
-
-class Liked(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True, nullable=False)
-    song_id: int = Field(default=None, foreign_key="song.id")
-    song_liked: Song = Relationship(back_populates="liked_bool")

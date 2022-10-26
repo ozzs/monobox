@@ -109,15 +109,15 @@ export const useSetupTracks = (
         artwork: '',
         duration: 0,
       }
-      track['id'] = item.Song.id
+      track['id'] = item.id
       track[
         'url'
-      ] = `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${item.Song.id}/stream`
-      track['title'] = item.Song.title
-      track['artist'] = item.Song.artist
-      track['artwork'] = item.Song.artwork
-      track['rating'] = item.song_id ? true : false
-      track['duration'] = item.Song.duration
+      ] = `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${item.id}/stream`
+      track['title'] = item.title
+      track['artist'] = item.artist
+      track['artwork'] = item.artwork
+      track['rating'] = item.liked_bool ? true : false
+      track['duration'] = item.duration
       tracks.push(track)
     })
     const index = tracks.findIndex((track) => track.id === song_id)

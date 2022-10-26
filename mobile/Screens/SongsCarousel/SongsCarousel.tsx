@@ -12,13 +12,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native'
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  createContext,
-} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import themeContext from '../../../assets/styles/themeContext'
 
 /* Navigation imports */
@@ -44,15 +38,10 @@ import TrackPlayer, {
   Event,
   RepeatMode,
   State,
-  Track,
   usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
-
-interface TrackContextInterface {
-  track: Track
-}
 
 type SongsCarouselProps = NativeStackScreenProps<
   RootStackParamList,
@@ -65,7 +54,6 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
 
   /* General use variables */
   const theme = useContext(themeContext)
-  const trackContext = createContext({} as TrackContextInterface)
 
   /* TrackPlayer variables initialization */
   const isPlaying = usePlaybackState() === State.Playing
@@ -206,9 +194,10 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
 
   // Fetches required songs
   const { playlist, error } = useTracksApiRequest(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${playlist_id}/fetch`,
+    playlist_id
+      ? `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${playlist_id}/fetch`
+      : `http://${BASE_API_URL}:${BASE_API_PORT}/songs`,
   )
-
   if (error) console.error(error)
 
   // Sets up tracks for TrackPlayer after data is fetched & set

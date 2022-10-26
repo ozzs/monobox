@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons'
+/* React / React-Native imports */
 import React, { FC, useContext } from 'react'
 import {
   StyleSheet,
@@ -11,15 +11,28 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native'
-import SongDetails from '../../Components/General/SongDetails'
-import CurrentSong from '../../Components/General/CurrentSong'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../App'
+
+/* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
-import trackContext from '../../utils/CurrentSongContext'
-import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+
+/* Navigation imports */
+import { RootStackParamList } from '../../../App'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+
+/* utils imports */
 import playlistIDContext from '../../utils/PlaylistIDContext'
 import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
+
+/* Components imports */
+import SongDetails from '../../Components/General/SongDetails'
+import CurrentSong from '../../Components/General/CurrentSong'
+
+/* Icons imports */
+import { AntDesign } from '@expo/vector-icons'
+
+/* Music Player imports */
+import trackContext from '../../utils/CurrentSongContext'
+import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
@@ -75,7 +88,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
                     }}
                   >
                     <SongDetails
-                      song={item.Song}
+                      song={item}
                       imageSize={{ height: 150, width: 150 }}
                       fontSize={{ songNameFontSize: 14, authorFontSize: 10 }}
                     />

@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native'
 
 /* utils imports */
 import { Playlist } from '../../utils/Song'
+import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Components imports */
 import SongDetails from '../../Components/General/SongDetails'
@@ -34,6 +35,19 @@ const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const theme = useContext(themeContext)
+
+  const removeFromPlaylist = async (playlist_id: number, song_id: number) => {
+    await fetch(
+      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/remove_song/${playlist_id}/${song_id}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ playlist_id: playlist_id, song_id: song_id }),
+      },
+    )
+      .then((res) => res.json)
+      .then((json) => console.log(json))
+      .catch((error) => console.error(error))
+  }
 
   return (
     <>
@@ -55,6 +69,8 @@ const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
                   })
                   setPlaylistId(playlist.id)
                 }}
+                onLongPress={() => removeFromPlaylist(playlist.id, item.id)}
+                delayLongPress={1500}
               >
                 <SongDetails
                   song={item}

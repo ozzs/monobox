@@ -77,16 +77,16 @@ const Homescreen = () => {
           </ScrollView>
 
           {/* Bottom Layer */}
-          {currentTrack === undefined ? null : (
-            <View
-              style={[
-                styles.bottomLayerWrapper,
-                { backgroundColor: theme.background },
-              ]}
-            >
-              <CurrentSong track={currentTrack} playlistID={playlistId} />
-            </View>
-          )}
+        </View>
+      )}
+      {currentTrack === undefined ? null : (
+        <View
+          style={[
+            styles.bottomLayerWrapper,
+            { backgroundColor: theme.background },
+          ]}
+        >
+          <CurrentSong track={currentTrack} playlistID={playlistId} />
         </View>
       )}
     </View>

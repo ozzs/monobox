@@ -174,6 +174,11 @@ const SongsCarousel = ({ route, navigation }: SongsCarouselProps) => {
           method: 'POST',
         },
       )
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json)
+          // setPlaylists((playlists) => [...playlists, json])
+        })
       TrackPlayer.updateMetadataForTrack(trackId, {
         rating: true,
       })

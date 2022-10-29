@@ -4,12 +4,21 @@ import { windowWidth } from '../../utils/Dimensions'
 import themeContext from '../../../assets/styles/themeContext'
 import { TextInput } from 'react-native-gesture-handler'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
+import { Playlist } from '../../utils/Song'
 
 interface addPlaylistProps {
   setModalOpen: (bool: boolean) => void
+  playlists: Playlist[]
+  setPlaylists: (
+    playlists: Playlist[] | ((prevPlaylists: Playlist[]) => Playlist[]),
+  ) => void
 }
 
-const AddPlaylist: FC<addPlaylistProps> = ({ setModalOpen }) => {
+const AddPlaylist: FC<addPlaylistProps> = ({
+  setModalOpen,
+  playlists,
+  setPlaylists,
+}) => {
   const theme = useContext(themeContext)
   const [playlistName, setPlaylistName] = useState('')
 
@@ -24,9 +33,12 @@ const AddPlaylist: FC<addPlaylistProps> = ({ setModalOpen }) => {
       requestOptions,
     )
       .then((response) => response.json())
-      .then((json) => console.log(json))
+      .then((json) => {
+        console.log(json)
+        setPlaylists((playlists) => [...playlists, json])
+      })
       .catch((error) => {
-        console.error('There was an error: ' + error)
+        console.error(error)
       })
   }
 

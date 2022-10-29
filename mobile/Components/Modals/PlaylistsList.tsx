@@ -17,33 +17,52 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Music Player imports */
 import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+import { Song } from '../../utils/Song'
+import { Track } from 'react-native-track-player'
 
 interface PlaylistsListProps {
-  chosenSongID: number
+  chosenSong: Track
   setModalOpen: (bool: boolean) => void
 }
 
 const PlaylistsList: FC<PlaylistsListProps> = ({
-  chosenSongID,
+  chosenSong,
   setModalOpen,
 }) => {
   const theme = useContext(themeContext)
 
-  const { playlists, isLoaded, error } = usePlaylistApiRequest(
+  const { playlists, setPlaylists, isLoaded, error } = usePlaylistApiRequest(
     `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
   )
   if (error) console.error(error)
 
-  const addToPlaylist = async (playlist_id: number, song_id: number) => {
+  const onAdd = (playlist_id: number, chosenSong: Track) => {
+    const newPlaylists = playlists.map((playlist) => {
+      if (playlist.id === playlist_id) {
+        const newSongsList = [...playlist.songs, chosenSong]
+        return { ...playlist, songs: newSongsList }
+      }
+      return playlist
+    })
+    setPlaylists(newPlaylists)
+  }
+
+  const addToPlaylist = async (playlist_id: number, chosenSong: Track) => {
     await fetch(
-      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/add_song/${playlist_id}/${song_id}`,
+      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/add_song/${playlist_id}/${chosenSong.id}`,
       {
         method: 'PATCH',
-        body: JSON.stringify({ playlist_id: playlist_id, song_id: song_id }),
+        body: JSON.stringify({
+          playlist_id: playlist_id,
+          song_id: chosenSong.id,
+        }),
       },
     )
-      .then((res) => res.json)
-      .then((json) => console.log(json))
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json)
+        onAdd(playlist_id, json)
+      })
       .catch((error) => console.error(error))
   }
 
@@ -63,8 +82,8 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
               <TouchableOpacity
                 key={playlist.id}
                 onPress={() => {
-                  addToPlaylist(playlist.id, chosenSongID)
-                  setModalOpen(false)
+                  addToPlaylist(playlist.id, chosenSong)
+                  // setModalOpen(false)
                 }}
               >
                 <View style={styles.playlistTitleContainer}>

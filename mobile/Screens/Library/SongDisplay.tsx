@@ -18,17 +18,18 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Icons imports */
 import { MaterialIcons } from '@expo/vector-icons'
+import { Song } from '../../utils/Song'
 
 interface SongDisplayProps {
   song: Track
   setModalOpen: (bool: boolean) => void
-  setChosenSongID: (num: number) => void
+  setChosenSong: (song: Track) => void
 }
 
 const SongDisplay: FC<SongDisplayProps> = ({
   song,
   setModalOpen,
-  setChosenSongID,
+  setChosenSong,
 }) => {
   const theme = useContext(themeContext)
   const navigation =
@@ -70,7 +71,7 @@ const SongDisplay: FC<SongDisplayProps> = ({
       <TouchableOpacity
         onPress={() => {
           setModalOpen(true)
-          setChosenSongID(song.id)
+          setChosenSong(song)
         }}
       >
         <MaterialIcons

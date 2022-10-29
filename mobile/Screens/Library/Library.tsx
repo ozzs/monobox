@@ -34,13 +34,15 @@ import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 import PlaylistsList from '../../Components/Modals/PlaylistsList'
+import { Song } from '../../utils/Song'
+import { Track } from 'react-native-track-player'
 
 const Library = () => {
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
   const [modalOpen, setModalOpen] = useState(false)
-  const [chosenSongID, setChosenSongID] = useState(0)
+  const [chosenSong, setChosenSong] = useState({} as Track)
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
@@ -66,7 +68,7 @@ const Library = () => {
             onRequestClose={() => setModalOpen(false)}
           >
             <PlaylistsList
-              chosenSongID={chosenSongID}
+              chosenSong={chosenSong}
               setModalOpen={setModalOpen}
             />
           </Modal>
@@ -90,7 +92,7 @@ const Library = () => {
                 key={song.id}
                 song={song}
                 setModalOpen={setModalOpen}
-                setChosenSongID={setChosenSongID}
+                setChosenSong={setChosenSong}
               />
             ))}
           </View>

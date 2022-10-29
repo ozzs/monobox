@@ -34,7 +34,7 @@ const Homescreen = () => {
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
 
   // Fetches required songs
-  const { playlists, isLoaded, error } = usePlaylistApiRequest(
+  const { playlists, setPlaylists, isLoaded, error } = usePlaylistApiRequest(
     `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
   )
   if (error) console.error(error)
@@ -53,7 +53,11 @@ const Homescreen = () => {
             visible={modalOpen}
             onRequestClose={() => setModalOpen(false)}
           >
-            <AddPlaylist setModalOpen={setModalOpen} />
+            <AddPlaylist
+              setModalOpen={setModalOpen}
+              setPlaylists={setPlaylists}
+              playlists={playlists}
+            />
           </Modal>
           <ScrollView>
             {/* Header */}
@@ -68,7 +72,9 @@ const Homescreen = () => {
                   <View key={playlist.id}>
                     <PlaylistSongsDisplay
                       playlist={playlist}
+                      playlists={playlists}
                       setPlaylistId={setPlaylistId}
+                      setPlaylists={setPlaylists}
                     />
                   </View>
                 )

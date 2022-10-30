@@ -16,6 +16,8 @@ import themeContext from '../../../assets/styles/themeContext'
 
 /* Navigation imports */
 import { DrawerActions, useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../App'
 
 /* utils imports */
 import playlistIDContext from '../../utils/PlaylistIDContext'
@@ -28,13 +30,10 @@ import { FontAwesome } from '@expo/vector-icons'
 /* Components imports */
 import CurrentSong from '../../Components/General/CurrentSong'
 import SongDisplay from './SongDisplay'
+import PlaylistsList from '../../Components/Modals/PlaylistsList'
 
 /* Music Player imports */
 import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../App'
-import PlaylistsList from '../../Components/Modals/PlaylistsList'
-import { Song } from '../../utils/Song'
 import { Track } from 'react-native-track-player'
 
 const Library = () => {

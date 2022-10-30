@@ -31,8 +31,8 @@ from models import (
 app = FastAPI()
 session = Session(bind=engine)
 
-music_folder_url = "C:\musicPlayer\Songs"
-cover_folder_url = "C:\musicPlayer\Covers"
+music_folder_url = "D:\Music\musicPlayer\Songs"
+cover_folder_url = "D:\Music\musicPlayer\Covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -148,7 +148,9 @@ async def check(
 
 
 @app.post(
-    "/songs/playlists", response_model=PlaylistReadWithSongs, status_code=status.HTTP_201_CREATED
+    "/songs/playlists",
+    response_model=PlaylistReadWithSongs,
+    status_code=status.HTTP_201_CREATED,
 )
 async def create_playlist(playlist: PlaylistBase) -> Playlist:
     new_playlist = Playlist.from_orm(playlist)
@@ -157,9 +159,7 @@ async def create_playlist(playlist: PlaylistBase) -> Playlist:
     return new_playlist
 
 
-@app.delete(
-    "/songs/delete_playlist/{playlist_id}", response_model=Dict
-)
+@app.delete("/songs/delete_playlist/{playlist_id}", response_model=Dict)
 async def delete_playlist(playlist_id: int) -> dict:
     playlist = session.get(Playlist, playlist_id)
     if not playlist:
@@ -315,7 +315,7 @@ def scan_songs():
             artwork_exists = False
             for image in audiofile.tag.images:
                 image_file = open(
-                    "C:\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
+                    "D:\Music\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
                 )
                 print("Writing image file: {}).jpg".format(song_title))
                 image_file.write(image.image_data)
@@ -337,4 +337,4 @@ def scan_songs():
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="10.0.0.26", port=5000, reload=True)
+    uvicorn.run("main:app", host="192.168.1.120", port=5000, reload=True)

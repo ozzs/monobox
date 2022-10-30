@@ -17,7 +17,6 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Music Player imports */
 import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
-import { Song } from '../../utils/Song'
 import { Track } from 'react-native-track-player'
 
 interface PlaylistsListProps {
@@ -36,7 +35,8 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
   )
   if (error) console.error(error)
 
-  const onAdd = (playlist_id: number, chosenSong: Track) => {
+  {
+    /* const onAdd = (playlist_id: number, chosenSong: Track) => {
     const newPlaylists = playlists.map((playlist) => {
       if (playlist.id === playlist_id) {
         const newSongsList = [...playlist.songs, chosenSong]
@@ -45,6 +45,7 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
       return playlist
     })
     setPlaylists(newPlaylists)
+  } */
   }
 
   const addToPlaylist = async (playlist_id: number, chosenSong: Track) => {
@@ -59,10 +60,7 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
       },
     )
       .then((res) => res.json())
-      .then((json) => {
-        console.log(json)
-        onAdd(playlist_id, json)
-      })
+      .then((json) => console.log(json))
       .catch((error) => console.error(error))
   }
 
@@ -83,7 +81,7 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
                 key={playlist.id}
                 onPress={() => {
                   addToPlaylist(playlist.id, chosenSong)
-                  // setModalOpen(false)
+                  setModalOpen(false)
                 }}
               >
                 <View style={styles.playlistTitleContainer}>

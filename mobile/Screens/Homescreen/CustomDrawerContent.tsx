@@ -73,24 +73,6 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
         onPress={() => props.navigation.navigate('LikedSongs')}
       />
       <DrawerItem
-        label={'Profile'}
-        labelStyle={[styles.drawerRow, { color: theme.primary }]}
-        icon={() => <AntDesign name='user' size={20} color={theme.icon} />}
-        onPress={() => props.navigation.navigate('Homescreen')}
-      />
-      <DrawerItem
-        label={'Contact Us'}
-        labelStyle={[styles.drawerRow, { color: theme.primary }]}
-        icon={() => (
-          <MaterialCommunityIcons
-            name='message-text-outline'
-            size={20}
-            color={theme.icon}
-          />
-        )}
-        onPress={() => props.navigation.navigate('Homescreen')}
-      />
-      <DrawerItem
         label={'FAQs'}
         labelStyle={[styles.drawerRow, { color: theme.primary }]}
         icon={() => (
@@ -100,19 +82,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
             color={theme.icon}
           />
         )}
-        onPress={() => props.navigation.navigate('Homescreen')}
-      />
-      <DrawerItem
-        label={'Settings'}
-        labelStyle={[styles.drawerRow, { color: theme.primary }]}
-        icon={() => (
-          <MaterialCommunityIcons
-            name='cog-outline'
-            size={20}
-            color={theme.icon}
-          />
-        )}
-        onPress={() => props.navigation.navigate('Homescreen')}
+        onPress={() => props.navigation.navigate('FAQ')}
       />
     </DrawerContentScrollView>
   )

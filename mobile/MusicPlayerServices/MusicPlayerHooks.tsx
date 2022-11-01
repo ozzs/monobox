@@ -1,5 +1,6 @@
 /* React / React-Native imports */
-import { useCallback, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import React, { useCallback, useEffect, useState } from 'react'
 
 /* Music Player imports */
 import TrackPlayer, {

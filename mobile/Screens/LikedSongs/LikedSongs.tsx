@@ -28,11 +28,12 @@ import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 
 /* Icons imports */
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, FontAwesome } from '@expo/vector-icons'
 
 /* Music Player imports */
 import trackContext from '../../utils/CurrentSongContext'
 import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+import { DrawerActions } from '@react-navigation/native'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
@@ -58,8 +59,10 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
           {/* Header */}
           <SafeAreaView>
             <View style={styles.headerIcons}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <AntDesign name='arrowleft' size={24} color={theme.primary} />
+              <TouchableOpacity
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+              >
+                <FontAwesome name='bars' size={24} color={theme.primary} />
               </TouchableOpacity>
               <AntDesign name='bars' size={24} color={theme.primary} />
             </View>

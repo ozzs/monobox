@@ -31,6 +31,7 @@ import { useFonts } from 'expo-font'
 import Library from './mobile/Screens/Library/Library'
 import LikedSongs from './mobile/Screens/LikedSongs/LikedSongs'
 import Homescreen from './mobile/Screens/Homescreen/Homescreen'
+import FAQ from './mobile/Screens/FAQ/FAQ'
 import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
 import CustomDrawerContent from './mobile/Screens/Homescreen/CustomDrawerContent'
 
@@ -38,8 +39,8 @@ export type RootStackParamList = {
   Homescreen: undefined
   Library: undefined
   LikedSongs: undefined
+  FAQ: undefined
   SongsCarousel: { song_id: number; playlist_id?: number } | undefined
-  Profile: undefined
   CustomDrawerContent: undefined
 }
 
@@ -91,6 +92,11 @@ export default function App() {
               <Drawer.Screen
                 name='LikedSongs'
                 component={LikedSongs}
+                options={{ headerShown: false }}
+              />
+              <Drawer.Screen
+                name='FAQ'
+                component={FAQ}
                 options={{ headerShown: false }}
               />
               <Drawer.Screen

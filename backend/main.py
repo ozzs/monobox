@@ -31,6 +31,8 @@ from models import (
 app = FastAPI()
 session = Session(bind=engine)
 
+host_ip = "192.168.1.120"
+host_port = 5000
 music_folder_url = "D:\Music\musicPlayer\Songs"
 cover_folder_url = "D:\Music\musicPlayer\Covers"
 
@@ -118,33 +120,6 @@ async def unlike(song_id: int) -> dict:
     song.liked_bool = None
     session.commit()
     return {"Unliked song with id: ": song_id}
-
-
-@app.post("/check", response_model=List[PlaylistReadWithSongs])
-async def check(
-    song_id1: int,
-    song_id2: int,
-    song_id3: int,
-    song_id4: int,
-    playlist_id1: int,
-    playlist_id2: int,
-):
-    song1 = session.exec(select(Song).where(Song.id == song_id1)).one()
-    song2 = session.exec(select(Song).where(Song.id == song_id2)).one()
-    song3 = session.exec(select(Song).where(Song.id == song_id3)).one()
-    song4 = session.exec(select(Song).where(Song.id == song_id4)).one()
-
-    playlist1 = session.exec(select(Playlist).where(Playlist.id == playlist_id1)).one()
-    playlist2 = session.exec(select(Playlist).where(Playlist.id == playlist_id2)).one()
-    playlist1.songs.append(song1)
-    playlist1.songs.append(song2)
-    playlist2.songs.append(song2)
-    playlist2.songs.append(song3)
-    playlist2.songs.append(song4)
-    session.add(playlist1)
-    session.add(playlist2)
-    session.commit()
-    return [playlist1, playlist2]
 
 
 @app.post(
@@ -282,7 +257,7 @@ async def delete_song(song_id: int) -> Optional[Song]:
 def create_initial_playlists():
 
     # Create Liked Songs Playlist
-    stmt = select(Playlist).where(Playlist.id == 2)
+    stmt = select(Playlist).where(Playlist.id == 1)
     db_liked_playlist = session.exec(stmt).one_or_none()
     if not db_liked_playlist:
         session.add(Playlist(name="Liked Songs"))
@@ -299,11 +274,13 @@ def scan_songs():
             joined_path = os.path.join(music_folder_url, song)
             audiofile = eyed3.load(joined_path)
 
-            # TODO: Think of a better algorithm
+            # Get song from DB
             statement = select(Song).where(
                 Song.title == audiofile.tag.title, Song.artist == audiofile.tag.artist
             )
             db_song = session.exec(statement).one_or_none()
+
+            # Song exists in DB
             if db_song:
                 if get_last_modify(joined_path) != db_song.last_modify:
                     # TODO: think of a smart way to implement updating a song
@@ -317,7 +294,10 @@ def scan_songs():
                 image_file = open(
                     "D:\Music\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
                 )
-                print("Writing image file: {}).jpg".format(song_title))
+                print(
+                    "Writing image file: {}).jpg".format(song_title)
+                    + " to song: {}".format(song_title)
+                )
                 image_file.write(image.image_data)
                 image_file.close()
                 artwork_exists = True
@@ -337,4 +317,4 @@ def scan_songs():
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host="192.168.1.120", port=5000, reload=True)
+    uvicorn.run("main:app", host=host_ip, port=host_port, reload=True)

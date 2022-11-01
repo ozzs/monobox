@@ -34,6 +34,7 @@ const Homescreen = () => {
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
 
   // Fetches required songs
+
   const { playlists, setPlaylists, isLoaded, error } = usePlaylistApiRequest(
     `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
   )

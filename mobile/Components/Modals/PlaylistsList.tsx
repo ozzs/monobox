@@ -35,8 +35,7 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
   )
   if (error) console.error(error)
 
-  {
-    /* const onAdd = (playlist_id: number, chosenSong: Track) => {
+  const onAdd = (playlist_id: number, chosenSong: Track) => {
     const newPlaylists = playlists.map((playlist) => {
       if (playlist.id === playlist_id) {
         const newSongsList = [...playlist.songs, chosenSong]
@@ -45,7 +44,6 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
       return playlist
     })
     setPlaylists(newPlaylists)
-  } */
   }
 
   const addToPlaylist = async (playlist_id: number, chosenSong: Track) => {

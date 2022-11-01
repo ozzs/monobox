@@ -53,7 +53,6 @@ const Library = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {/* Header */}
       {isLoaded ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
@@ -71,6 +70,8 @@ const Library = () => {
               setModalOpen={setModalOpen}
             />
           </Modal>
+
+          {/* Header */}
           <View style={styles.headerContainer}>
             <TouchableOpacity
               onPress={() => navigation.dispatch(DrawerActions.openDrawer())}

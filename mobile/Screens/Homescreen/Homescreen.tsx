@@ -2,6 +2,7 @@
 import {
   StyleSheet,
   View,
+  Text,
   Platform,
   StatusBar,
   ScrollView,
@@ -26,6 +27,9 @@ import HomescreenHeader from './HomescreenHeader'
 
 /* Music Player imports */
 import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+import { useQuery } from 'react-query'
+import axios from 'axios'
+import { Playlist } from '../../utils/Song'
 
 const Homescreen = () => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -34,7 +38,6 @@ const Homescreen = () => {
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
 
   // Fetches required songs
-
   const { playlists, setPlaylists, isLoaded, error } = usePlaylistApiRequest(
     `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
   )

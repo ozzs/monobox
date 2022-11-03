@@ -1,8 +1,18 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+/* React / React-Native imports */
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native'
 import React, { FC, useContext, useState } from 'react'
-import { windowWidth } from '../../utils/Dimensions'
+
+/* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
-import { TextInput } from 'react-native-gesture-handler'
+
+/* utils imports */
+import { windowWidth } from '../../utils/Dimensions'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 import { Playlist } from '../../utils/Song'
 

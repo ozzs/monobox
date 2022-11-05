@@ -26,10 +26,10 @@ from models import (
 app = FastAPI()
 session = Session(bind=engine)
 
-host_ip = "10.0.0.26"
+host_ip = "192.168.1.198"
 host_port = 5000
-music_folder_url = "C:\musicPlayer\Songs"
-cover_folder_url = "C:\musicPlayer\Covers"
+music_folder_url = "..\Songs"
+cover_folder_url = "..\Covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -260,45 +260,39 @@ def create_initial_playlists():
 
 
 @app.on_event("startup")
-# @repeat_every(seconds=5)
+@repeat_every(seconds=30)
 def scan_songs():
 
-    # Scan All Songs
+    all_songs = session.exec(select(Song)).all()
+    songs_on_disk = []
+    
     for song in os.listdir(music_folder_url):
         if song.endswith(".mp3"):
             joined_path = os.path.join(music_folder_url, song)
             audiofile = eyed3.load(joined_path)
 
-            # Get song from DB
-            statement = select(Song).where(
-                Song.title == audiofile.tag.title, Song.artist == audiofile.tag.artist
-            )
-            db_song = session.exec(statement).one_or_none()
+            db_song = None
+            for song in all_songs:
+                if song.title == audiofile.tag.title and song.artist == audiofile.tag.artist:
+                    db_song = song
+                    break
 
-            # Song exists in DB
             if db_song:
-                if get_last_modify(joined_path) != db_song.last_modify:
-                    # TODO: think of a smart way to implement updating a song
-                    pass
+                songs_on_disk.append(db_song.id)
                 continue
-
+            
             song_title = audiofile.tag.title
             artwork_path = str(os.path.join(cover_folder_url, song_title)) + ".jpg"
             artwork_exists = False
             for image in audiofile.tag.images:
                 image_file = open(
-                    "C:\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
-                )
-                print(
-                    "Writing image file: {}).jpg".format(song_title)
-                    + " to song: {}".format(song_title)
+                    "..\Covers\{}.jpg".format(song_title), "wb"
                 )
                 image_file.write(image.image_data)
                 image_file.close()
                 artwork_exists = True
 
-            session.add(
-                Song(
+            new_song = Song(
                     url=joined_path,
                     title=song_title,
                     artist=audiofile.tag.artist,
@@ -306,8 +300,15 @@ def scan_songs():
                     last_modify=get_last_modify(joined_path),
                     duration=audiofile.info.time_secs,
                 )
-            )
-            print(song_title + " Added to DB!")
+            session.add(new_song)
+            session.commit()
+            songs_on_disk.append(new_song.id)
+
+    songs_to_delete = list(set([s.id for s in all_songs]) - set(songs_on_disk))
+
+    for song_id in songs_to_delete:
+        session.delete(session.get(Song, song_id))
+    session.commit()
 
 
 if __name__ == "__main__":

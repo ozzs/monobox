@@ -21,7 +21,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 /* utils imports */
 import playlistIDContext from '../../utils/PlaylistIDContext'
-import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 /* Components imports */
 import SongDetails from '../../Components/General/SongDetails'
@@ -32,17 +31,22 @@ import { AntDesign, FontAwesome } from '@expo/vector-icons'
 
 /* Music Player imports */
 import trackContext from '../../utils/CurrentSongContext'
-import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
 import { DrawerActions } from '@react-navigation/native'
+import { useSongsData } from '../../hooks/HooksAPI'
+import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 
 const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
-  const { playlist, error } = useTracksApiRequest(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/1/fetch`,
-  )
+  const {
+    data: songs,
+    isLoading,
+    isIdle,
+    isError,
+    error,
+  } = useSongsData(`http://${BASE_API_URL}:${BASE_API_PORT}/songs/1/fetch`)
 
-  if (error) console.error(error)
+  if (isError) return <Text>An error has occurred: {error}</Text>
 
   const theme = useContext(themeContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
@@ -50,7 +54,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {playlist.length < 0 ? (
+      {isLoading || isIdle ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
         </View>
@@ -64,7 +68,6 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
               >
                 <FontAwesome name='bars' size={24} color={theme.primary} />
               </TouchableOpacity>
-              <AntDesign name='bars' size={24} color={theme.primary} />
             </View>
           </SafeAreaView>
 
@@ -74,18 +77,18 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
           </Text>
           {/* Songs */}
           <View style={styles.songsWrapper}>
-            {playlist.length > 0 ? (
+            {songs.length > 0 ? (
               <FlatList
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
-                data={playlist}
+                data={songs}
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('SongsCarousel', {
                         song_id: item.id,
-                        playlist_id: 1,
+                        playlist: songs,
                       })
                       setPlaylistId(1)
                     }}

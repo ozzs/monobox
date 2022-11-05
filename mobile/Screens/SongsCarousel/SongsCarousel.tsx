@@ -28,7 +28,6 @@ import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 import {
   useCurrentTrack,
   useSetupTracks,
-  useTracksApiRequest,
 } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   Event,
@@ -48,8 +47,8 @@ type SongsCarouselProps = NativeStackScreenProps<
 >
 
 const SongsCarousel = ({ route }: SongsCarouselProps) => {
-  const song_id = route.params?.song_id
-  const playlist_id = route.params?.playlist_id
+  const song_id = route.params.song_id
+  const playlist = route.params.playlist
 
   /* General use variables */
   const theme = useContext(themeContext)
@@ -68,16 +67,8 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
   const [trackArtwork, setTrackArtwork] = useState<number>()
   const [trackRating, setTrackRating] = useState<number | boolean>()
 
-  // Fetches required songs
-  const { playlist, error } = useTracksApiRequest(
-    playlist_id
-      ? `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${playlist_id}/fetch`
-      : `http://${BASE_API_URL}:${BASE_API_PORT}/songs`,
-  )
-  if (error) console.error(error)
-
   // Sets up tracks for TrackPlayer after data is fetched & set
-  const { index, isLoaded } = useSetupTracks(playlist, song_id)
+  const { index, isLoading } = useSetupTracks(playlist, song_id)
 
   useEffect(() => {
     setSongIndex(index)
@@ -156,7 +147,7 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-      {isLoaded ? (
+      {isLoading ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
         </View>
@@ -230,7 +221,6 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
             setRepeatMode={setRepeatMode}
             trackRating={trackRating}
             setTrackRating={setTrackRating}
-            songIndex={songIndex}
           />
 
           {/* Slider */}

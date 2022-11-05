@@ -1,7 +1,5 @@
 import datetime
-import json
 import os
-import socket
 from typing import Dict, List, Optional
 
 import eyed3  # type: ignore
@@ -14,27 +12,24 @@ from sqlmodel import Session, select
 from database_setup import create_db_and_tables, engine
 from models import (
     Liked,
-    LikedBase,
     Playlist,
     PlaylistBase,
-    PlaylistRead,
     PlaylistReadWithSongs,
     Song,
     SongBase,
     SongPlaylistLink,
     SongRead,
     SongReadWithLike,
-    SongReadWithPlaylists,
     SongUpdate,
 )
 
 app = FastAPI()
 session = Session(bind=engine)
 
-host_ip = "192.168.1.120"
+host_ip = "10.0.0.26"
 host_port = 5000
-music_folder_url = "D:\Music\musicPlayer\Songs"
-cover_folder_url = "D:\Music\musicPlayer\Covers"
+music_folder_url = "C:\musicPlayer\Songs"
+cover_folder_url = "C:\musicPlayer\Covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -292,7 +287,7 @@ def scan_songs():
             artwork_exists = False
             for image in audiofile.tag.images:
                 image_file = open(
-                    "D:\Music\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
+                    "C:\musicPlayer\Covers\{}.jpg".format(song_title), "wb"
                 )
                 print(
                     "Writing image file: {}).jpg".format(song_title)

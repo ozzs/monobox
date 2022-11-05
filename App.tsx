@@ -35,12 +35,17 @@ import FAQ from './mobile/Screens/FAQ/FAQ'
 import SongsCarousel from './mobile/Screens/SongsCarousel/SongsCarousel'
 import CustomDrawerContent from './mobile/Screens/Homescreen/CustomDrawerContent'
 
+import { QueryClientProvider, QueryClient } from 'react-query'
+import { Track } from 'react-native-track-player'
+
+const queryClient = new QueryClient()
+
 export type RootStackParamList = {
   Homescreen: undefined
   Library: undefined
   LikedSongs: undefined
   FAQ: undefined
-  SongsCarousel: { song_id: number; playlist_id?: number } | undefined
+  SongsCarousel: { playlist: Track[]; song_id: number }
   CustomDrawerContent: undefined
 }
 
@@ -71,43 +76,45 @@ export default function App() {
   }
 
   return (
-    <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
-      <playlistIDContext.Provider value={{ playlistId, setPlaylistId }}>
-        <trackContext.Provider value={currentTrack}>
-          <NavigationContainer>
-            <Drawer.Navigator
-              initialRouteName='Homescreen'
-              drawerContent={(props) => <CustomDrawerContent {...props} />}
-            >
-              <Drawer.Screen
-                name='Homescreen'
-                component={Homescreen}
-                options={{ headerShown: false }}
-              />
-              <Drawer.Screen
-                name='Library'
-                component={Library}
-                options={{ headerShown: false }}
-              />
-              <Drawer.Screen
-                name='LikedSongs'
-                component={LikedSongs}
-                options={{ headerShown: false }}
-              />
-              <Drawer.Screen
-                name='FAQ'
-                component={FAQ}
-                options={{ headerShown: false }}
-              />
-              <Drawer.Screen
-                name='SongsCarousel'
-                component={SongsCarousel}
-                options={{ headerShown: false }}
-              />
-            </Drawer.Navigator>
-          </NavigationContainer>
-        </trackContext.Provider>
-      </playlistIDContext.Provider>
-    </themeContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
+        <playlistIDContext.Provider value={{ playlistId, setPlaylistId }}>
+          <trackContext.Provider value={currentTrack}>
+            <NavigationContainer>
+              <Drawer.Navigator
+                initialRouteName='Homescreen'
+                drawerContent={(props) => <CustomDrawerContent {...props} />}
+              >
+                <Drawer.Screen
+                  name='Homescreen'
+                  component={Homescreen}
+                  options={{ headerShown: false }}
+                />
+                <Drawer.Screen
+                  name='Library'
+                  component={Library}
+                  options={{ headerShown: false }}
+                />
+                <Drawer.Screen
+                  name='LikedSongs'
+                  component={LikedSongs}
+                  options={{ headerShown: false }}
+                />
+                <Drawer.Screen
+                  name='FAQ'
+                  component={FAQ}
+                  options={{ headerShown: false }}
+                />
+                <Drawer.Screen
+                  name='SongsCarousel'
+                  component={SongsCarousel}
+                  options={{ headerShown: false }}
+                />
+              </Drawer.Navigator>
+            </NavigationContainer>
+          </trackContext.Provider>
+        </playlistIDContext.Provider>
+      </themeContext.Provider>
+    </QueryClientProvider>
   )
 }

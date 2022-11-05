@@ -73,7 +73,7 @@ class SongReadWithPlaylists(SongRead):
 
 
 class PlaylistReadWithSongs(PlaylistRead):
-    songs: List[SongRead] = []
+    songs: List[SongReadWithLike] = []
 
 
 class SongUpdate(SQLModel):

@@ -19,17 +19,20 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 /* Icons imports */
 import { MaterialIcons } from '@expo/vector-icons'
 import { Song } from '../../utils/Song'
+import SongsCarousel from '../SongsCarousel/SongsCarousel'
 
 interface SongDisplayProps {
   song: Track
+  songs: Track[]
   setModalOpen: (bool: boolean) => void
-  setChosenSong: (song: Track) => void
+  setChosenSongID: (song_id: number) => void
 }
 
 const SongDisplay: FC<SongDisplayProps> = ({
   song,
+  songs,
   setModalOpen,
-  setChosenSong,
+  setChosenSongID,
 }) => {
   const theme = useContext(themeContext)
   const navigation =
@@ -42,6 +45,7 @@ const SongDisplay: FC<SongDisplayProps> = ({
           style={styles.songButton}
           onPress={() => {
             navigation.navigate('SongsCarousel', {
+              playlist: songs,
               song_id: song.id,
             })
           }}
@@ -71,7 +75,7 @@ const SongDisplay: FC<SongDisplayProps> = ({
       <TouchableOpacity
         onPress={() => {
           setModalOpen(true)
-          setChosenSong(song)
+          setChosenSongID(song.id)
         }}
       >
         <MaterialIcons

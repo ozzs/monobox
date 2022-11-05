@@ -6,23 +6,18 @@ import React, { FC, useContext } from 'react'
 import themeContext from '../../../../assets/styles/themeContext'
 
 /* Icons imports */
-import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons'
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 
 /* Music Player imports */
-import {
-  changeRepeatMode,
-  getIndex,
-  likeSong,
-  repeatIcon,
-} from '../SongsCarouselFunctions'
+import { changeRepeatMode, repeatIcon } from '../SongsCarouselFunctions'
 import { useCurrentTrack } from '../../../MusicPlayerServices/MusicPlayerHooks'
+import { useRateSong } from '../../../hooks/HooksAPI'
 
 interface SongsCarouselOptionsProps {
   repeatMode: string
   setRepeatMode: (str: string) => void
   trackRating: number | boolean | undefined
   setTrackRating: (value: number | boolean) => void
-  songIndex: number
 }
 
 const SongsCarouselOptions: FC<SongsCarouselOptionsProps> = ({
@@ -30,10 +25,11 @@ const SongsCarouselOptions: FC<SongsCarouselOptionsProps> = ({
   setRepeatMode,
   trackRating,
   setTrackRating,
-  songIndex,
 }) => {
   const theme = useContext(themeContext)
   const currentTrack = useCurrentTrack()
+
+  const { mutate: rateSong } = useRateSong(trackRating, setTrackRating)
 
   return (
     <View style={styles.optionsWrapper}>
@@ -52,7 +48,7 @@ const SongsCarouselOptions: FC<SongsCarouselOptionsProps> = ({
         {trackRating ? (
           <TouchableOpacity
             onPress={() => {
-              likeSong(currentTrack?.id, trackRating, setTrackRating)
+              rateSong(currentTrack?.id)
             }}
           >
             <AntDesign name={'heart'} size={20} color={'red'} />
@@ -60,28 +56,14 @@ const SongsCarouselOptions: FC<SongsCarouselOptionsProps> = ({
         ) : (
           <TouchableOpacity
             onPress={() => {
-              likeSong(currentTrack?.id, trackRating, setTrackRating)
+              rateSong(currentTrack?.id)
             }}
           >
             <AntDesign name={'hearto'} size={20} color={theme.icon} />
           </TouchableOpacity>
         )}
       </View>
-
-      <View style={styles.optionsRightContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            getIndex(songIndex)
-          }}
-        >
-          <Feather
-            name='shuffle'
-            size={20}
-            color={theme.icon}
-            style={styles.shuffleIcon}
-          />
-        </TouchableOpacity>
-      </View>
+      <View style={styles.optionsRightContainer}></View>
     </View>
   )
 }
@@ -104,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    paddingRight: 30,
+    marginRight: 30,
   },
   shuffleIcon: {
     marginLeft: 15,

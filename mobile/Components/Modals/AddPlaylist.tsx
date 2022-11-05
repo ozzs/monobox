@@ -5,42 +5,25 @@ import themeContext from '../../../assets/styles/themeContext'
 import { TextInput } from 'react-native-gesture-handler'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 import { Playlist } from '../../utils/Song'
+import { useAddPlaylist } from '../../hooks/HooksAPI'
 
 interface addPlaylistProps {
   setModalOpen: (bool: boolean) => void
   playlists: Playlist[]
-  setPlaylists: (
-    playlists: Playlist[] | ((prevPlaylists: Playlist[]) => Playlist[]),
-  ) => void
+  // setPlaylists: (
+  //   playlists: Playlist[] | ((prevPlaylists: Playlist[]) => Playlist[]),
+  // ) => void
 }
 
 const AddPlaylist: FC<addPlaylistProps> = ({
   setModalOpen,
   playlists,
-  setPlaylists,
+  // setPlaylists,
 }) => {
   const theme = useContext(themeContext)
   const [playlistName, setPlaylistName] = useState('')
 
-  const submitPlaylist = async (playlistName: string) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: playlistName }),
-    }
-    await fetch(
-      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
-      requestOptions,
-    )
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json)
-        setPlaylists((playlists) => [...playlists, json])
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  const { mutate: addPlaylist } = useAddPlaylist()
 
   return (
     <View style={styles.container}>
@@ -64,7 +47,7 @@ const AddPlaylist: FC<addPlaylistProps> = ({
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => {
-                submitPlaylist(playlistName)
+                addPlaylist(playlistName)
                 setModalOpen(false)
               }}
             >

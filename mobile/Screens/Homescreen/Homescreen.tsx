@@ -2,9 +2,10 @@
 import {
   StyleSheet,
   View,
+  Text,
+  FlatList,
   Platform,
   StatusBar,
-  ScrollView,
   ActivityIndicator,
   Modal,
 } from 'react-native'
@@ -16,7 +17,6 @@ import themeContext from '../../../assets/styles/themeContext'
 /* utils imports */
 import trackContext from '../../utils/CurrentSongContext'
 import playlistIDContext from '../../utils/PlaylistIDContext'
-import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 /* Components imports */
 import CurrentSong from '../../Components/General/CurrentSong'
@@ -25,7 +25,7 @@ import PlaylistSongsDisplay from './PlaylistSongsDisplay'
 import HomescreenHeader from './HomescreenHeader'
 
 /* Music Player imports */
-import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
+import { usePlaylistsData } from '../../hooks/HooksAPI'
 
 const Homescreen = () => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -33,55 +33,53 @@ const Homescreen = () => {
   const currentTrack = useContext(trackContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
 
-  // Fetches required songs
+  const {
+    data: playlists,
+    isLoading,
+    isIdle,
+    isError,
+    error,
+  } = usePlaylistsData()
 
-  const { playlists, setPlaylists, isLoaded, error } = usePlaylistApiRequest(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
-  )
-  if (error) console.error(error)
+  if (isError) return <Text>An error has occurred: {error}</Text>
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {isLoaded ? (
+      {isLoading || isIdle ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
         </View>
       ) : (
-        <View>
+        <View style={{ flex: 1 }}>
           <Modal
             transparent={true}
             animationType='fade'
             visible={modalOpen}
             onRequestClose={() => setModalOpen(false)}
           >
-            <AddPlaylist
-              setModalOpen={setModalOpen}
-              setPlaylists={setPlaylists}
-              playlists={playlists}
-            />
+            <AddPlaylist setModalOpen={setModalOpen} playlists={playlists} />
           </Modal>
-          <ScrollView>
-            {/* Header */}
-            <HomescreenHeader setModalOpen={setModalOpen} />
+          {/* Header */}
+          <HomescreenHeader setModalOpen={setModalOpen} />
 
-            {/* Playlists */}
-            <View
-              style={{ paddingBottom: currentTrack === undefined ? 0 : 90 }}
-            >
-              {playlists.map((playlist) => {
-                return (
-                  <View key={playlist.id}>
-                    <PlaylistSongsDisplay
-                      playlist={playlist}
-                      playlists={playlists}
-                      setPlaylistId={setPlaylistId}
-                      setPlaylists={setPlaylists}
-                    />
-                  </View>
-                )
-              })}
-            </View>
-          </ScrollView>
+          {/* Playlists */}
+          <View
+            style={{
+              paddingBottom: currentTrack === undefined ? 0 : 90,
+              flex: 1,
+            }}
+          >
+            <FlatList
+              data={playlists}
+              renderItem={({ item }) => (
+                <PlaylistSongsDisplay
+                  key={item.id}
+                  playlist={item}
+                  setPlaylistId={setPlaylistId}
+                />
+              )}
+            />
+          </View>
 
           {/* Bottom Layer */}
         </View>

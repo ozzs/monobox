@@ -2,6 +2,7 @@
 import {
   View,
   Text,
+  FlatList,
   StyleSheet,
   Platform,
   StatusBar,
@@ -22,10 +23,9 @@ import { RootStackParamList } from '../../../App'
 /* utils imports */
 import playlistIDContext from '../../utils/PlaylistIDContext'
 import trackContext from '../../utils/CurrentSongContext'
-import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Icons imports */
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
 
 /* Components imports */
 import CurrentSong from '../../Components/General/CurrentSong'
@@ -33,32 +33,37 @@ import SongDisplay from './SongDisplay'
 import PlaylistsList from '../../Components/Modals/PlaylistsList'
 
 /* Music Player imports */
-import { useTracksApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
-import { Track } from 'react-native-track-player'
+import { useSongsData } from '../../hooks/HooksAPI'
+import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 const Library = () => {
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
   const { playlistId, setPlaylistId } = useContext(playlistIDContext)
   const [modalOpen, setModalOpen] = useState(false)
-  const [chosenSong, setChosenSong] = useState({} as Track)
+  const [chosenSongID, setChosenSongID] = useState(0)
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
-  const { playlist, isLoaded, error } = useTracksApiRequest(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs`,
-  )
-  if (error) console.error(error)
+  const {
+    data: songs,
+    isLoading,
+    isIdle,
+    isError,
+    error,
+  } = useSongsData(`http://${BASE_API_URL}:${BASE_API_PORT}/songs`)
+
+  if (isError) return <Text>An error has occurred: {error}</Text>
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      {isLoaded ? (
+      {isLoading || isIdle ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
         </View>
       ) : (
-        <View>
+        <View style={{ flex: 1 }}>
           <Modal
             transparent={true}
             animationType='fade'
@@ -66,7 +71,7 @@ const Library = () => {
             onRequestClose={() => setModalOpen(false)}
           >
             <PlaylistsList
-              chosenSong={chosenSong}
+              chosenSongID={chosenSongID}
               setModalOpen={setModalOpen}
             />
           </Modal>
@@ -85,16 +90,21 @@ const Library = () => {
           <View
             style={{
               paddingBottom: currentTrack === undefined ? 0 : 90,
+              flex: 1,
             }}
           >
-            {playlist.map((song) => (
-              <SongDisplay
-                key={song.id}
-                song={song}
-                setModalOpen={setModalOpen}
-                setChosenSong={setChosenSong}
-              />
-            ))}
+            <FlatList
+              data={songs}
+              renderItem={({ item }) => (
+                <SongDisplay
+                  key={item.id}
+                  song={item}
+                  songs={songs}
+                  setModalOpen={setModalOpen}
+                  setChosenSongID={setChosenSongID}
+                />
+              )}
+            />
           </View>
         </View>
       )}

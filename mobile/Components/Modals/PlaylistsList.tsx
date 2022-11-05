@@ -13,58 +13,36 @@ import themeContext from '../../../assets/styles/themeContext'
 
 /* utils imports */
 import { windowHeight, windowWidth } from '../../utils/Dimensions'
-import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Music Player imports */
-import { usePlaylistApiRequest } from '../../MusicPlayerServices/MusicPlayerHooks'
-import { Track } from 'react-native-track-player'
+import { useAddSongToPlaylist, usePlaylistsData } from '../../hooks/HooksAPI'
 
 interface PlaylistsListProps {
-  chosenSong: Track
+  chosenSongID: number
   setModalOpen: (bool: boolean) => void
 }
 
 const PlaylistsList: FC<PlaylistsListProps> = ({
-  chosenSong,
+  chosenSongID,
   setModalOpen,
 }) => {
   const theme = useContext(themeContext)
 
-  const { playlists, setPlaylists, isLoaded, error } = usePlaylistApiRequest(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/playlists`,
-  )
-  if (error) console.error(error)
+  const {
+    data: playlists,
+    isLoading,
+    isIdle,
+    isError,
+    error,
+  } = usePlaylistsData()
 
-  const onAdd = (playlist_id: number, chosenSong: Track) => {
-    const newPlaylists = playlists.map((playlist) => {
-      if (playlist.id === playlist_id) {
-        const newSongsList = [...playlist.songs, chosenSong]
-        return { ...playlist, songs: newSongsList }
-      }
-      return playlist
-    })
-    setPlaylists(newPlaylists)
-  }
+  if (isError) return <Text>{error}</Text>
 
-  const addToPlaylist = async (playlist_id: number, chosenSong: Track) => {
-    await fetch(
-      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/add_song/${playlist_id}/${chosenSong.id}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({
-          playlist_id: playlist_id,
-          song_id: chosenSong.id,
-        }),
-      },
-    )
-      .then((res) => res.json())
-      .then((json) => console.log(json))
-      .catch((error) => console.error(error))
-  }
+  const { mutate: addSongToPlaylist } = useAddSongToPlaylist()
 
   return (
     <View style={styles.container}>
-      {isLoaded ? (
+      {isLoading || isIdle ? (
         <View style={styles.activityIndicatorContainer}>
           <ActivityIndicator size='large' color={theme.primary} />
         </View>
@@ -78,7 +56,10 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
               <TouchableOpacity
                 key={playlist.id}
                 onPress={() => {
-                  addToPlaylist(playlist.id, chosenSong)
+                  addSongToPlaylist({
+                    playlist_id: playlist.id,
+                    song_id: chosenSongID,
+                  })
                   setModalOpen(false)
                 }}
               >

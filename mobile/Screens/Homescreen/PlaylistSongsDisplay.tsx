@@ -24,69 +24,27 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 /* Components imports */
 import SongDetails from '../../Components/General/SongDetails'
 import SongsCarousel from '../SongsCarousel/SongsCarousel'
+import {
+  useDeletePlaylist,
+  useRemoveSongFromPlaylist,
+} from '../../hooks/HooksAPI'
 
 interface PlaylistSongsProps {
   playlist: Playlist
-  playlists: Playlist[]
   setPlaylistId: (num: number) => void
-  setPlaylists: (
-    playlists: Playlist[] | ((prevPlaylists: Playlist[]) => Playlist[]),
-  ) => void
 }
 
 const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
   playlist,
-  playlists,
   setPlaylistId,
-  setPlaylists,
 }) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
   const theme = useContext(themeContext)
 
-  const onRemove = (playlist_id: number, song_id: number) => {
-    const newPlaylists = playlists.map((playlist) => {
-      if (playlist.id === playlist_id) {
-        const newSongsList = playlist.songs.filter(
-          (song) => song.id !== song_id,
-        )
-        return { ...playlist, songs: newSongsList }
-      }
-      return playlist
-    })
-    setPlaylists(newPlaylists)
-  }
+  const { mutate: removeSong } = useRemoveSongFromPlaylist()
 
-  const removeFromPlaylist = async (playlist_id: number, song_id: number) => {
-    await fetch(
-      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/remove_song/${playlist_id}/${song_id}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({ playlist_id: playlist_id, song_id: song_id }),
-      },
-    )
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(json)
-        onRemove(playlist_id, song_id)
-      })
-      .catch((error) => console.error(error))
-  }
-
-  const deletePlaylist = async (playlist_id: number) => {
-    await fetch(
-      `http://${BASE_API_URL}:${BASE_API_PORT}/songs/delete_playlist/${playlist_id}`,
-      { method: 'DELETE', body: JSON.stringify({ playlist_id: playlist_id }) },
-    )
-      .then((res) => res.json)
-      .then((json) => {
-        console.log(json)
-        setPlaylists((prevPlaylists) =>
-          prevPlaylists.filter((playlist) => playlist.id !== playlist_id),
-        )
-      })
-      .catch((error) => console.error(error))
-  }
+  const { mutate: deletePlaylist } = useDeletePlaylist()
 
   return (
     <>
@@ -108,12 +66,14 @@ const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('SongsCarousel', {
+                    playlist: playlist.songs,
                     song_id: item.id,
-                    playlist_id: playlist.id,
                   })
                   setPlaylistId(playlist.id)
                 }}
-                onLongPress={() => removeFromPlaylist(playlist.id, item.id)}
+                onLongPress={() =>
+                  removeSong({ playlist_id: playlist.id, song_id: item.id })
+                }
                 delayLongPress={1500}
               >
                 <SongDetails

@@ -1,3 +1,3 @@
 # musicPlayer
 
-<img src="https://github.com/ozzs/musicPlayer/blob/main/assets/MusicPlayerLogo.png" width="600">
+<img src="https://github.com/ozzs/musicPlayer/blob/main/assets/MusicPlayerLogo.png" width="200">

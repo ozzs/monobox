@@ -38,7 +38,10 @@ pip install -r requirements.txt
 ```
 
 ```python
-print "hello"
+host_ip = "192.168.1.198"
+host_port = 5000
+music_folder_url = "..\Songs"
+cover_folder_url = "..\Covers"
 ```
 
 ### Frontend

@@ -30,14 +30,16 @@ otherwise the application will not be able to communicate with the server runnin
 Then, in the root of the project, create 2 folders: 
 * ``Songs`` contains all the songs in the app library
 * ``Covers`` contains all the artworks of the songs in the ``Songs`` folder
+<br /> <br />
+Now you can copy all the songs you want to display in the app into the ``Songs`` folder.
 
 ### Backend Setup
-From the root, you need to navigate to the ``backend`` folder. from your command line:
+From the root, you need to navigate to the ``backend`` folder. from your terminal:
 ```
 cd backend
 ```
 
-The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed from your terminal using:
+The ``requirements.txt`` file lists all the Python libraries that the music player depends on, and they can be installed from your terminal using:
 ```
 pip install -r requirements.txt
 ```
@@ -51,6 +53,11 @@ cover_folder_url = "..\Covers"
 ```
 The default port is 5000, but you can also change it if you want the server to listen to a different port, 
 although it is required to change this in the Frontend as well.
+<br /> <br />
+Finally, run the following command from your terminal to set up your server and create your database:
+```
+python main.py
+```
 
 ### Frontend Setup
 ```

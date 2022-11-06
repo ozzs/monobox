@@ -1,8 +1,8 @@
 <h1 align="center">
   <img src="https://github.com/ozzs/musicPlayer/blob/main/assets/MusicPlayerLogo.png" alt="MusicPlayerLogo" width="200">
-  <br />
+  <br /> <br />
   MusicPlayer App
-  <br />
+  <br /><br />
 </h1>
 
 <h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI. </h4>
@@ -27,14 +27,18 @@
 First and foremost, make sure your mobile device and PC are using the same wireless network, 
 otherwise the application will not be able to communicate with the server running on the computer.
 <br /> <br />
-Then, in the root of your project, create 2 folders: 
+Then, in the root of the project, create 2 folders: 
 * ``Songs`` contains all the songs in the app library
 * ``Covers`` contains all the artworks of the songs in the ``Songs`` folder
 
 ### Backend
-The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed using:
+The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed from your terminal using:
 ```
 pip install -r requirements.txt
+```
+
+```python
+print "hello"
 ```
 
 ### Frontend

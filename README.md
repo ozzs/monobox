@@ -25,6 +25,9 @@
 ## Installation
 First and foremost, make sure your mobile device and PC are using the same wireless network, 
 otherwise the application will not be able to communicate with the server running on the computer.
+<br /> <br />
+Then, in the root of your project, create 2 folders: 
+* ``Songs``, which will contain all the songs in the app library
 
 ### Backend
 The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed using:

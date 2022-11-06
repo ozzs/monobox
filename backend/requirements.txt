@@ -1,0 +1,3 @@
+sqlmodel
+eyeD3
+"fastapi[all]"

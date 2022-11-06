@@ -23,12 +23,16 @@
 * No ads
 
 ## Installation
+First and foremost, make sure your mobile device and PC are using the same wireless network, 
+otherwise the application will not be able to communicate with the server running on the computer.
+
 ### Backend
 The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed using:
-
 ```
 pip install -r requirements.txt
 ```
+
+### Frontend
 
 ## How To Use
 

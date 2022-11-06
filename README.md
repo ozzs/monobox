@@ -1,7 +1,8 @@
 <h1 align="center">
   <img src="https://github.com/ozzs/musicPlayer/blob/main/assets/MusicPlayerLogo.png" alt="MusicPlayerLogo" width="200">
-  <br /> <br />
+  <br />
   MusicPlayer App
+  <br />
 </h1>
 
 <h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI. </h4>

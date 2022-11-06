@@ -32,7 +32,7 @@ Then, in the root of the project, create 2 folders:
 * ``Covers`` contains all the artworks of the songs in the ``Songs`` folder
 
 ### Backend Setup
-From the root, navigate to the backend folder. from your command line:
+From the root, you need to navigate to the ``backend`` folder. from your command line:
 ```
 cd backend
 ```
@@ -42,13 +42,15 @@ The `requirements.txt` file lists all the Python libraries that the music player
 pip install -r requirements.txt
 ```
 
-Then, in the ``main.py`` file, you have this block of code, where you need to insert your PC's IP address (notice the comments):
+Then, in the ``main.py`` file, you have this block of code, where you need to insert your PC's IP address (notice the comment):
 ```python
 host_ip = "0.0.0.0" # Change to your device's IP
 host_port = 5000
 music_folder_url = "..\Songs"
 cover_folder_url = "..\Covers"
 ```
+The default port is 5000, but you can also change it if you want the server to listen to a different port, 
+although it is required to change this in the Frontend as well.
 
 ### Frontend Setup
 ```

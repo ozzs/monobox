@@ -36,14 +36,13 @@ From the root, navigate to the backend folder. from your command line:
 ```
 cd backend
 ```
-<br />
+
 The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed from your terminal using:
 ```
 pip install -r requirements.txt
 ```
-<br />
-Then, in the ``main.py`` file, you have this block of code, where you need to insert your PC's IP address (notice the comments):
 
+Then, in the ``main.py`` file, you have this block of code, where you need to insert your PC's IP address (notice the comments):
 ```python
 host_ip = "0.0.0.0" # Change to your device's IP
 host_port = 5000

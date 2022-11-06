@@ -30,8 +30,8 @@ otherwise the application will not be able to communicate with the server runnin
 Then, in the root of the project, create 2 folders: 
 * ``Songs`` contains all the songs in the app library
 * ``Covers`` contains all the artworks of the songs in the ``Songs`` folder
-<br />
 Now you can copy all the songs you want to display in the app into the ``Songs`` folder.
+<br />
 
 ### Backend Setup
 From the root, you need to navigate to the ``backend`` folder. from your terminal:

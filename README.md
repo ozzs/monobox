@@ -4,7 +4,7 @@
   MusicPlayer App
 </h1>
 
-<h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your computer, in a friendly and simple UI. </h4>
+<h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI. </h4>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
@@ -13,13 +13,21 @@
 </p>
 
 ## Key Features
+* Simple & Easy to use music player
+* Listen from your local library
+* Create and customize your own playlists
+* Open Source Code:
+  - Frontend: React-Native with TypeScript and Node.js
+  - Backend: Python with SQLModel and FastAPI
 * Dark / Light themes
-* TypeScript and Node.js Source Code
+* No ads
 
 ## Installation
 
 ## How To Use
 
-## Create a bug report
+### Project resources 
 
-## Submit a feature request
+### Create a bug report
+
+### Submit a feature request

@@ -23,6 +23,12 @@
 * No ads
 
 ## Installation
+### Backend
+The `requirements.txt` file lists all the Python libraries that the music player depends on, and they can be installed using:
+
+```
+pip install -r requirements.txt
+```
 
 ## How To Use
 

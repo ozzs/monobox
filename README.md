@@ -8,6 +8,17 @@
 
 <p align="center">
   [Installation](#installation) •
+  [Installation](#installation) •
 </p>
 
+## Key Features
+* Dark / Light themes
+* TypeScript and Node.js Source Code
+
 ## Installation
+
+## How To Use
+
+## Create a bug report
+
+## Submit a feature request

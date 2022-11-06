@@ -6,8 +6,11 @@
 
 <h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your computer, in a friendly and simple UI. </h4>
 
-[Key Features](#keyfeatures) •
-[Installation](#installation) •
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#how-to-use">How To Use</a> •
+</p>
 
 ## Key Features
 * Dark / Light themes

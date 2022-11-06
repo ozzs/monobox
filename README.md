@@ -26,7 +26,8 @@
 
 ## How To Use
 
-### Project resources 
+### Project resources
+* <a href="https://github.com/ozzs/musicPlayer">Source Code</a>
 
 ### Create a bug report
 

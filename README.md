@@ -1,12 +1,12 @@
 <p align="center">
   <img src="https://github.com/ozzs/musicPlayer/blob/main/assets/MonoBoxLogo.png" alt="MusicPlayerLogo" width="300">
   <br />
+
+  <h4 align="center">A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI.</h4>
+  <br />
 </p>
 
-<h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI. </h4>
-<br />
-
-<p align="center"> 
+<p align="center">
   <img alt="React-Native" src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" />
   <img alt="Javascript" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" />
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
@@ -21,6 +21,8 @@
 - [Installation](#installation)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
+- [How to use](#how-to-use)
+- [Support](#support)
 
 ## Key Features
 * Simple & Easy to use music player
@@ -93,9 +95,18 @@ You are welcome to try the application yourself or continue to the next section 
 
 ## How To Use
 
+## Support
+The product is still in its initial stages, so we would really appreciate feedback and donations 😄 <br />
+And don't forget to star us — it motivates us a lot! :star:
+
 ### Project resources
 * <a href="https://github.com/ozzs/musicPlayer">Source Code</a>
+* <a href="https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com">React-Query</a>
+* <a href="https://sqlmodel.tiangolo.com">SQLModel</a>
+* <a href="https://fastapi.tiangolo.com">FastAPI</a>
+* <a href="https://react-native-track-player.js.org">React Native Track Player</a>
 
-### Create a bug report
-
-### Submit a feature request
+### Create a bug report or submit a feature request
+If you see an error message or run into an issue, or maybe you have an idea, or you're missing a capability that would make development easier and more robust, please [create a bug report or submit feature request](https://github.com/ozzs/monobox/issues/new). <br /> <br />
+If a similar feature request already exists, don't forget to leave a "+1".
+If you add some more information such as your thoughts and vision about the feature, your comments will be embraced warmly 😃

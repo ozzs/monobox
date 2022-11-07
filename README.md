@@ -1,9 +1,10 @@
-<h1 align="center">
+<p align="center">
   <img src="https://github.com/ozzs/musicPlayer/blob/main/assets/MonoBoxLogo.png" alt="MusicPlayerLogo" width="300">
-  <br /><br />
-</h1>
+  <br />
+</p>
 
 <h4 align="center"> A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI. </h4>
+<br />
 
 ## Table of Content
 - [Key Features](#key-features)

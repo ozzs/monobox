@@ -4,12 +4,10 @@ from typing import Dict, List, Optional
 
 import eyed3  # type: ignore
 import uvicorn  # type: ignore
+from database_setup import create_db_and_tables, engine
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi_utils.tasks import repeat_every
-from sqlmodel import Session, select
-
-from database_setup import create_db_and_tables, engine
 from models import (
     Liked,
     Playlist,
@@ -22,11 +20,12 @@ from models import (
     SongReadWithLike,
     SongUpdate,
 )
+from sqlmodel import Session, select
 
 app = FastAPI()
 session = Session(bind=engine)
 
-host_ip = "192.168.1.198"
+host_ip = "192.168.1.120"
 host_port = 5000
 music_folder_url = "..\Songs"
 cover_folder_url = "..\Covers"
@@ -265,7 +264,7 @@ def scan_songs():
 
     all_songs = session.exec(select(Song)).all()
     songs_on_disk = []
-    
+
     for song in os.listdir(music_folder_url):
         if song.endswith(".mp3"):
             joined_path = os.path.join(music_folder_url, song)
@@ -273,33 +272,34 @@ def scan_songs():
 
             db_song = None
             for song in all_songs:
-                if song.title == audiofile.tag.title and song.artist == audiofile.tag.artist:
+                if (
+                    song.title == audiofile.tag.title
+                    and song.artist == audiofile.tag.artist
+                ):
                     db_song = song
                     break
 
             if db_song:
                 songs_on_disk.append(db_song.id)
                 continue
-            
+
             song_title = audiofile.tag.title
             artwork_path = str(os.path.join(cover_folder_url, song_title)) + ".jpg"
             artwork_exists = False
             for image in audiofile.tag.images:
-                image_file = open(
-                    "..\Covers\{}.jpg".format(song_title), "wb"
-                )
+                image_file = open("..\Covers\{}.jpg".format(song_title), "wb")
                 image_file.write(image.image_data)
                 image_file.close()
                 artwork_exists = True
 
             new_song = Song(
-                    url=joined_path,
-                    title=song_title,
-                    artist=audiofile.tag.artist,
-                    artwork=artwork_path if artwork_exists else None,
-                    last_modify=get_last_modify(joined_path),
-                    duration=audiofile.info.time_secs,
-                )
+                url=joined_path,
+                title=song_title,
+                artist=audiofile.tag.artist,
+                artwork=artwork_path if artwork_exists else None,
+                last_modify=get_last_modify(joined_path),
+                duration=audiofile.info.time_secs,
+            )
             session.add(new_song)
             session.commit()
             songs_on_disk.append(new_song.id)

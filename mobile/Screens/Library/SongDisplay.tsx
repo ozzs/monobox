@@ -18,8 +18,6 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Icons imports */
 import { MaterialIcons } from '@expo/vector-icons'
-import { Song } from '../../utils/Song'
-import SongsCarousel from '../SongsCarousel/SongsCarousel'
 
 interface SongDisplayProps {
   song: Track

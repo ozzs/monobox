@@ -27,10 +27,10 @@ First and foremost, make sure your mobile device and PC are using the same wirel
 otherwise the application will not be able to communicate with the server running on the computer.
 <br /> <br />
 Then, in the root of the project, create 2 folders: 
-* ``Songs`` contains all the songs in the app library.
-* ``Covers`` contains all the artworks of the songs in the ``Songs`` folder.
+* ``songs`` contains all the songs in the app library.
+* ``sovers`` contains all the artworks of the songs in the ``songs`` folder.
 
-Now you can copy all the songs you want to display in the app into the ``Songs`` folder.
+Now you can copy all the songs you want to display in the app into the ``songs`` folder.
 
 ### Backend Setup
 From the root, you need to navigate to the ``backend`` folder. from your terminal:
@@ -47,8 +47,8 @@ Then, in the ``main.py`` file, you have this block of code, where you need to in
 ```python
 host_ip = "0.0.0.0" # Change to your PC's IP
 host_port = 5000
-music_folder_url = "..\Songs"
-cover_folder_url = "..\Covers"
+music_folder_url = "..\songs"
+cover_folder_url = "..\covers"
 ```
 The default port is 5000, but you can also change it if you want the server to listen to a different port, 
 although it is required to change this in the Frontend as well.

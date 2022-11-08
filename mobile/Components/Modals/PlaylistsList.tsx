@@ -8,10 +8,8 @@ import {
 } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Theme imports */
-import themeContext from '../../../assets/styles/themeContext'
-
 /* utils imports */
+import themeContext from '../../../assets/styles/themeContext'
 import { windowHeight, windowWidth } from '../../utils/Dimensions'
 
 /* Music Player imports */

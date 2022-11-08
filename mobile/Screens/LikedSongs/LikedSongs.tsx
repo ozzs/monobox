@@ -12,28 +12,26 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
-/* Theme imports */
-import themeContext from '../../../assets/styles/themeContext'
-
 /* Navigation imports */
 import { RootStackParamList } from '../../../App'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { DrawerActions } from '@react-navigation/native'
 
 /* utils imports */
+import themeContext from '../../../assets/styles/themeContext'
 import playlistContext from '../../utils/PlaylistIDContext'
+import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Components imports */
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 
 /* Icons imports */
-import { AntDesign, FontAwesome } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 
 /* Music Player imports */
 import trackContext from '../../utils/CurrentSongContext'
-import { DrawerActions } from '@react-navigation/native'
 import { useSongsData } from '../../hooks/HooksAPI'
-import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 type LikedSongsProps = NativeStackScreenProps<RootStackParamList, 'Homescreen'>
 

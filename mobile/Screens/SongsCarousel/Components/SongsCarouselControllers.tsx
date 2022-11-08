@@ -5,7 +5,7 @@ import React, { FC, useContext } from 'react'
 /* Icons imports */
 import { AntDesign, Feather } from '@expo/vector-icons'
 
-/* Theme imports */
+/* utils imports */
 import themeContext from '../../../../assets/styles/themeContext'
 
 /* Music Player imports */

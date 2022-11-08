@@ -1,3 +1,4 @@
+/* Music Player imports */
 import TrackPlayer, { Capability, RatingType } from 'react-native-track-player'
 
 export async function setupPlayer() {

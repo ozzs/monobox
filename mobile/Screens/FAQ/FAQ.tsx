@@ -1,3 +1,4 @@
+/* React / React-Native imports */
 import {
   View,
   Text,
@@ -9,10 +10,18 @@ import {
   Linking,
 } from 'react-native'
 import React, { useContext, useState } from 'react'
-import Accordion from 'react-native-collapsible/Accordion'
-import themeContext from '../../../assets/styles/themeContext'
-import { FontAwesome } from '@expo/vector-icons'
+
+/* Navigation imports */
 import { DrawerActions, useNavigation } from '@react-navigation/native'
+
+/* Components imports */
+import Accordion from 'react-native-collapsible/Accordion'
+
+/* utils imports */
+import themeContext from '../../../assets/styles/themeContext'
+
+/* Icons imports*/
+import { FontAwesome } from '@expo/vector-icons'
 
 const SECTIONS = [
   {

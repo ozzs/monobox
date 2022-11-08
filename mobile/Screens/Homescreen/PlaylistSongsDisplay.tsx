@@ -9,9 +9,6 @@ import {
 } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Theme imports */
-import themeContext from '../../../assets/styles/themeContext'
-
 /* Navigation imports */
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
@@ -19,11 +16,12 @@ import { useNavigation } from '@react-navigation/native'
 
 /* utils imports */
 import { Playlist } from '../../utils/Song'
-import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
+import themeContext from '../../../assets/styles/themeContext'
 
 /* Components imports */
 import SongDetails from '../../Components/General/SongDetails'
-import SongsCarousel from '../SongsCarousel/SongsCarousel'
+
+/* Music Player imports */
 import {
   useDeletePlaylist,
   useRemoveSongFromPlaylist,

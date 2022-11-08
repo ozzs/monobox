@@ -2,7 +2,7 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Theme imports */
+/* utils imports */
 import themeContext from '../../../../assets/styles/themeContext'
 
 /* Music Player imports */

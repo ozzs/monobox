@@ -1,23 +1,30 @@
+/* React / React-Native imports */
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
+
+/* Navigation imports */
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../App'
+
+/* Icons imports */
+import { Feather, AntDesign } from '@expo/vector-icons'
+
+/* Components imports */
 import Slider from '@react-native-community/slider'
 
-import { Feather, AntDesign } from '@expo/vector-icons'
+/* utils imports */
 import themeContext from '../../../assets/styles/themeContext'
-import {
-  useCurrentQueue,
-  useOnTogglePlayback,
-} from '../../MusicPlayerServices/MusicPlayerHooks'
+import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
+
+/* Music Player imports */
+import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   State,
   Track,
   usePlaybackState,
   useProgress,
 } from 'react-native-track-player'
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../App'
-import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 interface TrackInfoProps {
   track: Track
@@ -68,7 +75,9 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, currentPlaylist }) => {
         >
           <Image
             source={{
-              uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${track?.id}/artwork`,
+              uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${
+                track?.id
+              }/artwork/${new Date().getHours}`,
             }}
             style={styles.currentSongImage}
           />

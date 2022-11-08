@@ -1,6 +1,9 @@
+/* React Query imports */
 import axios from 'axios'
-import { Track } from 'react-native-track-player'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+
+/* Music Player imports */
+import { Track } from 'react-native-track-player'
 
 /* utils imports */
 import { BASE_API_PORT, BASE_API_URL } from '../utils/BaseAPI'

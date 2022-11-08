@@ -1,7 +1,7 @@
 /* Music Player imports */
 import TrackPlayer, { RepeatMode, Track } from 'react-native-track-player'
 
-/* Function: Gets current track's duration */
+// Function: Gets current track's duration
 export const getCurrentTrackDuration = (
   currentTrack: Track | undefined,
 ): number => {
@@ -12,7 +12,7 @@ export const getCurrentTrackDuration = (
   return 0
 }
 
-/* Function: Changes repeat icon according to user's choice */
+// Function: Changes repeat icon according to user's choice
 export const repeatIcon = (repeatMode: string) => {
   if (repeatMode === 'off') {
     return 'repeat-off'
@@ -25,7 +25,7 @@ export const repeatIcon = (repeatMode: string) => {
   }
 }
 
-/* Function: sets repeat mode */
+// Function: sets repeat mode
 export const changeRepeatMode = (
   repeatMode: string,
   setRepeatMode: (str: string) => void,

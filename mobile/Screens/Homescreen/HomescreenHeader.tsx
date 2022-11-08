@@ -5,7 +5,7 @@ import React, { FC, useContext } from 'react'
 /* Navigation imports */
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 
-/* Theme imports */
+/* utils imports */
 import themeContext from '../../../assets/styles/themeContext'
 
 /* Icons imports */

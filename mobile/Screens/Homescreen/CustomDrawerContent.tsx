@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import React, { useState, useContext } from 'react'
 
-/* Theme imports */
+/* utils imports */
 import themeContext from '../../../assets/styles/themeContext'
 
 /* Navigation imports */

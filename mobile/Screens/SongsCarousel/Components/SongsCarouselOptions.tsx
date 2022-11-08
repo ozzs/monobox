@@ -2,7 +2,7 @@
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Theme imports*/
+/* utils imports*/
 import themeContext from '../../../../assets/styles/themeContext'
 
 /* Icons imports */

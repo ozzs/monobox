@@ -2,9 +2,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Theme imports*/
-import themeContext from '../../../assets/styles/themeContext'
-
 /* Navigation imports */
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -14,6 +11,7 @@ import { RootStackParamList } from '../../../App'
 import { Track } from 'react-native-track-player'
 
 /* utils imports */
+import themeContext from '../../../assets/styles/themeContext'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Icons imports */
@@ -24,6 +22,7 @@ interface SongDisplayProps {
   songs: Track[]
   setModalOpen: (bool: boolean) => void
   setChosenSongID: (song_id: number) => void
+  setCurrentPlaylist: (playlist: Track[]) => void
 }
 
 const SongDisplay: FC<SongDisplayProps> = ({
@@ -31,6 +30,7 @@ const SongDisplay: FC<SongDisplayProps> = ({
   songs,
   setModalOpen,
   setChosenSongID,
+  setCurrentPlaylist,
 }) => {
   const theme = useContext(themeContext)
   const navigation =
@@ -46,11 +46,14 @@ const SongDisplay: FC<SongDisplayProps> = ({
               playlist: songs,
               song_id: song.id,
             })
+            setCurrentPlaylist(songs)
           }}
         >
           <Image
             source={{
-              uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${song.id}/artwork`,
+              uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${
+                song.id
+              }/artwork/${new Date().getHours}`,
             }}
             style={styles.songArtwork}
           />

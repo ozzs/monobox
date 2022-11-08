@@ -1,8 +1,15 @@
+/* React / React-Native imports */
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useContext } from 'react'
-import { AntDesign } from '@expo/vector-icons'
-import themeContext from '../../../../assets/styles/themeContext'
+
+/* Navigation imports */
 import { useNavigation } from '@react-navigation/native'
+
+/* utils imports */
+import themeContext from '../../../../assets/styles/themeContext'
+
+/* Icons imports*/
+import { AntDesign } from '@expo/vector-icons'
 
 const SongsCarouselHeader = () => {
   const theme = useContext(themeContext)

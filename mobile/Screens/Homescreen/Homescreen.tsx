@@ -11,10 +11,8 @@ import {
 } from 'react-native'
 import React, { useContext, useState } from 'react'
 
-/* Theme imports */
-import themeContext from '../../../assets/styles/themeContext'
-
 /* utils imports */
+import themeContext from '../../../assets/styles/themeContext'
 import trackContext from '../../utils/CurrentSongContext'
 import playlistContext from '../../utils/PlaylistIDContext'
 
@@ -26,7 +24,6 @@ import HomescreenHeader from './HomescreenHeader'
 
 /* Music Player imports */
 import { usePlaylistsData } from '../../hooks/HooksAPI'
-import { useCurrentQueue } from '../../MusicPlayerServices/MusicPlayerHooks'
 
 const Homescreen = () => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -58,7 +55,7 @@ const Homescreen = () => {
             visible={modalOpen}
             onRequestClose={() => setModalOpen(false)}
           >
-            <AddPlaylist setModalOpen={setModalOpen} playlists={playlists} />
+            <AddPlaylist setModalOpen={setModalOpen} />
           </Modal>
           {/* Header */}
           <HomescreenHeader setModalOpen={setModalOpen} />

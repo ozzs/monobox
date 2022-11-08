@@ -11,7 +11,14 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 /* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
@@ -42,7 +49,6 @@ import SongsCarouselHeader from './Components/SongsCarouselHeader'
 import SongsCarouselSlider from './Components/SongsCarouselSlider'
 import SongsCarouselOptions from './Components/SongsCarouselOptions'
 import SongsCarouselControllers from './Components/SongsCarouselControllers'
-import playlistContext from '../../utils/PlaylistIDContext'
 
 type SongsCarouselProps = NativeStackScreenProps<
   RootStackParamList,
@@ -139,7 +145,9 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
       <View style={styles.carouselImageContainer}>
         <Image
           source={{
-            uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${trackArtwork}/artwork`,
+            uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${trackArtwork}/artwork/${
+              new Date().getHours
+            }`,
           }}
           style={styles.carouselImage}
         />
@@ -165,6 +173,7 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
             ref={carouselRef}
             data={playlist}
             renderItem={renderSong}
+            keyExtractor={(item) => item.id}
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}

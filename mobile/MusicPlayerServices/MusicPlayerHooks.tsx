@@ -44,23 +44,6 @@ export const useCurrentTrack = (): Track | undefined => {
   return track
 }
 
-export const useCurrentQueue = () => {
-  const [queueList, setQueueList] = useState<Track[]>()
-  const [isLoading, setIsLoading] = useState(true)
-
-  const getCurrentQueue = async () => {
-    const queue = await TrackPlayer.getQueue()
-    setQueueList(queue)
-    setIsLoading(false)
-  }
-
-  useEffect(() => {
-    getCurrentQueue()
-  }, [])
-
-  return queueList
-}
-
 export const useSetupTracks = (
   playlist: Track[] | undefined,
   song_id: number | undefined,

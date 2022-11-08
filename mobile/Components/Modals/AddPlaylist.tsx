@@ -1,23 +1,26 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+/* React / React-Native imports */
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native'
 import React, { FC, useContext, useState } from 'react'
+
+/* utils imports*/
 import { windowWidth } from '../../utils/Dimensions'
 import themeContext from '../../../assets/styles/themeContext'
-import { TextInput } from 'react-native-gesture-handler'
-import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
-import { Playlist } from '../../utils/Song'
+
+/* Music Player imports */
 import { useAddPlaylist } from '../../hooks/HooksAPI'
 
 interface addPlaylistProps {
   setModalOpen: (bool: boolean) => void
-  playlists: Playlist[]
-  // setPlaylists: (
-  //   playlists: Playlist[] | ((prevPlaylists: Playlist[]) => Playlist[]),
-  // ) => void
 }
 
 const AddPlaylist: FC<addPlaylistProps> = ({
   setModalOpen,
-  playlists,
   // setPlaylists,
 }) => {
   const theme = useContext(themeContext)

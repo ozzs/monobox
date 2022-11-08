@@ -12,20 +12,19 @@ import {
 } from 'react-native'
 import React, { useContext, useState } from 'react'
 
-/* Theme imports */
-import themeContext from '../../../assets/styles/themeContext'
-
 /* Navigation imports */
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
 /* utils imports */
+import themeContext from '../../../assets/styles/themeContext'
 import playlistContext from '../../utils/PlaylistIDContext'
 import trackContext from '../../utils/CurrentSongContext'
+import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 /* Icons imports */
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 
 /* Components imports */
 import CurrentSong from '../../Components/General/CurrentSong'
@@ -34,7 +33,6 @@ import PlaylistsList from '../../Components/Modals/PlaylistsList'
 
 /* Music Player imports */
 import { useSongsData } from '../../hooks/HooksAPI'
-import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
 const Library = () => {
   const theme = useContext(themeContext)
@@ -102,6 +100,7 @@ const Library = () => {
                   songs={songs}
                   setModalOpen={setModalOpen}
                   setChosenSongID={setChosenSongID}
+                  setCurrentPlaylist={setCurrentPlaylist}
                 />
               )}
             />

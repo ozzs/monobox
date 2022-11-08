@@ -36,7 +36,7 @@ def get_last_modify(path: str) -> str:
     return path_str
 
 
-@app.get("/songs/{song_id}/artwork")
+@app.get("/songs/{song_id}/artwork/{random_string}", response_class=FileResponse)
 async def download_artwork(song_id: int) -> FileResponse:
     path = "../assets/defaultArtwork.png"
     song = session.get(Song, song_id)
@@ -49,7 +49,7 @@ async def download_artwork(song_id: int) -> FileResponse:
     return FileResponse(song.artwork)
 
 
-@app.get("/songs/{song_id}/stream")
+@app.get("/songs/{song_id}/stream", response_class=StreamingResponse)
 async def stream_song(song_id: int) -> StreamingResponse:
     song = session.get(Song, song_id)
     if not song:
@@ -84,7 +84,7 @@ async def like(song_id: int) -> dict:
     return {"Liked song with id: ": song_id}
 
 
-@app.delete("/songs/{song_id}/unlike")
+@app.delete("/songs/{song_id}/unlike", response_model=Dict)
 async def unlike(song_id: int) -> dict:
     likedStmt = select(Liked).where(Liked.song_id == song_id)
     songplaylistlinkStmt = select(SongPlaylistLink).where(
@@ -141,7 +141,7 @@ async def delete_playlist(playlist_id: int) -> dict:
 
 
 @app.get("/songs/{playlist_id}/fetch", response_model=List[SongReadWithLike])
-async def get_playlist(playlist_id: int):
+async def get_playlist(playlist_id: int) -> List[Song]:
     playlist = session.get(Playlist, playlist_id)
     if not playlist:
         raise HTTPException(
@@ -187,22 +187,22 @@ async def delete_song_from_playlist(song_id: int, playlist_id: int) -> dict:
 
 
 @app.get("/songs/playlists", response_model=List[PlaylistReadWithSongs])
-async def get_all_playlist():
+async def get_all_playlist() -> List[Playlist]:
     return session.exec(select(Playlist)).all()
 
 
 @app.get("/songs", response_model=List[SongReadWithLike])
-async def get_all_songs():
+async def get_all_songs() -> List[Song]:
     return session.exec(select(Song)).all()
 
 
 @app.get("/songs/liked", response_model=List[PlaylistReadWithSongs])
-async def get_liked_songs():
+async def get_liked_songs() -> List[Playlist]:
     return session.exec(select(Playlist).where(Playlist.id == 1)).all()
 
 
 @app.get("/songs/{song_id}", response_model=SongRead)
-async def get_song(song_id: int) -> Optional[Song]:
+async def get_song(song_id: int) -> Song:
     song = session.get(Song, song_id)
     if not song:
         raise HTTPException(
@@ -212,7 +212,7 @@ async def get_song(song_id: int) -> Optional[Song]:
 
 
 @app.post("/songs", response_model=SongRead, status_code=status.HTTP_201_CREATED)
-async def create_song(song: SongBase):
+async def create_song(song: SongBase) -> Song:
     new_song = Song.from_orm(song)
     session.add(new_song)
     session.commit()
@@ -220,7 +220,7 @@ async def create_song(song: SongBase):
 
 
 @app.patch("/songs/{song_id}", response_model=Song)
-async def update_song(song_id: int, song: SongUpdate) -> Optional[Song]:
+async def update_song(song_id: int, song: SongUpdate) -> Song:
     db_song = session.get(Song, song_id)
     if not db_song:
         raise HTTPException(
@@ -236,7 +236,7 @@ async def update_song(song_id: int, song: SongUpdate) -> Optional[Song]:
 
 
 @app.delete("/songs/{song_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_song(song_id: int) -> Optional[Song]:
+async def delete_song(song_id: int) -> Song:
     song = session.get(Song, song_id)
     if not song:
         raise HTTPException(
@@ -259,7 +259,7 @@ def create_initial_playlists():
 
 
 @app.on_event("startup")
-# @repeat_every(seconds=30)
+@repeat_every(seconds=30)
 def scan_songs():
 
     all_songs = session.exec(select(Song)).all()
@@ -298,7 +298,6 @@ def scan_songs():
                 duration=audiofile.info.time_secs,
             )
             session.add(new_song)
-            print(new_song.title + "Added to DB!")
             session.commit()
             songs_on_disk.append(new_song.id)
 

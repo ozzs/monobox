@@ -13,5 +13,5 @@ web-build/
 # macOS
 .DS_Store
 
-Songs/
-Covers/
+songs/
+covers/

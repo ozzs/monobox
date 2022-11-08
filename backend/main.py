@@ -27,8 +27,8 @@ session = Session(bind=engine)
 
 host_ip = "192.168.1.120"
 host_port = 5000
-music_folder_url = "..\Songs"
-cover_folder_url = "..\Covers"
+music_folder_url = "..\songs"
+cover_folder_url = "..\covers"
 
 
 def get_last_modify(path: str) -> str:
@@ -259,7 +259,7 @@ def create_initial_playlists():
 
 
 @app.on_event("startup")
-@repeat_every(seconds=30)
+# @repeat_every(seconds=30)
 def scan_songs():
 
     all_songs = session.exec(select(Song)).all()
@@ -271,12 +271,9 @@ def scan_songs():
             audiofile = eyed3.load(joined_path)
 
             db_song = None
-            for song in all_songs:
-                if (
-                    song.title == audiofile.tag.title
-                    and song.artist == audiofile.tag.artist
-                ):
-                    db_song = song
+            for s in all_songs:
+                if s.title == audiofile.tag.title and s.artist == audiofile.tag.artist:
+                    db_song = s
                     break
 
             if db_song:
@@ -287,7 +284,7 @@ def scan_songs():
             artwork_path = str(os.path.join(cover_folder_url, song_title)) + ".jpg"
             artwork_exists = False
             for image in audiofile.tag.images:
-                image_file = open("..\Covers\{}.jpg".format(song_title), "wb")
+                image_file = open("..\covers\{}.jpg".format(song_title), "wb")
                 image_file.write(image.image_data)
                 image_file.close()
                 artwork_exists = True
@@ -301,6 +298,7 @@ def scan_songs():
                 duration=audiofile.info.time_secs,
             )
             session.add(new_song)
+            print(new_song.title + "Added to DB!")
             session.commit()
             songs_on_disk.append(new_song.id)
 

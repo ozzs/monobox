@@ -21,7 +21,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
 /* utils imports */
-import playlistIDContext from '../../utils/PlaylistIDContext'
+import playlistContext from '../../utils/PlaylistIDContext'
 import trackContext from '../../utils/CurrentSongContext'
 
 /* Icons imports */
@@ -39,7 +39,7 @@ import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 const Library = () => {
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
-  const { playlistId, setPlaylistId } = useContext(playlistIDContext)
+  const { currentPlaylist, setCurrentPlaylist } = useContext(playlistContext)
   const [modalOpen, setModalOpen] = useState(false)
   const [chosenSongID, setChosenSongID] = useState(0)
 
@@ -116,7 +116,7 @@ const Library = () => {
             { backgroundColor: theme.background },
           ]}
         >
-          <CurrentSong track={currentTrack} playlistID={playlistId} />
+          <CurrentSong track={currentTrack} currentPlaylist={currentPlaylist} />
         </View>
       )}
     </View>

@@ -44,8 +44,25 @@ export const useCurrentTrack = (): Track | undefined => {
   return track
 }
 
+export const useCurrentQueue = () => {
+  const [queueList, setQueueList] = useState<Track[]>()
+  const [isLoading, setIsLoading] = useState(true)
+
+  const getCurrentQueue = async () => {
+    const queue = await TrackPlayer.getQueue()
+    setQueueList(queue)
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    getCurrentQueue()
+  }, [])
+
+  return queueList
+}
+
 export const useSetupTracks = (
-  playlist: Track[],
+  playlist: Track[] | undefined,
   song_id: number | undefined,
 ) => {
   const [isLoading, setIsLoading] = useState(true)
@@ -54,18 +71,20 @@ export const useSetupTracks = (
   const setupTracks = async () => {
     await TrackPlayer.reset()
     const tracks: Track[] = []
-    playlist.map((item) => {
-      const track: Track = {
-        id: item.id,
-        url: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${item.id}/stream`,
-        title: item.title,
-        artist: item.artist,
-        artwork: item.artwork,
-        rating: item.liked_bool ? true : false,
-        duration: item.duration,
-      }
-      tracks.push(track)
-    })
+    playlist !== undefined
+      ? playlist.map((item) => {
+          const track: Track = {
+            id: item.id,
+            url: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${item.id}/stream`,
+            title: item.title,
+            artist: item.artist,
+            artwork: item.artwork,
+            rating: item.liked_bool ? true : false,
+            duration: item.duration,
+          }
+          tracks.push(track)
+        })
+      : null
     await TrackPlayer.add(tracks)
 
     const index = tracks.findIndex((track) => track.id === song_id)

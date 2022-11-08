@@ -13,7 +13,7 @@ import themeContext from './assets/styles/themeContext'
 
 /* utils imports */
 import trackContext from './mobile/utils/CurrentSongContext'
-import playlistIDContext from './mobile/utils/PlaylistIDContext'
+import playlistContextInterface from './mobile/utils/PlaylistIDContext'
 
 /* Music Player imports */
 import { setupPlayer } from './mobile/MusicPlayerServices/SetupService'
@@ -45,7 +45,7 @@ export type RootStackParamList = {
   Library: undefined
   LikedSongs: undefined
   FAQ: undefined
-  SongsCarousel: { playlist: Track[]; song_id: number }
+  SongsCarousel: { playlist: Track[]; song_id: number } | undefined
   CustomDrawerContent: undefined
 }
 
@@ -54,7 +54,7 @@ const Drawer = createDrawerNavigator<RootStackParamList>()
 export default function App() {
   const [mode, setMode] = useState(true)
 
-  const [playlistId, setPlaylistId] = useState(0)
+  const [currentPlaylist, setCurrentPlaylist] = useState({} as Track[])
   const currentTrack = useCurrentTrack()
 
   useEffect(() => {
@@ -78,7 +78,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <themeContext.Provider value={mode === true ? theme.dark : theme.light}>
-        <playlistIDContext.Provider value={{ playlistId, setPlaylistId }}>
+        <playlistContextInterface.Provider
+          value={{ currentPlaylist, setCurrentPlaylist }}
+        >
           <trackContext.Provider value={currentTrack}>
             <NavigationContainer>
               <Drawer.Navigator
@@ -113,7 +115,7 @@ export default function App() {
               </Drawer.Navigator>
             </NavigationContainer>
           </trackContext.Provider>
-        </playlistIDContext.Provider>
+        </playlistContextInterface.Provider>
       </themeContext.Provider>
     </QueryClientProvider>
   )

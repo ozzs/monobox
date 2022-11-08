@@ -28,15 +28,16 @@ import {
   useDeletePlaylist,
   useRemoveSongFromPlaylist,
 } from '../../hooks/HooksAPI'
+import { Track } from 'react-native-track-player'
 
 interface PlaylistSongsProps {
   playlist: Playlist
-  setPlaylistId: (num: number) => void
+  setCurrentPlaylist: (playlist: Track[]) => void
 }
 
 const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
   playlist,
-  setPlaylistId,
+  setCurrentPlaylist,
 }) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>()
@@ -69,7 +70,7 @@ const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
                     playlist: playlist.songs,
                     song_id: item.id,
                   })
-                  setPlaylistId(playlist.id)
+                  setCurrentPlaylist(playlist.songs)
                 }}
                 onLongPress={() =>
                   removeSong({ playlist_id: playlist.id, song_id: item.id })

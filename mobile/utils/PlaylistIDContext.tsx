@@ -1,10 +1,11 @@
 import { createContext } from 'react'
+import { Track } from 'react-native-track-player'
 
-interface playlistIDContextInterface {
-  playlistId: number | undefined
-  setPlaylistId: (playlistId: number) => void
+interface playlistContextInterface {
+  currentPlaylist: Track[]
+  setCurrentPlaylist: (playlist: Track[]) => void
 }
 
-const playlistIDContext = createContext({} as playlistIDContextInterface)
+const playlistContext = createContext({} as playlistContextInterface)
 
-export default playlistIDContext
+export default playlistContext

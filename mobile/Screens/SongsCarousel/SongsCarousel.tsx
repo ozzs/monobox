@@ -11,7 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 /* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'
@@ -31,6 +31,8 @@ import {
 } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   Event,
+  State,
+  usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player'
@@ -40,6 +42,7 @@ import SongsCarouselHeader from './Components/SongsCarouselHeader'
 import SongsCarouselSlider from './Components/SongsCarouselSlider'
 import SongsCarouselOptions from './Components/SongsCarouselOptions'
 import SongsCarouselControllers from './Components/SongsCarouselControllers'
+import playlistContext from '../../utils/PlaylistIDContext'
 
 type SongsCarouselProps = NativeStackScreenProps<
   RootStackParamList,
@@ -47,8 +50,8 @@ type SongsCarouselProps = NativeStackScreenProps<
 >
 
 const SongsCarousel = ({ route }: SongsCarouselProps) => {
-  const song_id = route.params.song_id
-  const playlist = route.params.playlist
+  const song_id = route.params?.song_id
+  const playlist = route.params?.playlist
 
   /* General use variables */
   const theme = useContext(themeContext)
@@ -60,6 +63,7 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
   /* Carousel variables initialization */
   const carouselRef = useRef<FlatList>(null)
   const scrollX = useRef(new ReactAnimated.Value(0)).current
+  const [update, setUpdate] = useState(true)
   const [songIndex, setSongIndex] = useState(0)
   const [repeatMode, setRepeatMode] = useState('off')
   const [trackTitle, setTrackTitle] = useState<string>()

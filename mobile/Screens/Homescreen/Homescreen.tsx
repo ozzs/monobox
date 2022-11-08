@@ -16,7 +16,7 @@ import themeContext from '../../../assets/styles/themeContext'
 
 /* utils imports */
 import trackContext from '../../utils/CurrentSongContext'
-import playlistIDContext from '../../utils/PlaylistIDContext'
+import playlistContext from '../../utils/PlaylistIDContext'
 
 /* Components imports */
 import CurrentSong from '../../Components/General/CurrentSong'
@@ -26,12 +26,13 @@ import HomescreenHeader from './HomescreenHeader'
 
 /* Music Player imports */
 import { usePlaylistsData } from '../../hooks/HooksAPI'
+import { useCurrentQueue } from '../../MusicPlayerServices/MusicPlayerHooks'
 
 const Homescreen = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const theme = useContext(themeContext)
   const currentTrack = useContext(trackContext)
-  const { playlistId, setPlaylistId } = useContext(playlistIDContext)
+  const { currentPlaylist, setCurrentPlaylist } = useContext(playlistContext)
 
   const {
     data: playlists,
@@ -75,7 +76,7 @@ const Homescreen = () => {
                 <PlaylistSongsDisplay
                   key={item.id}
                   playlist={item}
-                  setPlaylistId={setPlaylistId}
+                  setCurrentPlaylist={setCurrentPlaylist}
                 />
               )}
             />
@@ -91,7 +92,7 @@ const Homescreen = () => {
             { backgroundColor: theme.background },
           ]}
         >
-          <CurrentSong track={currentTrack} playlistID={playlistId} />
+          <CurrentSong track={currentTrack} currentPlaylist={currentPlaylist} />
         </View>
       )}
     </View>

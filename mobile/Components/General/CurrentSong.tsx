@@ -4,7 +4,10 @@ import Slider from '@react-native-community/slider'
 
 import { Feather, AntDesign } from '@expo/vector-icons'
 import themeContext from '../../../assets/styles/themeContext'
-import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerHooks'
+import {
+  useCurrentQueue,
+  useOnTogglePlayback,
+} from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   State,
   Track,
@@ -17,8 +20,8 @@ import { RootStackParamList } from '../../../App'
 import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
 interface TrackInfoProps {
-  track?: Track
-  playlistID?: number
+  track: Track
+  currentPlaylist: Track[]
 }
 
 type CurrentSongProps = NativeStackNavigationProp<
@@ -26,7 +29,7 @@ type CurrentSongProps = NativeStackNavigationProp<
   'Homescreen'
 >
 
-const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
+const CurrentSong: FC<TrackInfoProps> = ({ track, currentPlaylist }) => {
   const theme = useContext(themeContext)
   const navigation = useNavigation<CurrentSongProps>()
 
@@ -58,8 +61,8 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, playlistID }) => {
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('SongsCarousel', {
-              playlist_id: playlistID,
-              song_id: 0,
+              playlist: currentPlaylist,
+              song_id: track.id,
             })
           }
         >

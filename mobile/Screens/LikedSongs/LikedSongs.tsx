@@ -20,7 +20,7 @@ import { RootStackParamList } from '../../../App'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 /* utils imports */
-import playlistIDContext from '../../utils/PlaylistIDContext'
+import playlistContext from '../../utils/PlaylistIDContext'
 
 /* Components imports */
 import SongDetails from '../../Components/General/SongDetails'
@@ -49,7 +49,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
   if (isError) return <Text>An error has occurred: {error}</Text>
 
   const theme = useContext(themeContext)
-  const { playlistId, setPlaylistId } = useContext(playlistIDContext)
+  const { currentPlaylist, setCurrentPlaylist } = useContext(playlistContext)
   const currentTrack = useContext(trackContext)
 
   return (
@@ -90,7 +90,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
                         song_id: item.id,
                         playlist: songs,
                       })
-                      setPlaylistId(1)
+                      setCurrentPlaylist(songs)
                     }}
                   >
                     <SongDetails
@@ -117,7 +117,10 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
                 { backgroundColor: theme.background },
               ]}
             >
-              <CurrentSong track={currentTrack} playlistID={playlistId} />
+              <CurrentSong
+                track={currentTrack}
+                currentPlaylist={currentPlaylist}
+              />
             </View>
           )}
         </View>

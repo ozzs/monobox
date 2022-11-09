@@ -23,7 +23,7 @@
 - [Installation](#installation)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
-- [How to use](#how-to-use)
+- [How To Use](#how-to-use)
 - [Support](#support)
 
 ## Overview
@@ -46,7 +46,7 @@ Users will be able to run their own servers with their own songs. The server its
   - _SQLModel -_ A library for interacting with SQL databases from Python code, with Python objects
   - _pre-commit_, _black_, _mypy_ and _isort_ are integrated to make sure the code looks good and clean
 * **Database** :page_facing_up:
-  - SQLite
+  - _SQLite_
 
 ## Key Features
 * Simple & Easy to use music player
@@ -116,6 +116,13 @@ Now you're all set!
 You are welcome to try the application yourself or continue to the next section to learn about its features and how to use it.
 
 ## How To Use
+Upon initializtion, in your _Homescreen_, you'll notice you have a playlist called _Liked Songs_ which does not contain any songs at the moment. Don't worry, we'll get to that later. :leftwards_arrow_with_hook: <br />
+On the top right corner you'll also notice a :heavy_plus_sign: sign button, with which you can create a new playlist and give it a name! <br /> <br />
+***INSERT Homescreen GIF, create 2 new playlists***
+
+If you followed the instructions on the [Installation section](#installation) and copied all the songs to the designated folder, you should be able to see all of them on your _Library_ screen. :books: <br />
+In order to add a song to a playlist, press the button that appears to the right of each song, and choose one of your playlists. Pretty easy so far, right? :v: <br /> <br />
+***INSERT Homescreen GIF, move to Library screen, add 2 songs to each new playlist and move back to Homescreen***
 
 ## Support
 The product is still in its initial stages, so we would really appreciate feedback and donations 😄 <br />

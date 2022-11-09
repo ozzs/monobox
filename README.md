@@ -125,8 +125,10 @@ You are welcome to try the application yourself or continue to the next section 
 ### Create Playlist
 Upon initializtion, in your _Homescreen_, you'll notice you have a playlist called _Liked Songs_ which does not contain any songs at the moment. Don't worry, we'll get to that later. :leftwards_arrow_with_hook: <br />
 On the top right corner you'll also notice a :heavy_plus_sign: sign button, with which you can create a new playlist and give it a name! 
-<br />
-***INSERT: Homescreen GIF, create 2 new playlists***
+<br /> <br />
+<p align="center">
+  <img alt="create-playlists" src="https://github.com/ozzs/monobox/blob/main/assets/media/CreatePlaylists.gif" height="500"/>
+</p>
 
 ### Add Songs To Playlist
 If you followed the instructions on the [Installation section](#installation) and copied all the songs to the designated folder, you should be able to see all of them on your _Library_ screen. :books: <br />

@@ -12,10 +12,8 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import React, {
-  useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -38,8 +36,6 @@ import {
 } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   Event,
-  State,
-  usePlaybackState,
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player'

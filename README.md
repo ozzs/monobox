@@ -17,6 +17,8 @@
 </p>
 
 ## Table of Content
+- [Overview](#overview)
+  - [Technologies and Libraries](#technologies-and-libraries)
 - [Key Features](#key-features)
 - [Installation](#installation)
   - [Backend Setup](#backend-setup)
@@ -24,13 +26,33 @@
 - [How to use](#how-to-use)
 - [Support](#support)
 
+## Overview
+MonoBox is a free music application designed to be easy to operate, intuitive to the user and has fast performance. <br />
+Its main purpose is to play the music files you have on your computer, and to allow you to create and customize playlists according to your personal taste. <br />
+
+MonoBox is a self-hosted fullstack application built using the latest and most sought-after technologies and libraries on the market. <br />
+Users will be able to run their own servers with their own songs. The server itself is implemented in **Python** and the mobile application in **React-Native**. <br />
+
+### Technologies and Libraries
+#### Frontend
+* **React-Native** :iphone:
+  - _Javascript & Typescript_
+  - Code formatted with _Prettier_ :ribbon:
+  - _React Native Track Player -_ An audio module for music apps :musical_note:
+  - _React Query -_ A powerful library containing hooks for fetching, caching and updating asynchronous data
+#### Backend
+* **Python** :snake:
+  - _FastAPI -_ A modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints 
+  - _SQLModel -_ A library for interacting with SQL databases from Python code, with Python objects
+  - _pre-commit_, _black_, _mypy_ and _isort_ are integrated to make sure the code looks good and clean
+* **Database** :page_facing_up:
+  - SQLite
+
 ## Key Features
 * Simple & Easy to use music player
 * Listen from your local library
 * Create and customize your own playlists
-* Open Source Code:
-  - Frontend: React-Native with TypeScript and Node.js
-  - Backend: Python with SQLModel and FastAPI
+* Open-Source code
 * Dark / Light themes
 * No ads
 

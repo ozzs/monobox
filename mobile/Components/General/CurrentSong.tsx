@@ -77,7 +77,7 @@ const CurrentSong: FC<TrackInfoProps> = ({ track, currentPlaylist }) => {
             source={{
               uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${
                 track?.id
-              }/artwork/${new Date().getHours}`,
+              }/artwork/${new Date().getMilliseconds}`,
             }}
             style={styles.currentSongImage}
           />

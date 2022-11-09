@@ -146,7 +146,7 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
         <Image
           source={{
             uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${trackArtwork}/artwork/${
-              new Date().getHours
+              new Date().getMilliseconds
             }`,
           }}
           style={styles.carouselImage}

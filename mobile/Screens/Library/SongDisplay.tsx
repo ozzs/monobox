@@ -53,7 +53,7 @@ const SongDisplay: FC<SongDisplayProps> = ({
             source={{
               uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${
                 song.id
-              }/artwork/${new Date().getHours}`,
+              }/artwork/${new Date().getMilliseconds}`,
             }}
             style={styles.songArtwork}
           />

@@ -29,7 +29,7 @@ const SongsDetails: FC<DetailsProps> = ({ song, imageSize, fontSize }) => {
         source={{
           uri: `http://${BASE_API_URL}:${BASE_API_PORT}/songs/${
             song.id
-          }/artwork/${new Date().getHours}`,
+          }/artwork/${new Date().getMilliseconds}`,
         }}
         style={{
           width: imageSize.width,

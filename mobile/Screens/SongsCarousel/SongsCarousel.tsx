@@ -11,12 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native'
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 /* Theme imports */
 import themeContext from '../../../assets/styles/themeContext'

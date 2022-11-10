@@ -3,7 +3,6 @@
   <br />
 
   <h4 align="center">A lightweight, self-hosted, ad-free player to play music from your local library on your mobile device, in a friendly and simple UI.</h4>
-  <br />
 </p>
 
 <p align="center">
@@ -14,6 +13,12 @@
   <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
   <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" />
   <img alt="SQLite" src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white" />
+</p>
+<br />
+
+<p align="center">
+  <img alt="showcase1" src="https://github.com/ozzs/monobox/blob/main/assets/media/Showcase1.gif" height="500"/> &nbsp; &nbsp;
+  <img alt="showcase2" src="https://github.com/ozzs/monobox/blob/main/assets/media/Showcase2.gif" height="500"/>
 </p>
 
 ## Table of Content
@@ -32,6 +37,7 @@
   - [The Current Song Tab](#the-current-song-tab)
   - [Toggle Themes](#toggle-themes)
 - [Support](#support)
+- [Project Resources](#project-resources)
 
 ## Overview
 MonoBox is a free music application designed to be easy to operate, intuitive to the user and has fast performance. <br />
@@ -125,26 +131,33 @@ You are welcome to try the application yourself or continue to the next section 
 ## How To Use
 ### Create Playlist
 Upon initializtion, in your _Homescreen_, you'll notice you have a playlist called _Liked Songs_ which does not contain any songs at the moment. Don't worry, we'll get to that later. :leftwards_arrow_with_hook: <br />
-On the top right corner you'll also notice a :heavy_plus_sign: sign button, with which you can create a new playlist and give it a name! 
-<br /> <br />
+On the top right corner you'll also notice a :heavy_plus_sign: sign button, with which you can create a new playlist and give it a name!
+
 <p align="center">
   <img alt="create-playlists" src="https://github.com/ozzs/monobox/blob/main/assets/media/CreatePlaylists.gif" height="500"/>
 </p>
 
 ### Add Songs To Playlist
 If you followed the instructions on the [Installation section](#installation) and copied all the songs to the designated folder, you should be able to see all of them on your _Library_ screen. :books: <br />
-In order to add a song to a playlist, press the button that appears to the right of each song, and choose one of your playlists. Pretty easy so far, huh? :v: <br /> <br />
-***INSERT: Homescreen GIF, move to Library screen, add 2 songs to each new playlist and move back to Homescreen***
+In order to add a song to a playlist, press the button that appears to the right of each song, and choose one of your playlists. Pretty easy so far, huh? :v:
+
+<p align="center">
+  <img alt="add-songs-to-playlist" src="https://github.com/ozzs/monobox/blob/main/assets/media/AddSongsToPlaylist.gif" height="500"/>
+</p>
 
 ### Remove Songs From Playlist
 So in order for you to remove a song from a playlist - simply press a song in a playlist and hold it for 2 seconds, and the song will be removed.
-<br />
-***INSERT: Homescreen GIF, remove one song from each playlist***
+
+<p align="center">
+  <img alt="remove-songs-from-playlist" src="https://github.com/ozzs/monobox/blob/main/assets/media/RemoveSongsFromPlaylist.gif" height="500"/>
+</p>
 
 ### Delete Playlist
 The same goes for the entire playlist - press its name and hold for 2 seconds, and it will be deleted along with its songs.
-<br />
-***INSERT: Homescreen GIF, delete both playlists***
+
+<p align="center">
+  <img alt="delete-playlist" src="https://github.com/ozzs/monobox/blob/main/assets/media/DeletePlaylist.gif" height="500"/>
+</p>
 
 ### The Songs Carousel
 What music app would it be without a _Songs Carousel_, right?
@@ -165,15 +178,25 @@ Above the _Slider_, the current running time of the song (on the left) and the t
 Did you like a certain part of the song? The _Slider_ itself allows you to move forward and backward in the song.
 
 #### Like Button
-Pressing the :heart: button will add the song you selected to the Liked Songs playlist that appears on the _Homescreen_ and the _Liked Songs_ screen (in the navigation drawer). <br />
-***INSERT: SongsCarousel GIF, skip song forward, then backward, click the repeat button 3 times, use the slider to move inside the song, press like, go to Homescreen, then Liked Songs***
+Pressing the :heart: button will add the song you selected to the Liked Songs playlist that appears on the _Homescreen_ and the _Liked Songs_ screen (in the navigation drawer).
+
+<p align="center">
+  <img alt="songs-carousel" src="https://github.com/ozzs/monobox/blob/main/assets/media/SongsCarousel.gif" height="500"/>
+</p>
 
 ### The Current Song Tab
 You will notice that if a song from a playlist is playing in the background, a new tab will appear at the bottom of the screen, indicating which song is being played, which also (similar to the _Songs Carousel_) allows you to move forward and backward in the song with the _Slider_ and skip to the next or previous song.
-***INSERT: Homescreen GIF (continuation of previous GIF), moving the slider forward and backward, using the arrow functions as well***
+
+<p align="center">
+  <img alt="current-song" src="https://github.com/ozzs/monobox/blob/main/assets/media/CurrentSongTab.gif" height="500"/>
+</p>
 
 ### Toggle Themes
 As mentioned before, you can switch themes between dark mode and light mode, using the moon icon that appears at the top right corner of the navigation drawer.
+
+<p align="center">
+  <img alt="themes" src="https://github.com/ozzs/monobox/blob/main/assets/media/Themes.gif" height="500"/>
+</p>
 
 #### Oh, and one more thing!
 In case you were wondering how the matter of adding/deleting songs works behind the scenes: <br /> 
@@ -196,7 +219,7 @@ if song in songs_folder and song in database:
 The product is still in its initial stages, so we would really appreciate feedback and donations 😄 <br />
 And don't forget to star us — it motivates us a lot! :star:
 
-### Project resources
+## Project Resources
 * <a href="https://github.com/ozzs/musicPlayer">Source Code</a>
 * <a href="https://react-native-track-player.js.org">React Native Track Player</a>
 * <a href="https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com">React-Query</a>

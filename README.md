@@ -7,7 +7,7 @@
 
 <p align="center">
   <img alt="React Native" src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" />
-  <img alt="Javascript" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" />
+  <img alt="JavaScript" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" />
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
   <img alt="Prettier" src="https://img.shields.io/badge/-Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white" />
   <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
@@ -56,7 +56,7 @@ Users will be able to run their own servers with their own songs. The server its
 ## Tech
 ### Frontend
 * **React Native** :iphone:
-  - _Javascript & Typescript_
+  - _JavaScript & Typescript_
   - Code formatted with _Prettier_ :ribbon:
   - _React Native Track Player -_ An audio module for music apps :musical_note:
   - _React Query -_ A powerful library containing hooks for fetching, caching and updating asynchronous data

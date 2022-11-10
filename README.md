@@ -56,7 +56,7 @@ Users will be able to run their own servers with their own songs. The server its
 ## Tech
 ### Frontend
 * **React Native** :iphone:
-  - _JavaScript & Typescript_
+  - _JavaScript & TypeScript_
   - Code formatted with _Prettier_ :ribbon:
   - _React Native Track Player -_ An audio module for music apps :musical_note:
   - _React Query -_ A powerful library containing hooks for fetching, caching and updating asynchronous data

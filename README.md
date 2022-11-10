@@ -28,7 +28,7 @@
 - [Installation](#installation)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
-- [How To Use](#how-to-use)
+- [Usage](#usage)
   - [Create Playlist](#create-playlist)
   - [Add Songs To Playlist](#add-songs-to-playlist)
   - [Remove Songs From Playlist](#remove-songs-from-playlist)
@@ -94,8 +94,8 @@ Then, in the ``main.py`` file, you have this block of code, where you need to in
 ```python
 host_ip = "0.0.0.0" # Change to your PC's IP
 host_port = 5000
-music_folder_url = "..\songs"
-cover_folder_url = "..\covers"
+music_folder_url = "../songs"
+cover_folder_url = "../covers"
 ```
 The default port is 5000, but you can also change it if you want the server to listen to a different port, 
 although it is required to change this in the Frontend as well.
@@ -128,7 +128,7 @@ Now you're all set!
 <br />
 You are welcome to try the application yourself or continue to the next section to learn about its features and how to use it.
 
-## How To Use
+## Usage
 ### Create Playlist
 Upon initializtion, in your _Homescreen_, you'll notice you have a playlist called _Liked Songs_ which does not contain any songs at the moment. Don't worry, we'll get to that later. :leftwards_arrow_with_hook: <br />
 On the top right corner you'll also notice a :heavy_plus_sign: sign button, with which you can create a new playlist and give it a name!
@@ -198,8 +198,9 @@ As mentioned before, you can switch themes between dark mode and light mode, usi
   <img alt="themes" src="https://github.com/ozzs/monobox/blob/main/assets/media/Themes.gif" height="500"/>
 </p>
 
-#### Oh, and one more thing!
-In case you were wondering how the matter of adding/deleting songs works behind the scenes: <br /> 
+## Implementation Notes
+**Oh, and one more thing!** <br />
+In case you were wondering how adding/deleting songs works behind the scenes: <br /> 
 Every 30 seconds, the server simultaneously checks for compatibility between the song lists in the ``songs`` folder and the database, and for each song one of the following actions is performed:
 * If the song exists only in ``songs`` and not in the database :arrow_right: adds the song to the database.
 * If the song exists only in the database and not in ``songs`` :arrow_right: deletes the song from the database.

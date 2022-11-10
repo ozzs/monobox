@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img alt="React-Native" src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" />
+  <img alt="React Native" src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" />
   <img alt="Javascript" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" />
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
   <img alt="Prettier" src="https://img.shields.io/badge/-Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white" />
@@ -23,8 +23,8 @@
 
 ## Table of Content
 - [Overview](#overview)
-  - [Technologies and Libraries](#technologies-and-libraries)
 - [Key Features](#key-features)
+- [Tech](#tech)
 - [Installation](#installation)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
@@ -43,23 +43,7 @@
 MonoBox is a free music application designed to be easy to operate, intuitive to the user and has fast performance. <br />
 Its main purpose is to play the music files you have on your computer, and to allow you to create and customize playlists according to your personal taste. <br />
 
-MonoBox is a self-hosted fullstack application built using the latest and most sought-after technologies and libraries on the market. <br />
-Users will be able to run their own servers with their own songs. The server itself is implemented in **Python** and the mobile application in **React-Native**. <br />
-
-### Technologies and Libraries
-#### Frontend
-* **React-Native** :iphone:
-  - _Javascript & Typescript_
-  - Code formatted with _Prettier_ :ribbon:
-  - _React Native Track Player -_ An audio module for music apps :musical_note:
-  - _React Query -_ A powerful library containing hooks for fetching, caching and updating asynchronous data
-#### Backend
-* **Python** :snake:
-  - _FastAPI -_ A modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints 
-  - _SQLModel -_ A library for interacting with SQL databases from Python code, with Python objects
-  - _pre-commit_, _black_, _mypy_ and _isort_ are integrated to make sure the code looks good and clean
-* **Database** :page_facing_up:
-  - _SQLite_
+Users will be able to run their own servers with their own songs. The server itself is implemented in **Python** and the mobile application in **React Native**. <br />
 
 ## Key Features
 * Simple & Easy to use music player
@@ -68,6 +52,21 @@ Users will be able to run their own servers with their own songs. The server its
 * Open-Source code
 * Dark / Light themes
 * No ads
+
+## Tech
+### Frontend
+* **React Native** :iphone:
+  - _Javascript & Typescript_
+  - Code formatted with _Prettier_ :ribbon:
+  - _React Native Track Player -_ An audio module for music apps :musical_note:
+  - _React Query -_ A powerful library containing hooks for fetching, caching and updating asynchronous data
+### Backend
+* **Python** :snake:
+  - _FastAPI -_ A modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints 
+  - _SQLModel -_ A library for interacting with SQL databases from Python code, with Python objects
+  - _pre-commit_, _black_, _mypy_ and _isort_ are integrated to make sure the code looks good and clean
+* **Database** :page_facing_up:
+  - _SQLite_
 
 ## Installation
 First and foremost, make sure your mobile device and PC are using the same wireless network, 
@@ -108,7 +107,7 @@ python main.py
 ### Frontend Setup
 After setting up the Backend, open a new terminal for the Frontend.
 <br />
-The ``package.json`` file lists all the React / React-Native libraries that the music player depends on, so let's install them from the terminal using:
+The ``package.json`` file lists all the React / React Native libraries that the music player depends on, so let's install them from the terminal using:
 ```
 npm install
 ```
@@ -208,12 +207,13 @@ Every 30 seconds, the server simultaneously checks for compatibility between the
 
 Or in a more "Pythonic" way, if you'd like:
 ```python
-if song in songs_folder and song not in database:
-  database.append(song)
-if song not in songs_folder and song in database:
+if songs in songs_folder:
+   if song in database:
+     continue
+   else:
+      database.add(song)
+elif song in database:
   database.remove(song)
-if song in songs_folder and song in database:
-  continue
 ```
 
 ## Support
@@ -223,7 +223,7 @@ And don't forget to star us — it motivates us a lot! :star:
 ## Project Resources
 * <a href="https://github.com/ozzs/musicPlayer">Source Code</a>
 * <a href="https://react-native-track-player.js.org">React Native Track Player</a>
-* <a href="https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com">React-Query</a>
+* <a href="https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com">React Query</a>
 * <a href="https://sqlmodel.tiangolo.com">SQLModel</a>
 * <a href="https://fastapi.tiangolo.com">FastAPI</a>
 

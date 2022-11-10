@@ -29,6 +29,7 @@
   - [Remove Songs From Playlist](#remove-songs-from-playlist)
   - [Delete Playlist](#delete-playlist)
   - [The Songs Carousel](#the-songs-carousel)
+  - [The Current Song Tab](#the-current-song-tab)
   - [Toggle Themes](#toggle-themes)
 - [Support](#support)
 
@@ -125,8 +126,10 @@ You are welcome to try the application yourself or continue to the next section 
 ### Create Playlist
 Upon initializtion, in your _Homescreen_, you'll notice you have a playlist called _Liked Songs_ which does not contain any songs at the moment. Don't worry, we'll get to that later. :leftwards_arrow_with_hook: <br />
 On the top right corner you'll also notice a :heavy_plus_sign: sign button, with which you can create a new playlist and give it a name! 
-<br />
-***INSERT: Homescreen GIF, create 2 new playlists***
+<br /> <br />
+<p align="center">
+  <img alt="create-playlists" src="https://github.com/ozzs/monobox/blob/main/assets/media/CreatePlaylists.gif" height="500"/>
+</p>
 
 ### Add Songs To Playlist
 If you followed the instructions on the [Installation section](#installation) and copied all the songs to the designated folder, you should be able to see all of them on your _Library_ screen. :books: <br />
@@ -145,7 +148,29 @@ The same goes for the entire playlist - press its name and hold for 2 seconds, a
 
 ### The Songs Carousel
 What music app would it be without a _Songs Carousel_, right?
-For you to get to the _Songs Carousel_, just press on any song in a playlist, on any screen you'd like (e.g. Choosing a song from the _Library_ screen will create a queue of all the songs from the _Library_ for you).
+For you to get to the _Songs Carousel_, just press on any song in a playlist, on any screen you'd like (e.g. Choosing a song from the _Library_ screen will create a queue of all the songs from the _Library_ for you). <br />
+
+#### Skip Songs
+So the _Songs Carousel_ is quite intuitive and familiar to use. <br />
+To skip to the next or previous song - click on :arrow_backward: / :arrow_forward: at the bottom of the screen, or alternatively slide the song artwork to the right / left. <br />
+
+#### Repeat
+You also have the :repeat: button which determines whether the list of songs that is currently playing:
+- will repeat itself endlessly :infinity:
+- will repeat once :repeat_one:
+- will not repeat itself at all
+
+#### Slider
+Above the _Slider_, the current running time of the song (on the left) and the time remaining until the end of the song (on the right) are indicated. <br />
+Did you like a certain part of the song? The _Slider_ itself allows you to move forward and backward in the song.
+
+#### Like Button
+Pressing the :heart: button will add the song you selected to the Liked Songs playlist that appears on the _Homescreen_ and the _Liked Songs_ screen (in the navigation drawer). <br />
+***INSERT: SongsCarousel GIF, skip song forward, then backward, click the repeat button 3 times, use the slider to move inside the song, press like, go to Homescreen, then Liked Songs***
+
+### The Current Song Tab
+You will notice that if a song from a playlist is playing in the background, a new tab will appear at the bottom of the screen, indicating which song is being played, which also (similar to the _Songs Carousel_) allows you to move forward and backward in the song with the _Slider_ and skip to the next or previous song.
+***INSERT: Homescreen GIF (continuation of previous GIF), moving the slider forward and backward, using the arrow functions as well***
 
 ### Toggle Themes
 As mentioned before, you can switch themes between dark mode and light mode, using the moon icon that appears at the top right corner of the navigation drawer.

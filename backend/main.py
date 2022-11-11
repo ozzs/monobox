@@ -27,8 +27,8 @@ session = Session(bind=engine)
 
 host_ip = "192.168.1.120"
 host_port = 5000
-music_folder_url = "..\songs"
-cover_folder_url = "..\covers"
+music_folder_url = "../songs"
+cover_folder_url = "../covers"
 
 
 def get_last_modify(path: str) -> str:

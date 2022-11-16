@@ -17,7 +17,7 @@
 <br />
 
 <p align="center">
-  <img alt="showcase1" src="https://github.com/ozzs/monobox/blob/main/assets/media/Showcase1.gif" height="500"/> &nbsp; &nbsp;
+  <img alt="showcase1" src="https://github.com/ozzs/monobox/blob/main/assets/media/Showcase1.gif" height="500"/>
   <img alt="showcase2" src="https://github.com/ozzs/monobox/blob/main/assets/media/Showcase2.gif" height="500"/>
 </p>
 

@@ -46,7 +46,7 @@ Its main purpose is to play the music files you have on your computer, and to al
 Users will be able to run their own servers with their own songs. The server itself is implemented in **Python** and the mobile application in **React Native**. <br />
 
 * **An article explaining how I created MonoBox:** <a href="https://ozzs.dev/introducing-monobox">Introducing MonoBox</a>
-* **An article that provided guidelines for building a MonoBox** <a href="https://ozzs.dev/build-your-own-spotify">Build Your Own Spotify</a>
+* **An article that provided guidelines for building MonoBox** <a href="https://ozzs.dev/build-your-own-spotify">Build Your Own Spotify</a>
 
 ## Key Features
 * Simple & Easy to use music player

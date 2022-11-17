@@ -15,3 +15,5 @@ web-build/
 
 songs/
 covers/
+backend/__pycache__
+backend/database.db

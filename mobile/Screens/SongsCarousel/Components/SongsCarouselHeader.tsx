@@ -1,14 +1,14 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useContext } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { useNavigation } from '@react-navigation/native'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../../assets/styles/themeContext'
 
-/* Icons imports*/
+// Icons imports
 import { AntDesign } from '@expo/vector-icons'
 
 const SongsCarouselHeader = () => {

@@ -1,4 +1,4 @@
-/* Music Player imports */
+// Music Player imports
 import TrackPlayer, { Event } from 'react-native-track-player'
 
 export async function PlaybackService() {

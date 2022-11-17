@@ -1,13 +1,18 @@
+# General Python imports
 import datetime
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import eyed3  # type: ignore
 import uvicorn  # type: ignore
 from database_setup import create_db_and_tables, engine
+
+# FastAPI imports
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi_utils.tasks import repeat_every
+
+# SQLModel imports
 from models import (
     Liked,
     Playlist,
@@ -22,20 +27,24 @@ from models import (
 )
 from sqlmodel import Session, select
 
+# Backend initialization
 app = FastAPI()
 session = Session(bind=engine)
 
+# Hard-coded variables for server
 host_ip = "192.168.1.120"
 host_port = 5000
-music_folder_url = "../songs"
-cover_folder_url = "../covers"
+music_folder_url = "../songs"  # folder containing all songs
+cover_folder_url = "../covers"  # folder containing all songs' artwortks
 
 
+# Helper function to get 'last modification' of song
 def get_last_modify(path: str) -> str:
     path_str = str(datetime.datetime.fromtimestamp(os.path.getctime(path)))
     return path_str
 
 
+# GET: artwork of song
 @app.get("/songs/{song_id}/artwork/{random_string}", response_class=FileResponse)
 async def download_artwork(song_id: int) -> FileResponse:
     path = "../assets/defaultArtwork.png"
@@ -49,6 +58,7 @@ async def download_artwork(song_id: int) -> FileResponse:
     return FileResponse(song.artwork)
 
 
+# GET: stream requested song by id
 @app.get("/songs/{song_id}/stream", response_class=StreamingResponse)
 async def stream_song(song_id: int) -> StreamingResponse:
     song = session.get(Song, song_id)
@@ -67,6 +77,7 @@ async def stream_song(song_id: int) -> StreamingResponse:
     return StreamingResponse(iterfile(), media_type="audio/mp3")
 
 
+# POST: like song by id (creates new row in 'Liked Songs' table in database)
 @app.post("/songs/{song_id}/like", response_model=Dict)
 async def like(song_id: int) -> dict:
     song = session.get(Song, song_id)
@@ -84,6 +95,7 @@ async def like(song_id: int) -> dict:
     return {"Liked song with id: ": song_id}
 
 
+# DELETE: unlike song by id (deletes row from 'Liked Songs' table in database)
 @app.delete("/songs/{song_id}/unlike", response_model=Dict)
 async def unlike(song_id: int) -> dict:
     likedStmt = select(Liked).where(Liked.song_id == song_id)
@@ -116,6 +128,7 @@ async def unlike(song_id: int) -> dict:
     return {"Unliked song with id: ": song_id}
 
 
+# POST: create new playlist
 @app.post(
     "/songs/playlists",
     response_model=PlaylistReadWithSongs,
@@ -128,6 +141,7 @@ async def create_playlist(playlist: PlaylistBase) -> Playlist:
     return new_playlist
 
 
+# DELETE: delete playlist by id
 @app.delete("/songs/delete_playlist/{playlist_id}", response_model=Dict)
 async def delete_playlist(playlist_id: int) -> dict:
     playlist = session.get(Playlist, playlist_id)
@@ -140,6 +154,7 @@ async def delete_playlist(playlist_id: int) -> dict:
     return {"Deleted playlist with ID: ": playlist_id}
 
 
+# GET: all songs inside playlist (by playlist id)
 @app.get("/songs/{playlist_id}/fetch", response_model=List[SongReadWithLike])
 async def get_playlist(playlist_id: int) -> List[Song]:
     playlist = session.get(Playlist, playlist_id)
@@ -150,6 +165,7 @@ async def get_playlist(playlist_id: int) -> List[Song]:
     return playlist.songs
 
 
+# PATCH: add song to playlist (by playlist id and song id)
 @app.patch("/songs/add_song/{playlist_id}/{song_id}", response_model=SongReadWithLike)
 async def add_song_to_playlist(song_id: int, playlist_id: int) -> Song:
     playlist = session.get(Playlist, playlist_id)
@@ -168,6 +184,7 @@ async def add_song_to_playlist(song_id: int, playlist_id: int) -> Song:
     return song
 
 
+# PATCH: remove song from playlist (by playlist id and song id)
 @app.patch("/songs/remove_song/{playlist_id}/{song_id}", response_model=Dict)
 async def delete_song_from_playlist(song_id: int, playlist_id: int) -> dict:
     playlist = session.get(Playlist, playlist_id)
@@ -186,21 +203,25 @@ async def delete_song_from_playlist(song_id: int, playlist_id: int) -> dict:
     return {"Deleted Song with ID: ": song_id, "From Playlist with ID: ": playlist_id}
 
 
+# GET: all playlists and songs included in each one
 @app.get("/songs/playlists", response_model=List[PlaylistReadWithSongs])
 async def get_all_playlist() -> List[Playlist]:
     return session.exec(select(Playlist)).all()
 
 
+# GET: all songs
 @app.get("/songs", response_model=List[SongReadWithLike])
 async def get_all_songs() -> List[Song]:
     return session.exec(select(Song)).all()
 
 
+# GET: all liked songs
 @app.get("/songs/liked", response_model=List[PlaylistReadWithSongs])
 async def get_liked_songs() -> List[Playlist]:
     return session.exec(select(Playlist).where(Playlist.id == 1)).all()
 
 
+# GET: song by id
 @app.get("/songs/{song_id}", response_model=SongRead)
 async def get_song(song_id: int) -> Song:
     song = session.get(Song, song_id)
@@ -211,6 +232,7 @@ async def get_song(song_id: int) -> Song:
     return song
 
 
+# POST: create new song
 @app.post("/songs", response_model=SongRead, status_code=status.HTTP_201_CREATED)
 async def create_song(song: SongBase) -> Song:
     new_song = Song.from_orm(song)
@@ -219,6 +241,7 @@ async def create_song(song: SongBase) -> Song:
     return new_song
 
 
+# PATCH: updates song by id
 @app.patch("/songs/{song_id}", response_model=Song)
 async def update_song(song_id: int, song: SongUpdate) -> Song:
     db_song = session.get(Song, song_id)
@@ -235,6 +258,7 @@ async def update_song(song_id: int, song: SongUpdate) -> Song:
     return db_song
 
 
+# DELETE: song by id
 @app.delete("/songs/{song_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_song(song_id: int) -> Song:
     song = session.get(Song, song_id)
@@ -247,6 +271,7 @@ async def delete_song(song_id: int) -> Song:
     return song
 
 
+# create hard-coded 'Liked Songs' playlist upon first initialization
 @app.on_event("startup")
 def create_initial_playlists():
 
@@ -258,6 +283,10 @@ def create_initial_playlists():
     session.commit()
 
 
+# PRIMARY FUNCTION
+# scan database and 'songs' folder every 30 seconds (by default)
+# manipulate database accordingly -> add / remove songs
+# also, create new jpg file in 'covers' folder for songs with artwork
 @app.on_event("startup")
 @repeat_every(seconds=30)
 def scan_songs():

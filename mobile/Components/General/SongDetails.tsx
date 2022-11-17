@@ -1,12 +1,12 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { StyleSheet, View, Text, Image } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
-/* Music Player imports */
+// Music Player imports
 import { Track } from 'react-native-track-player'
 
 interface DetailsProps {

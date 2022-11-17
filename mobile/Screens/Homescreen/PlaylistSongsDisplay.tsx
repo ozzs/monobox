@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   View,
   Text,
@@ -9,19 +9,19 @@ import {
 } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 import { useNavigation } from '@react-navigation/native'
 
-/* utils imports */
+// utils imports
 import { Playlist } from '../../utils/Song'
 import themeContext from '../../../assets/styles/themeContext'
 
-/* Components imports */
+// Components imports
 import SongDetails from '../../Components/General/SongDetails'
 
-/* Music Player imports */
+// Music Player imports
 import {
   useDeletePlaylist,
   useRemoveSongFromPlaylist,
@@ -66,12 +66,12 @@ const PlaylistSongsDisplay: FC<PlaylistSongsProps> = ({
                 onPress={() => {
                   navigation.navigate('SongsCarousel', {
                     playlist: playlist.songs,
-                    song_id: item.id,
+                    songId: item.id,
                   })
                   setCurrentPlaylist(playlist.songs)
                 }}
                 onLongPress={() =>
-                  removeSong({ playlist_id: playlist.id, song_id: item.id })
+                  removeSong({ playlist_id: playlist.id, songId: item.id })
                 }
                 delayLongPress={1500}
               >

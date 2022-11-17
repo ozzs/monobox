@@ -1,27 +1,27 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
-/* Music Player imports */
+// Music Player imports
 import { Track } from 'react-native-track-player'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
-/* Icons imports */
+// Icons imports
 import { MaterialIcons } from '@expo/vector-icons'
 
 interface SongDisplayProps {
   song: Track
   songs: Track[]
   setModalOpen: (bool: boolean) => void
-  setChosenSongID: (song_id: number) => void
+  setChosenSongID: (songId: number) => void
   setCurrentPlaylist: (playlist: Track[]) => void
 }
 
@@ -44,7 +44,7 @@ const SongDisplay: FC<SongDisplayProps> = ({
           onPress={() => {
             navigation.navigate('SongsCarousel', {
               playlist: songs,
-              song_id: song.id,
+              songId: song.id,
             })
             setCurrentPlaylist(songs)
           }}

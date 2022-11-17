@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   View,
   Text,
@@ -8,11 +8,11 @@ import {
 } from 'react-native'
 import React, { FC, useContext, useState } from 'react'
 
-/* utils imports*/
+// utils imports
 import { windowWidth } from '../../utils/Dimensions'
 import themeContext from '../../../assets/styles/themeContext'
 
-/* Music Player imports */
+// Music Player imports
 import { useAddPlaylist } from '../../hooks/HooksAPI'
 
 interface addPlaylistProps {

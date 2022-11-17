@@ -1,14 +1,14 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Icons imports */
+// Icons imports
 import { AntDesign, Feather } from '@expo/vector-icons'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../../assets/styles/themeContext'
 
-/* Music Player imports */
+// Music Player imports
 import { State, usePlaybackState } from 'react-native-track-player'
 import { useOnTogglePlayback } from '../../../MusicPlayerServices/MusicPlayerHooks'
 

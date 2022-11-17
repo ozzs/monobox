@@ -1,11 +1,11 @@
-/* React Query imports */
+// React Query imports
 import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
-/* Music Player imports */
+// Music Player imports
 import { Track } from 'react-native-track-player'
 
-/* utils imports */
+// utils imports
 import { BASE_API_PORT, BASE_API_URL } from '../utils/BaseAPI'
 import { Playlist } from '../utils/Song'
 
@@ -64,13 +64,13 @@ export const useDeletePlaylist = () => {
 // Adds new song to playlist
 function addSongToPlaylist({
   playlist_id,
-  song_id,
+  songId,
 }: {
   playlist_id: number
-  song_id: number
+  songId: number
 }) {
   return axios.patch(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/add_song/${playlist_id}/${song_id}`,
+    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/add_song/${playlist_id}/${songId}}`,
   )
 }
 
@@ -86,13 +86,13 @@ export const useAddSongToPlaylist = () => {
 // Removes song from playlist
 function removeSongFromPlaylist({
   playlist_id,
-  song_id,
+  songId,
 }: {
   playlist_id: number
-  song_id: number
+  songId: number
 }) {
   return axios.patch(
-    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/remove_song/${playlist_id}/${song_id}`,
+    `http://${BASE_API_URL}:${BASE_API_PORT}/songs/remove_song/${playlist_id}/${songId}`,
   )
 }
 

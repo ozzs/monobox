@@ -1,15 +1,15 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { View, Text, StyleSheet } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../../assets/styles/themeContext'
 
-/* Music Player imports */
+// Music Player imports
 import { getCurrentTrackDuration } from '../SongsCarouselFunctions'
 import TrackPlayer, { Track, useProgress } from 'react-native-track-player'
 
-/* Components imports */
+// Components imports
 import Slider from '@react-native-community/slider'
 
 interface SongsCarouselSliderProps {

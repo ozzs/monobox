@@ -1,4 +1,4 @@
-/* Music Player imports */
+// Music Player imports
 import TrackPlayer, { RepeatMode, Track } from 'react-native-track-player'
 
 // Function: Gets current track's duration

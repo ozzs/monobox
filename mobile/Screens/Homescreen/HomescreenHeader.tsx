@@ -1,14 +1,14 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { View, SafeAreaView, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 
-/* Icons imports */
+// Icons imports
 import { Feather, FontAwesome } from '@expo/vector-icons'
 
 interface HomescreenHeaderProps {

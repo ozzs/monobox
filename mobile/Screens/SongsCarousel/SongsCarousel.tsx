@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   StyleSheet,
   View,
@@ -13,18 +13,18 @@ import {
 } from 'react-native'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 
-/* Theme imports */
+// Theme imports
 import themeContext from '../../../assets/styles/themeContext'
 
-/* Navigation imports */
+// Navigation imports
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
-/* utils imports */
+// utils imports
 import { windowWidth } from '../../utils/Dimensions'
 import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
-/* Music Player imports */
+// Music Player imports
 import {
   useCurrentTrack,
   useSetupTracks,
@@ -35,7 +35,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player'
 
-/* Components imports */
+// Components imports
 import SongsCarouselHeader from './Components/SongsCarouselHeader'
 import SongsCarouselSlider from './Components/SongsCarouselSlider'
 import SongsCarouselOptions from './Components/SongsCarouselOptions'
@@ -47,7 +47,7 @@ type SongsCarouselProps = NativeStackScreenProps<
 >
 
 const SongsCarousel = ({ route }: SongsCarouselProps) => {
-  const song_id = route.params?.song_id
+  const songId = route.params?.songId
   const playlist = route.params?.playlist
 
   /* General use variables */
@@ -60,7 +60,6 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
   /* Carousel variables initialization */
   const carouselRef = useRef<FlatList>(null)
   const scrollX = useRef(new ReactAnimated.Value(0)).current
-  const [update, setUpdate] = useState(true)
   const [songIndex, setSongIndex] = useState(0)
   const [repeatMode, setRepeatMode] = useState('off')
   const [trackTitle, setTrackTitle] = useState<string>()
@@ -69,7 +68,7 @@ const SongsCarousel = ({ route }: SongsCarouselProps) => {
   const [trackRating, setTrackRating] = useState<number | boolean>()
 
   // Sets up tracks for TrackPlayer after data is fetched & set
-  const { index, isLoading } = useSetupTracks(playlist, song_id)
+  const { index, isLoading } = useSetupTracks(playlist, songId)
 
   useEffect(() => {
     setSongIndex(index)

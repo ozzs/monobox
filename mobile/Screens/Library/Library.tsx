@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   View,
   Text,
@@ -12,26 +12,26 @@ import {
 } from 'react-native'
 import React, { useContext, useState } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import playlistContext from '../../utils/PlaylistIDContext'
 import trackContext from '../../utils/CurrentSongContext'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
-/* Icons imports */
+// Icons imports
 import { FontAwesome } from '@expo/vector-icons'
 
-/* Components imports */
+// Components imports
 import CurrentSong from '../../Components/General/CurrentSong'
 import SongDisplay from './SongDisplay'
 import PlaylistsList from '../../Components/Modals/PlaylistsList'
 
-/* Music Player imports */
+// Music Player imports
 import { useSongsData } from '../../hooks/HooksAPI'
 
 const Library = () => {

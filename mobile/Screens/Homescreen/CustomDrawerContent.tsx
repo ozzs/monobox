@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   StyleSheet,
   View,
@@ -8,17 +8,17 @@ import {
 } from 'react-native'
 import React, { useState, useContext } from 'react'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 
-/* Navigation imports */
+// Navigation imports
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer'
 
-/* Icons imports */
+// Icons imports
 import {
   Feather,
   AntDesign,

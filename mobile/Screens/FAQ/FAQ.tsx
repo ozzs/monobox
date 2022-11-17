@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   View,
   Text,
@@ -11,16 +11,16 @@ import {
 } from 'react-native'
 import React, { useContext, useState } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 
-/* Components imports */
+// Components imports
 import Accordion from 'react-native-collapsible/Accordion'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 
-/* Icons imports*/
+// Icons imports
 import { FontAwesome } from '@expo/vector-icons'
 
 const SECTIONS = [

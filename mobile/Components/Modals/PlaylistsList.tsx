@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   View,
   Text,
@@ -8,11 +8,11 @@ import {
 } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import { windowHeight, windowWidth } from '../../utils/Dimensions'
 
-/* Music Player imports */
+// Music Player imports
 import { useAddSongToPlaylist, usePlaylistsData } from '../../hooks/HooksAPI'
 
 interface PlaylistsListProps {
@@ -56,7 +56,7 @@ const PlaylistsList: FC<PlaylistsListProps> = ({
                 onPress={() => {
                   addSongToPlaylist({
                     playlist_id: playlist.id,
-                    song_id: chosenSongID,
+                    songId: chosenSongID,
                   })
                   setModalOpen(false)
                 }}

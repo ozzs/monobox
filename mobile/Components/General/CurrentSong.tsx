@@ -1,23 +1,23 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { FC, useContext } from 'react'
 
-/* Navigation imports */
+// Navigation imports
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../App'
 
-/* Icons imports */
+// Icons imports
 import { Feather, AntDesign } from '@expo/vector-icons'
 
-/* Components imports */
+// Components imports
 import Slider from '@react-native-community/slider'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import { BASE_API_URL, BASE_API_PORT } from '../../utils/BaseAPI'
 
-/* Music Player imports */
+// Music Player imports
 import { useOnTogglePlayback } from '../../MusicPlayerServices/MusicPlayerHooks'
 import TrackPlayer, {
   State,

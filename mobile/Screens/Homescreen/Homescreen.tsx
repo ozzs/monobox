@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import {
   StyleSheet,
   View,
@@ -11,18 +11,18 @@ import {
 } from 'react-native'
 import React, { useContext, useState } from 'react'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import trackContext from '../../utils/CurrentSongContext'
 import playlistContext from '../../utils/PlaylistIDContext'
 
-/* Components imports */
+// Components imports
 import CurrentSong from '../../Components/General/CurrentSong'
 import AddPlaylist from '../../Components/Modals/AddPlaylist'
 import PlaylistSongsDisplay from './PlaylistSongsDisplay'
 import HomescreenHeader from './HomescreenHeader'
 
-/* Music Player imports */
+// Music Player imports
 import { usePlaylistsData } from '../../hooks/HooksAPI'
 
 const Homescreen = () => {

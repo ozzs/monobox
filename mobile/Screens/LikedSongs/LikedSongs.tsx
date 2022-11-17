@@ -1,4 +1,4 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import React, { FC, useContext } from 'react'
 import {
   StyleSheet,
@@ -12,24 +12,24 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
-/* Navigation imports */
+// Navigation imports
 import { RootStackParamList } from '../../../App'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { DrawerActions } from '@react-navigation/native'
 
-/* utils imports */
+// utils imports
 import themeContext from '../../../assets/styles/themeContext'
 import playlistContext from '../../utils/PlaylistIDContext'
 import { BASE_API_PORT, BASE_API_URL } from '../../utils/BaseAPI'
 
-/* Components imports */
+// Components imports
 import SongDetails from '../../Components/General/SongDetails'
 import CurrentSong from '../../Components/General/CurrentSong'
 
-/* Icons imports */
+// Icons imports
 import { FontAwesome } from '@expo/vector-icons'
 
-/* Music Player imports */
+// Music Player imports
 import trackContext from '../../utils/CurrentSongContext'
 import { useSongsData } from '../../hooks/HooksAPI'
 
@@ -85,7 +85,7 @@ const LikedSongs: FC<LikedSongsProps> = ({ navigation }) => {
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('SongsCarousel', {
-                        song_id: item.id,
+                        songId: item.id,
                         playlist: songs,
                       })
                       setCurrentPlaylist(songs)

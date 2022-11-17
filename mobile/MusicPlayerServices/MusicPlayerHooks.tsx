@@ -1,7 +1,7 @@
-/* React / React-Native imports */
+// React / React-Native imports
 import { useCallback, useEffect, useState } from 'react'
 
-/* Music Player imports */
+// Music Player imports
 import TrackPlayer, {
   usePlaybackState,
   State,
@@ -10,7 +10,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
 } from 'react-native-track-player'
 
-/* utils imports */
+// utils imports
 import { BASE_API_URL, BASE_API_PORT } from '../utils/BaseAPI'
 
 export const useOnTogglePlayback = () => {
@@ -46,7 +46,7 @@ export const useCurrentTrack = (): Track | undefined => {
 
 export const useSetupTracks = (
   playlist: Track[] | undefined,
-  song_id: number | undefined,
+  songId: number | undefined,
 ) => {
   const [isLoading, setIsLoading] = useState(true)
   const [index, setIndex] = useState(0)
@@ -70,7 +70,7 @@ export const useSetupTracks = (
       : null
     await TrackPlayer.add(tracks)
 
-    const index = tracks.findIndex((track) => track.id === song_id)
+    const index = tracks.findIndex((track) => track.id === songId)
     if (index !== -1) {
       setIndex(index)
       await TrackPlayer.skip(index)

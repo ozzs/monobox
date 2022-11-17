@@ -45,7 +45,7 @@ export type RootStackParamList = {
   Library: undefined
   LikedSongs: undefined
   FAQ: undefined
-  SongsCarousel: { playlist: Track[]; song_id: number } | undefined
+  SongsCarousel: { playlist: Track[]; songId: number } | undefined
   CustomDrawerContent: undefined
 }
 

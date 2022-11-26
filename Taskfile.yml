@@ -10,7 +10,7 @@ vars:
     sh: 'echo "$(basename {{.ROOT_PATH}})"'
   LOCAL_BIN_PATH:
     sh: 'echo "{{.ROOT_PATH}}/venv/bin"'
-  PYTHON_VENV_PATH: 
+  PYTHON_VENV_PATH:
     sh: 'echo "{{.ROOT_PATH}}/venv"'
   BUILD_DATE:
     sh: "date '+%Y-%m-%d-%H:%M:%S'"
@@ -21,14 +21,6 @@ vars:
   asdf_path:
     sh: if [ -d ~/.asdf ]; then echo "~/.asdf"; else echo "{{.ROOT_PATH}}/venv/.asdf"; fi
   TERM: screen-256color
-  DOCS_PATH: "{{.ROOT_PATH}}/docs"
-  DEPLOY_PATH: "{{.ROOT_PATH}}/deploy"
-  PUBLIC_PATH: "{{.ROOT_PATH}}/public"
-  CONFIG_PATH: "{{.ROOT_PATH}}/config"
-  CONFIG_FILE: "{{.ROOT_PATH}}/config/{{.TARGET}}.yml"
-  
-  SCRIPT_PATH: "{{.ROOT_PATH}}/scripts"
-  VERSION: '{{default "unknown" .GIT_LATEST_TAG}}'
   python_venv_path:
     sh: echo "$(pwd)/venv"
 dotenv:
@@ -72,7 +64,8 @@ tasks:
   asdf:init:
     desc: Install asdf defined plugins
     silent: true
-    deps: [asdf:install]
+    deps:
+      - 'asdf:install'
     cmds:
       - |
         tool_versions=${TOOL_VERSIONS:-"$(pwd)/.tool-versions"}
@@ -87,3 +80,13 @@ tasks:
         else
           echo "tool_versions does not exist: ${tool_versions}"
         fi
+
+  precommit:
+    desc: Install pre-commit hooks locally
+    silent: true
+    deps:
+      - 'backend:install:dev'
+    cmds:
+      - |
+        source {{.python_venv_path}}/bin/activate
+        pre-commit install || echo "Unable to initialize pre-commit hooks"

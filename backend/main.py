@@ -53,7 +53,7 @@ async def download_artwork(song_id: int) -> FileResponse:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Song not found"
         )
-    if song.artwork == None:
+    if song.artwork is None:
         return FileResponse(path, media_type="image/png")
     return FileResponse(song.artwork)
 
@@ -313,7 +313,7 @@ def scan_songs():
             artwork_path = str(os.path.join(cover_folder_url, song_title)) + ".jpg"
             artwork_exists = False
             for image in audiofile.tag.images:
-                image_file = open("..\covers\{}.jpg".format(song_title), "wb")
+                image_file = open(f"..\\covers\\{song_title}.jpg", "wb")
                 image_file.write(image.image_data)
                 image_file.close()
                 artwork_exists = True
@@ -339,4 +339,9 @@ def scan_songs():
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host=os.getenv("API_HOST", host_ip), port=int(os.getenv("API_PORT", host_port)), reload=True)
+    uvicorn.run(
+        "main:app",
+        host=os.getenv("API_HOST", host_ip),
+        port=int(os.getenv("API_PORT", host_port)),
+        reload=True,
+    )

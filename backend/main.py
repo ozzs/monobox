@@ -32,7 +32,7 @@ app = FastAPI()
 session = Session(bind=engine)
 
 # Hard-coded variables for server
-host_ip = "192.168.1.120"
+host_ip = "127.0.0.1"
 host_port = 5000
 music_folder_url = "../songs"  # folder containing all songs
 cover_folder_url = "../covers"  # folder containing all songs' artwortks
@@ -339,4 +339,4 @@ def scan_songs():
 
 if __name__ == "__main__":
     create_db_and_tables()
-    uvicorn.run("main:app", host=host_ip, port=host_port, reload=True)
+    uvicorn.run("main:app", host=os.getenv("API_HOST", host_ip), port=int(os.getenv("API_PORT", host_port)), reload=True)

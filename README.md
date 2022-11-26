@@ -81,7 +81,30 @@ Then, in the root of the project, create 2 folders:
 
 Now you can copy all the songs you want to display in the app into the ``songs`` folder.
 
-### Backend Setup
+
+## Backend
+
+The SQLite backend needs to be running for the API to use for state.
+
+### Start - Via task
+You can use the included [Taskfile](https://taskfile.dev) to configure much of this project. This Makefile alternative will assume the ignored `./venv` path for storage of local binaries and Python libraries.
+
+First ensure [task is installed](https://taskfile.dev/installation/) to your PATH somewhere.
+
+After this, the following tasks can be used to build the virtual environment and API backend via the `task` command.
+
+```bash
+# Configure virtual environment and pull down requirements
+task backend:install
+
+# Start up the backend services in the background
+task backend:start &
+```
+
+>**NOTE:** You can force re-run tasks anytime with the `-f` option. Example: `task backend:install -f`.
+
+### Start - Manual
+
 From the root, you need to navigate to the ``backend`` folder. from your terminal:
 ```
 cd backend
@@ -106,6 +129,16 @@ Finally, run the following command from your terminal to set up your server and 
 ```
 python main.py
 ```
+
+### Backend - Validation
+
+Visit the service url with `/redocs` or `/docs` to interactively browse the API docs. Example: `http://127.0.0.1:5001/docs`
+
+### Backend - Troubleshooting
+
+If you run into issues running the backend you may need to reconfigure python after having installed the local sqlite3 development libraries (`sudo apt install libsqlite3-dev` for Ubuntu based systems.).
+
+The included taskfile definition includes asdf-vm install and configuration tasks that can be used to bootstrap the Python and Nodejs environments if required.
 
 ### Frontend Setup
 After setting up the Backend, open a new terminal for the Frontend.

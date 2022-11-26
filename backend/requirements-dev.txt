@@ -1,0 +1,8 @@
+sqlmodel
+eyeD3
+fastapi[all]
+fastapi_utils
+flake8
+bandit
+pytest
+tavern

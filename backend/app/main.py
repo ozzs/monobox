@@ -35,7 +35,7 @@ session = Session(bind=engine)
 host_ip = "127.0.0.1"
 host_port = 5000
 music_folder_url = "../songs"  # folder containing all songs
-cover_folder_url = "../covers"  # folder containing all songs' artwortks
+cover_folder_url = "../covers"  # folder containing all songs
 
 
 # Helper function to get 'last modification' of song

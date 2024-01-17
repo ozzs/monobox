@@ -1,0 +1,92 @@
+version: '3'
+vars:
+  ROOT_PATH:
+    sh: 'echo "$(cd "$( dirname -- "$0" )" && pwd)"'
+  TARGET:
+    sh: 'echo "${TARGET:-"default"}"'
+  PROFILE:
+    sh: 'echo "${PROFILE:-"local"}"'
+  PROJECT:
+    sh: 'echo "$(basename {{.ROOT_PATH}})"'
+  LOCAL_BIN_PATH:
+    sh: 'echo "{{.ROOT_PATH}}/venv/bin"'
+  PYTHON_VENV_PATH:
+    sh: 'echo "{{.ROOT_PATH}}/venv"'
+  BUILD_DATE:
+    sh: "date '+%Y-%m-%d-%H:%M:%S'"
+  BUILD_DATE_SHORT:
+    sh: "date '+%Y-%m-%d-%H%M%S'"
+  GIT_LATEST_TAG:
+    sh: 'git tag -l | sort -r -V | head -n 1 2>/dev/null || echo "not a git repo"'
+  asdf_path:
+    sh: if [ -d ~/.asdf ]; then echo "~/.asdf"; else echo "{{.ROOT_PATH}}/venv/.asdf"; fi
+  TERM: screen-256color
+  python_venv_path:
+    sh: echo "$(pwd)/venv"
+dotenv:
+  - '.SECRET'
+
+includes:
+  backend:
+    taskfile: ./backend
+    optional: true
+
+tasks:
+  default:
+    silent: true
+    cmds:
+    - task -l
+
+  show:
+    desc: Show task variables
+    silent: true
+    cmds:
+    - |
+      echo "ROOT_PATH: {{.ROOT_PATH}}"
+      echo "PROJECT: {{.PROJECT}}"
+      echo "VERSION: {{.VERSION}}"
+      echo "OS: {{OS}}"
+      echo "ARCH: {{ARCH}}"
+      echo "ROOT_PATH: {{.ROOT_PATH}}"
+      echo "LOCAL_BIN_PATH: {{.LOCAL_BIN_PATH}}"
+      echo "PYTHON_VENV_PATH: {{.PYTHON_VENV_PATH}}"
+      echo "SCRIPT_PATH: {{.SCRIPT_PATH}}"
+      echo "BUILD_DATE: {{.BUILD_DATE}}"
+
+  asdf:install:
+    desc: Install asdf
+    silent: true
+    cmds:
+      - git clone https://github.com/asdf-vm/asdf.git {{.asdf_path}} || true
+    status:
+      - test -d {{.asdf_path}}
+
+  asdf:init:
+    desc: Install asdf defined plugins
+    silent: true
+    deps:
+      - 'asdf:install'
+    cmds:
+      - |
+        tool_versions=${TOOL_VERSIONS:-"$(pwd)/.tool-versions"}
+        if ! test -e "${tool_versions}"; then
+          tool_versions="{{.ROOT_PATH}}/.tool-versions"
+        fi
+        echo "tool_versions: ${tool_versions}"
+        if test -e "${tool_versions}"; then
+          source {{.asdf_path}}/asdf.sh
+          $(cut -d' ' -f1 {{.ROOT_PATH}}/.tool-versions|xargs -i asdf plugin add  {}) || true
+          asdf install
+        else
+          echo "tool_versions does not exist: ${tool_versions}"
+        fi
+
+  precommit:
+    desc: Install pre-commit hooks locally
+    silent: true
+    deps:
+      - 'backend:install:dev'
+    cmds:
+      - |
+        source {{.python_venv_path}}/bin/activate
+        pre-commit install || echo "Unable to initialize pre-commit hooks"

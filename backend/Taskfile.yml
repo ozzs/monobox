@@ -1,0 +1,150 @@
+version: "3"
+vars:
+  python_bin_path: "{{.python_venv_path}}/bin"
+  python_project_path: "backend"
+  python: "{{.python_bin_path}}/python"
+  pip3: "{{.python_bin_path}}/pip3"
+  linter: "{{.python_bin_path}}/flake8"
+  pandoc: "{{.python_bin_path}}/pandoc"
+  pytest: "{{.python_bin_path}}/py.test"
+
+tasks:
+  all:
+    silent: true
+    cmds:
+    - task: venv
+
+  start:
+    silent: true
+    cmds:
+      - |
+        source {{.python_bin_path}}/activate && \
+        python {{.python_project_path}}/main.py
+
+  show:
+    desc: Show python variables for this task
+    silent: true
+    cmds:
+      - |
+        echo "python_venv_path: {{.python_venv_path}}"
+        echo "python_bin_path: {{.python_bin_path}}"
+        echo "pip3: {{.pip3}}"
+        echo "linter: {{.linter}}"
+        echo "pytest: {{.pytest}}"
+
+  freeze:
+    desc: Emit requirements.txt
+    silent: true
+    cmds:
+      - |
+        {{.pip3}} freeze > {{.python_project_path}}/requirements.txt
+
+  lint:
+    desc: Lint
+    silent: true
+    cmds:
+      - |
+        {{.linter}} {{.python_project_path}}
+
+  test:
+    desc: Unit test and lint
+    deps: [lint]
+    silent: true
+    cmds:
+      - |
+        {{.pytest}} --cov-report=term --cov={{.python_project_path}} \
+        --junitxml={{.python_venv_path}}/report.xml tests/
+
+  quicktest:
+    desc: Unit tests only
+    silent: true
+    cmds:
+      - |
+        {{.pytest}} --cov-report=term --cov={{.python_project_path}} tests/
+
+  coverage:
+    desc: Coverage and lint
+    deps: [lint]
+    silent: true
+    cmds:
+      - |
+        {{.pytest}} --cov-report=html --cov={{.python_project_path}} tests/
+
+  docs:
+    desc: Create documentation
+    deps: [coverage]
+    silent: true
+    cmds:
+      - |
+        mkdir -p docs/source/_static
+        mkdir -p docs/source/_templates
+        {{.pandoc}} --from=markdown --to=rst --output=README.rst README.md
+
+  package:
+    deps: [clean]
+    desc: Create package
+    silent: true
+    cmds:
+      - |
+        {{.python}} setup.py sdist
+
+  # publish:
+  #   desc: Publish to artifact repo
+  #   deps: [build, package, publish:nexus, publish:releasenotees]
+  #   silent: true
+  #   cmds:
+  #     - git add --all . && git commit -m 'release: {{.release_version}} (See RELEASES.MD)'
+  #     - git push origin master --tags
+
+  clean:
+    desc: Clean build files
+    silent: true
+    cmds:
+      - rm -rf dist
+      - rm -rf docs/build
+      - rm -rf *.egg-info
+
+  venv/clean:
+    desc: Remove virtual environment
+    silent: true
+    cmds:
+      - |
+        rm -rf {{.python_venv_path}}
+
+  venv:
+    desc: Create virtual environment
+    silent: true
+    cmds:
+      - |
+        python3 -m venv {{.python_venv_path}}
+        source {{.python_venv_path}}/bin/activate
+        pip3 install pip --upgrade --index-url=https://pypi.org/simple/
+    status:
+      - test -d {{.python_venv_path}}
+
+  install:
+    desc: Install locally
+    silent: true
+    deps: [venv]
+    cmds:
+      - |
+        source {{.python_venv_path}}/bin/activate
+        pip3 install -r {{.python_project_path}}/requirements.txt
+  install:dev:
+    desc: Install local dev libraries
+    silent: true
+    deps: [venv]
+    cmds:
+      - |
+        source {{.python_venv_path}}/bin/activate
+        pip3 install -r {{.python_project_path}}/requirements-dev.txt
+
+  build:
+    desc: Build
+    silent: true
+    deps: [venv]
+    cmds:
+      - |
+        source {{.python_venv_path}}/bin/activate
+        pip3 install --editable {{.python_project_path}}
+

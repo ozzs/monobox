@@ -1,3 +1,5 @@
 sqlmodel
 eyeD3
-"fastapi[all]"
+fastapi[all]
+uvicorn
+fastapi_utils
